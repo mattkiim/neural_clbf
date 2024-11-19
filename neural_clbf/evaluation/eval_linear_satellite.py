@@ -7,7 +7,7 @@ import matplotlib
 from neural_clbf.controllers import NeuralCBFController
 
 
-matplotlib.use('TkAgg')
+matplotlib.use('Agg')
 
 
 def plot_linear_satellite():

@@ -138,9 +138,17 @@ class ControlAffineSystem(ABC):
             Act, Bct = self.linearized_ct_dynamics_matrices(s)
             A, B = self.linearized_dt_dynamics_matrices(s)
 
+            M = 100
+            N = 1000
+
             # Define cost matrices as identity
-            Q = np.eye(self.n_dims)
-            R = np.eye(self.n_controls)
+            Q = np.eye(self.n_dims) * M
+            R = np.eye(self.n_controls) * N
+
+            print("A:", A)
+            print("B:", B)
+            print("Q:", Q)
+            print("R:", R)
 
             # Get feedback matrix
             K_np = lqr(A, B, Q, R)
@@ -404,6 +412,9 @@ class ControlAffineSystem(ABC):
         f, g = self.control_affine_dynamics(x, params=params)
         # Compute state derivatives using control-affine form
         xdot = f + torch.bmm(g, u.unsqueeze(-1))
+        # print(f.shape, g.shape, u.shape)
+        # print(xdot.shape, x.shape)
+        # quit()
         return xdot.view(x.shape)
 
     def zero_order_hold(

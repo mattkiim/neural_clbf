@@ -4,6 +4,7 @@ from .experiment import Experiment
 from .experiment_suite import ExperimentSuite
 
 from .clf_contour_experiment import CLFContourExperiment
+from .cbf_contour_experiment import CBFContourExperiment
 from .clf_verification_experiment import CLFVerificationExperiment
 from .bf_contour_experiment import BFContourExperiment
 from .lf_contour_experiment import LFContourExperiment
@@ -19,6 +20,7 @@ __all__ = [
     "Experiment",
     "ExperimentSuite",
     "CLFContourExperiment",
+    "CBFContourExperiment",
     "CLFVerificationExperiment",
     "BFContourExperiment",
     "LFContourExperiment",

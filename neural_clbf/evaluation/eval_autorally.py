@@ -2,7 +2,7 @@ import matplotlib
 from neural_clbf.controllers import NeuralCLBFController
 
 
-matplotlib.use('TkAgg')
+matplotlib.use('Agg')
 
 
 def plot_autorally():

@@ -1,9 +1,11 @@
 import torch
 import matplotlib
+matplotlib.use('Agg')
+
 from neural_clbf.controllers import NeuralCLBFController
 
 
-matplotlib.use('TkAgg')
+import matplotlib.pyplot as plt
 
 
 def plot_inverted_pendulum():

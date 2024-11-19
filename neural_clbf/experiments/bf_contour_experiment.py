@@ -79,6 +79,8 @@ class BFContourExperiment(Experiment):
         """
         # Sanity check: can only be called on a NeuralObsBFController
         if not (hasattr(controller_under_test, "h")):
+            print(controller_under_test)
+            quit()
             raise ValueError("Controller under test must be a NeuralObsBFController")
 
         controller_under_test = cast("NeuralObsBFController", controller_under_test)
