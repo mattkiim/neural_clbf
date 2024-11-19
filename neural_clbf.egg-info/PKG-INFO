@@ -1,0 +1,8 @@
+Metadata-Version: 2.1
+Name: neural-clbf
+Version: 0.0.0
+Summary: Toolkit for synthesizing neural CLBF controllers
+Home-page: https://github.com/dawsonc/neural_clbf
+Author: Charles Dawson
+Author-email: cbd@mit.edu
+License-File: LICENSE
