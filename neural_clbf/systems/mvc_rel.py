@@ -1,11 +1,13 @@
 from .control_affine_system import ControlAffineSystem
 import torch
+import numpy as np
 import math
 from typing import Optional, Tuple
 from abc import abstractmethod
+from neural_clbf.systems.utils import Scenario, lqr
 
 class MultiVehicleCollisionRelative(ControlAffineSystem):
-    def __init__(self):
+    def __init__(self, dt: float = 0.01):
         # Define vehicle-specific parameters 
         self.angle_alpha_factor = 1.2
         self.velocity = 0.6
@@ -21,8 +23,53 @@ class MultiVehicleCollisionRelative(ControlAffineSystem):
         }
         super().__init__(
             nominal_params=nominal_params,
-            dt=0.01,
+            dt=dt,
         )
+
+        ## Compute LQR Gain Matrix
+
+        if controller_dt is None:
+            controller_dt = dt
+        self.controller_dt = controller_dt
+
+        A = np.zeros((self.n_dims, self.n_dims))
+        B = np.zeros((self.n_dims, self.n_controls))
+
+        # Fill A and B
+
+        ref_x = np.array([0, 0, 0, 0, 0, 0, 0, 0])  # Should this be relative to a particular i/c? or crash state?
+        ref_u = np.array([0, 0, 0])                 # zeros seem correct here
+        self.ref_x = ref_x
+        self.ref_u = ref_u
+
+        v = self.velocity
+        
+        A[0, 1], A[0, 6] =  ref_u[0], -v * np.sin(ref_x[6]) # dot x1_l
+        A[1, 0], A[1, 6] = -ref_u[0],  v * np.cos(ref_x[6]) # dot y1_l
+        A[2, 3], A[2, 7] =  ref_u[0], -v * np.sin(ref_x[7]) # dot x2_l
+        A[2, 2], A[2, 7] = -ref_u[0],  v * np.cos(ref_x[7]) # dot y2_l
+        A[4, :] = A[0, :] - A[2, :] # dot x3_l
+        A[5, :] = A[1, :] - A[3, :] # dot y3_l
+
+        B[0, 0] =  ref_x[1]
+        B[1, 0] = -ref_x[0]
+        B[2, 0] =  ref_x[3]
+        B[3, 0] = -ref_x[2]
+        B[4, 0] = B[0, 0] - B[2, 0]
+        B[5, 0] = B[1, 0] - B[3, 0]
+        B[6, 0], B[6, 1] = -1, 1
+        B[7, 0], B[7, 2] = -1, 1
+
+        # Discretize A and B
+        A = np.eye(self.n_dims) + self.controller_dt * A
+        B = self.controller_dt * B
+
+        # Define cost matrices as identity
+        Q = np.eye(self.n_dims)
+        R = np.eye(self.n_controls)
+
+        # Get feedback matrix
+        self.K = torch.tensor(lqr(A, B, Q, R))
     
     @property
     def n_dims(self) -> int:
@@ -153,3 +200,35 @@ class MultiVehicleCollisionRelative(ControlAffineSystem):
         ) - self.collisionR
 
         return boundary_values
+    
+    def u_nominal(
+        self, x: torch.Tensor, params: Optional[Scenario] = None
+    ) -> torch.Tensor:
+        """
+        Compute the nominal control for the nominal parameters. The nominal controller is LQR.
+
+        args:
+            x: bs x self.n_dims tensor of state
+        returns:
+            u_nominal: bs x self.n_controls tensor of controls
+        """
+        
+        self.goal_point = self.ref_x 
+        # FIXME : What should the goal point be? Depends on i/c of cars. Currently, aiming to crash at origin. 
+        # Probably should be on far side of circle for each agent.
+
+        # Compute nominal control from feedback + equilibrium control
+        u_nominal = -(self.K.type_as(x) @ (x - self.goal_point).T).T 
+        u_eq = torch.zeros_like(u_nominal)
+        u = u_nominal + u_eq
+
+        # Clamp given the control limits
+        upper_u_lim, lower_u_lim = self.control_limits
+        for dim_idx in range(self.n_controls):
+            u[:, dim_idx] = torch.clamp(
+                u[:, dim_idx],
+                min=lower_u_lim[dim_idx].item(),
+                max=upper_u_lim[dim_idx].item(),
+            )
+
+        return u

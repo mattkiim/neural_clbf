@@ -42,6 +42,9 @@ def main(args):
     # Initialize the dynamics model with MultiVehicleCollision
     dynamics_model = MultiVehicleCollisionRelative()
 
+    print("\n\ndynamics_model.K:\n")
+    print(dynamics_model.K)
+
     # Initialize the DataModule with appropriate initial conditions for MultiVehicleCollision
     initial_conditions = [
         (-1, 1),  # x positions
