@@ -113,6 +113,8 @@ class CBFContourExperiment(Experiment):
             .reshape(1, controller_under_test.dynamics_model.n_dims)
         )
 
+        print(x.shape)
+
         # Loop through the grid
         prog_bar_range = tqdm.trange(self.n_grid, desc="Plotting CBF", leave=True)
         for i in prog_bar_range:
@@ -120,6 +122,17 @@ class CBFContourExperiment(Experiment):
                 # Adjust x to be at the current grid point
                 x[0, self.x_axis_index] = x_vals[i]
                 x[0, self.y_axis_index] = y_vals[j]
+                x[0, 2] = -0.4
+                x[0, 3] = 0.0
+                x[0, 4] = 0.4
+                x[0, 5] = 0.0
+                x[0, 6] = -3.14 / 2
+                x[0, 7] = 0.7854
+                x[0, 8] = 2.3562
+
+                print(x)
+                
+                x = controller_under_test.dynamics_model.states_rel(x)
 
                 # Get the value of the CBF
                 h = controller_under_test.V(x)
@@ -202,6 +215,7 @@ class CBFContourExperiment(Experiment):
         fig_handle = ("CBF Contour", fig)
 
         if display_plots:
+            plt.savefig("contours.png")
             plt.show()
             return []
         else:

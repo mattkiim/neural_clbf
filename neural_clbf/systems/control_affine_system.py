@@ -38,7 +38,7 @@ class ControlAffineSystem(ABC):
         nominal_params: Scenario,
         dt: float = 0.01,
         controller_dt: Optional[float] = None,
-        use_linearized_controller: bool = True,
+        use_linearized_controller: bool = False,
         scenarios: Optional[ScenarioList] = None,
     ):
         """
@@ -75,6 +75,8 @@ class ControlAffineSystem(ABC):
         # Compute the linearized controller
         if use_linearized_controller:
             self.compute_linearized_controller(scenarios)
+        else:
+            self.P = torch.eye(self.n_dims)
 
     @torch.enable_grad()
     def compute_A_matrix(self, scenario: Optional[Scenario]) -> np.ndarray:

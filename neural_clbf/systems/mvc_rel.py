@@ -28,9 +28,7 @@ class MultiVehicleCollisionRelative(ControlAffineSystem):
 
         ## Compute LQR Gain Matrix
 
-        if controller_dt is None:
-            controller_dt = dt
-        self.controller_dt = controller_dt
+        self.controller_dt = dt
 
         A = np.zeros((self.n_dims, self.n_dims))
         B = np.zeros((self.n_dims, self.n_controls))
@@ -38,9 +36,11 @@ class MultiVehicleCollisionRelative(ControlAffineSystem):
         # Fill A and B
 
         ref_x = np.array([0, 0, 0, 0, 0, 0, 0, 0])  # Should this be relative to a particular i/c? or crash state?
-        ref_u = np.array([0, 0, 0])                 # zeros seem correct here
+        ref_u = torch.tensor([0.0, 0.0, 0.0])       # zeros seem correct here
         self.ref_x = ref_x
-        self.ref_u = ref_u
+
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.ref_u = ref_u.to("cpu")
 
         v = self.velocity
         
@@ -59,17 +59,20 @@ class MultiVehicleCollisionRelative(ControlAffineSystem):
         B[5, 0] = B[1, 0] - B[3, 0]
         B[6, 0], B[6, 1] = -1, 1
         B[7, 0], B[7, 2] = -1, 1
+        B[8, :] = B[6, :] - B[7, :]
 
         # Discretize A and B
         A = np.eye(self.n_dims) + self.controller_dt * A
         B = self.controller_dt * B
+
+        print(A, B)
 
         # Define cost matrices as identity
         Q = np.eye(self.n_dims)
         R = np.eye(self.n_controls)
 
         # Get feedback matrix
-        self.K = torch.tensor(lqr(A, B, Q, R))
+        # self.K = torch.tensor(lqr(A, B, Q, R))
     
     @property
     def n_dims(self) -> int:
@@ -85,8 +88,8 @@ class MultiVehicleCollisionRelative(ControlAffineSystem):
 
     @property
     def state_limits(self) -> Tuple[torch.Tensor, torch.Tensor]:
-        lower_limits = torch.tensor([-1, -1, -1, -1, -1, -1, -math.pi, -math.pi, -math.pi])
-        upper_limits = torch.tensor([1, 1, 1, 1, 1, 1, math.pi, math.pi, math.pi])
+        lower_limits = torch.tensor([-2, -2, -2, -2, -2, -2, -math.pi, -math.pi, -math.pi])
+        upper_limits = torch.tensor([2, 2, 2, 2, 2, 2, math.pi, math.pi, math.pi])
         return (upper_limits, lower_limits)
 
     @property
@@ -213,22 +216,31 @@ class MultiVehicleCollisionRelative(ControlAffineSystem):
             u_nominal: bs x self.n_controls tensor of controls
         """
         
-        self.goal_point = self.ref_x 
-        # FIXME : What should the goal point be? Depends on i/c of cars. Currently, aiming to crash at origin. 
-        # Probably should be on far side of circle for each agent.
+        # self.goal_point = self.ref_x 
+        # # FIXME : What should the goal point be? Depends on i/c of cars. Currently, aiming to crash at origin. 
+        # # Probably should be on far side of circle for each agent.
 
-        # Compute nominal control from feedback + equilibrium control
-        u_nominal = -(self.K.type_as(x) @ (x - self.goal_point).T).T 
-        u_eq = torch.zeros_like(u_nominal)
-        u = u_nominal + u_eq
+        # # Compute nominal control from feedback + equilibrium control
+        # u_nominal = -(self.K.type_as(x) @ (x - self.goal_point).T).T 
+        # u_eq = torch.zeros_like(u_nominal)
+        # u = u_nominal + u_eq
 
-        # Clamp given the control limits
-        upper_u_lim, lower_u_lim = self.control_limits
-        for dim_idx in range(self.n_controls):
-            u[:, dim_idx] = torch.clamp(
-                u[:, dim_idx],
-                min=lower_u_lim[dim_idx].item(),
-                max=upper_u_lim[dim_idx].item(),
-            )
+        # # Clamp given the control limits
+        # upper_u_lim, lower_u_lim = self.control_limits
+        # for dim_idx in range(self.n_controls):
+        #     u[:, dim_idx] = torch.clamp(
+        #         u[:, dim_idx],
+        #         min=lower_u_lim[dim_idx].item(),
+        #         max=upper_u_lim[dim_idx].item(),
+        #     )
 
-        return u
+        return self.ref_u
+    
+
+    def states_rel(self, x):
+        x_rel = x.clone()
+        x_rel[:, 0:2] = x[:, 0:2] - x[:, 2:4]
+        x_rel[:, 2:4] = x[:, 4:6] - x[:, 0:2]
+        x_rel[:, 4:6] = x_rel[:, 0:2] - x_rel[:, 2:4]
+        
+        return x_rel

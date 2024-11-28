@@ -3,6 +3,7 @@ import torch
 import math
 from typing import Optional, Tuple
 from abc import abstractmethod
+from neural_clbf.systems.utils import Scenario, lqr
 
 class MultiVehicleCollision(ControlAffineSystem):
     def __init__(self):
@@ -12,6 +13,8 @@ class MultiVehicleCollision(ControlAffineSystem):
         self.omega_max = 1.1
         self.collisionR = 0.25
         self.obs_dim = 9
+
+        self.ref_u = torch.tensor([0.0, 0.0, 0.0])  
         
         # Define state properties
         nominal_params = {
@@ -52,7 +55,7 @@ class MultiVehicleCollision(ControlAffineSystem):
         # Validation checks for system parameters
         return all(param in params for param in ['velocity', 'omega_max', 'collisionR'])
 
-    def _f_nr(self, x: torch.Tensor, params: dict) -> torch.Tensor:
+    def _f(self, x: torch.Tensor, params: dict) -> torch.Tensor:
         """
         MattKiim: NON-relative Control-independent dynamics f(x). Not being used.
         """
@@ -77,30 +80,7 @@ class MultiVehicleCollision(ControlAffineSystem):
 
         return f
 
-    def _f(self, x: torch.Tensor, params: dict) -> torch.Tensor:
-        """Relative control-independent dynamics f(x)"""
-        batch_size = x.shape[0]
-        f = torch.zeros((batch_size, self.n_dims, 1), dtype=x.dtype, device=x.device)
-
-        # Velocity
-        velocity = params['velocity']
-
-        # Relative dynamics
-        # Vehicle 1 w.r.t. 2
-        f[:, 0, 0] = velocity * (torch.cos(x[:, 3]) - torch.cos(x[:, 0]))  # x_1,2
-        f[:, 1, 0] = velocity * (torch.sin(x[:, 3]) - torch.sin(x[:, 0]))  # y_1,2
-
-        # Vehicle 2 w.r.t. 3
-        f[:, 2, 0] = velocity * (torch.cos(x[:, 6]) - torch.cos(x[:, 3]))  # x_2,3
-        f[:, 3, 0] = velocity * (torch.sin(x[:, 6]) - torch.sin(x[:, 3]))  # y_2,3
-
-        # Vehicle 1 w.r.t. 3
-        f[:, 4, 0] = velocity * (torch.cos(x[:, 6]) - torch.cos(x[:, 0]))  # x_1,3
-        f[:, 5, 0] = velocity * (torch.sin(x[:, 6]) - torch.sin(x[:, 0]))  # y_1,3
-
-        return f
-
-    def _g_nr(self, x: torch.Tensor, params: dict) -> torch.Tensor:
+    def _g(self, x: torch.Tensor, params: dict) -> torch.Tensor:
         """
         MattKiim: the NON-RELATIVE control-dependent dynamics. Not currently being used. 
         """
@@ -108,17 +88,6 @@ class MultiVehicleCollision(ControlAffineSystem):
         g[:, 6, 0] = 1.0
         g[:, 7, 1] = 1.0
         g[:, 8, 2] = 1.0
-        return g
-
-    def _g(self, x: torch.Tensor, params: dict) -> torch.Tensor:
-        """Relative control-dependent dynamics g(x)"""
-        g = torch.zeros((x.shape[0], self.n_dims, self.n_controls), dtype=x.dtype, device=x.device)
-
-        # Vehicle 1 w.r.t. 2
-        g[:, 6, 0] = 1.0  # u_1 - u_2 for relative orientation
-        g[:, 7, 1] = 1.0  # u_2 - u_3 for relative orientation
-        g[:, 8, 2] = 1.0  # u_1 - u_3 for relative orientation
-
         return g
 
     def safe_mask(self, x: torch.Tensor) -> torch.Tensor:
@@ -129,7 +98,7 @@ class MultiVehicleCollision(ControlAffineSystem):
         # Unsafe region if boundary function is less than zero
         return self.boundary_fn(x) < 0
 
-    def boundary_fn_nr(self, state: torch.Tensor) -> torch.Tensor:
+    def boundary_fn(self, state: torch.Tensor) -> torch.Tensor:
         """
         MattKiim: the NON-RELATIVE boundary function (original). Not currently being used. 
         """
@@ -147,16 +116,35 @@ class MultiVehicleCollision(ControlAffineSystem):
                 boundary_values = torch.min(boundary_values, boundary_values_current)
         return boundary_values
     
-    def boundary_fn(self, state: torch.Tensor) -> torch.Tensor:
-        # Relative distances
-        dist_1_2 = torch.norm(state[:, 0:2], dim=-1)  # Relative distance between 1 and 2
-        dist_2_3 = torch.norm(state[:, 2:4], dim=-1)  # Relative distance between 2 and 3
-        dist_1_3 = torch.norm(state[:, 4:6], dim=-1)  # Relative distance between 1 and 3
 
-        # Safety condition
-        boundary_values = torch.min(
-            torch.min(dist_1_2, dist_2_3),
-            dist_1_3
-        ) - self.collisionR
+    def u_nominal(
+        self, x: torch.Tensor, params: Optional[Scenario] = None
+    ) -> torch.Tensor:
+        """
+        Compute the nominal control for the nominal parameters. The nominal controller is LQR.
 
-        return boundary_values
+        args:
+            x: bs x self.n_dims tensor of state
+        returns:
+            u_nominal: bs x self.n_controls tensor of controls
+        """
+        
+        # self.goal_point = self.ref_x 
+        # # FIXME : What should the goal point be? Depends on i/c of cars. Currently, aiming to crash at origin. 
+        # # Probably should be on far side of circle for each agent.
+
+        # # Compute nominal control from feedback + equilibrium control
+        # u_nominal = -(self.K.type_as(x) @ (x - self.goal_point).T).T 
+        # u_eq = torch.zeros_like(u_nominal)
+        # u = u_nominal + u_eq
+
+        # # Clamp given the control limits
+        # upper_u_lim, lower_u_lim = self.control_limits
+        # for dim_idx in range(self.n_controls):
+        #     u[:, dim_idx] = torch.clamp(
+        #         u[:, dim_idx],
+        #         min=lower_u_lim[dim_idx].item(),
+        #         max=upper_u_lim[dim_idx].item(),
+        #     )
+
+        return self.ref_u

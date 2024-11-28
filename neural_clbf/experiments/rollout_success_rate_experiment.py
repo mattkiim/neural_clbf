@@ -29,6 +29,8 @@ class RolloutSuccessRateExperiment(Experiment):
         algorithm_name: str,
         n_sims: int = 500,
         t_sim: float = 10.0,
+        initial_states = None,
+        relative = True
     ):
         """Initialize an experiment for simulating controller performance.
 
@@ -44,9 +46,11 @@ class RolloutSuccessRateExperiment(Experiment):
         self.algorithm_name = algorithm_name
         self.n_sims = n_sims
         self.t_sim = t_sim
+        self.initial_states = initial_states
+        self.relative = relative
 
     @torch.no_grad()
-    def run(self, controller_under_test: "Controller") -> pd.DataFrame:
+    def run2(self, controller_under_test: "Controller") -> pd.DataFrame:
         """
         Run the experiment, likely by evaluating the controller, but the experiment
         has freedom to call other functions of the controller as necessary (if these
@@ -92,6 +96,9 @@ class RolloutSuccessRateExperiment(Experiment):
                 controller_under_test.dynamics_model.scene = scene  # type: ignore
 
             # Generate a safe starting state
+            if self.initial_states is not None:
+                # TODO: take in the initial states numpy file
+                pass
             x = controller_under_test.dynamics_model.sample_safe(1)
             while controller_under_test.dynamics_model.unsafe_mask(x).any():
                 x = controller_under_test.dynamics_model.sample_safe(1)
@@ -139,11 +146,11 @@ class RolloutSuccessRateExperiment(Experiment):
                     "Algorithm": self.algorithm_name,
                     "Metric": "Safety rate",
                     "Value": 1 - num_collisions / self.n_sims,
-                },
+                }, # TODO: implement false positives and false negatives: if value
                 {
                     "Algorithm": self.algorithm_name,
                     "Metric": "Time to goal",
-                    "Value": total_time_to_goal / num_goals_reached,
+                    "Value": total_time_to_goal / num_goals_reached if num_goals_reached != 0 else -1, # TODO: implement concept of goal?
                 },
             ]
         )
@@ -153,6 +160,153 @@ class RolloutSuccessRateExperiment(Experiment):
             controller_under_test.dynamics_model.scene = original_scene  # type: ignore
 
         return results_df
+
+    def run(self, controller_under_test: "Controller") -> pd.DataFrame:
+        """
+        Run the experiment to compute false positives and false negatives based on the CBF.
+
+        args:
+            controller_under_test: the controller with which to run the experiment.
+        returns:
+            a pandas DataFrame containing the results of the experiment.
+        """
+        # Metrics
+        num_false_positives = 0
+        num_false_negatives = 0
+        num_true_positives = 0
+        num_true_negatives = 0
+        num_safe_rollouts = 0
+        num_unsafe_rollouts = 0
+
+        # Simulation parameters
+        dt = controller_under_test.dynamics_model.dt
+        controller_update_freq = int(controller_under_test.controller_period / dt)
+        num_timesteps = int(self.t_sim // dt)
+
+        if self.initial_states is not None:
+            # TODO: take in the initial states numpy file
+            initial_states = self.initial_states
+            pass
+        
+        # False Positive Check: Initialize in safe states
+        for rollout_idx in range(self.n_sims):
+            # Initialize a safe state
+            if self.initial_states is not None:
+                x = initial_states[rollout_idx].view(1, 9) # TODO: hardcoded 
+                # print(x.shape)
+            else:
+                x = controller_under_test.dynamics_model.sample_safe(1)
+                while not controller_under_test.dynamics_model.safe_mask(x).all():
+                    x = controller_under_test.dynamics_model.sample_safe(1)
+            if self.relative:
+                x = controller_under_test.dynamics_model.states_rel(x)
+            # Reset the controller if necessary
+            if hasattr(controller_under_test, "reset_controller"):
+                controller_under_test.reset_controller(x)
+
+            # Simulate forward
+            safe_trajectory = True
+            for tstep in range(num_timesteps):
+                # Get control input if it's time
+                if tstep % controller_update_freq == 0:
+                    u_current = controller_under_test.u(x)
+
+                # Simulate dynamics
+                xdot = controller_under_test.dynamics_model.closed_loop_dynamics(x, u_current)
+                x = x + dt * xdot
+
+                # Check if the state becomes unsafe
+                if controller_under_test.dynamics_model.unsafe_mask(x).any():
+                    safe_trajectory = False
+                    break
+
+            # Accumulate metrics
+            num_safe_rollouts += 1
+            if not safe_trajectory:
+                num_false_positives += 1
+            else:
+                num_true_positives += 1
+
+        # False Negative Check: Initialize in unsafe states
+        for rollout_idx in range(self.n_sims):
+            # Initialize an unsafe state
+            if self.initial_states is not None:
+                x = initial_states[rollout_idx].view(1, 9) # TODO: hardcoded 
+                # print(x.shape)
+            else:
+                x = controller_under_test.dynamics_model.sample_unsafe(1)
+                while not controller_under_test.dynamics_model.unsafe_mask(x).all():
+                    x = controller_under_test.dynamics_model.sample_unsafe(1)
+
+            # Reset the controller if necessary
+            if hasattr(controller_under_test, "reset_controller"):
+                controller_under_test.reset_controller(x)
+
+            # Simulate forward
+            safe_trajectory = True
+            for tstep in range(num_timesteps):
+                # Get control input if it's time
+                if tstep % controller_update_freq == 0:
+                    u_current = controller_under_test.u(x)
+
+                # Simulate dynamics
+                xdot = controller_under_test.dynamics_model.closed_loop_dynamics(x, u_current)
+                x = x + dt * xdot
+
+                # Check if the state remains safe
+                if controller_under_test.dynamics_model.safe_mask(x).all():
+                    safe_trajectory = False
+                    break
+
+            # Accumulate metrics
+            num_unsafe_rollouts += 1
+            if safe_trajectory:
+                num_false_negatives += 1
+            else: 
+                num_true_negatives += 1
+
+        # Compute rates
+        false_positive_rate = num_false_positives / num_safe_rollouts if num_safe_rollouts > 0 else 0
+        false_negative_rate = num_false_negatives / num_unsafe_rollouts if num_unsafe_rollouts > 0 else 0
+
+        false_positive_rate_cm = num_false_positives / (num_false_positives + num_true_negatives)
+        false_negative_rate_cm = num_false_negatives / (num_false_negatives + num_true_positives)
+
+        print("FP: ", false_positive_rate)
+        print("FN: ", false_negative_rate)
+
+        print("FP CM: ", false_positive_rate_cm)
+        print("FN CM: ", false_negative_rate_cm)
+
+
+        # Create a DataFrame with the results
+        results_df = pd.DataFrame(
+            [
+                {
+                    "Algorithm": self.algorithm_name,
+                    "Metric": "False Positive Rate",
+                    "Value": false_positive_rate,
+                },
+                {
+                    "Algorithm": self.algorithm_name,
+                    "Metric": "False Negative Rate",
+                    "Value": false_negative_rate,
+                },
+                {
+                    "Algorithm": self.algorithm_name,
+                    "Metric": "False Positive Rate CM",
+                    "Value": false_positive_rate_cm,
+                },
+                {
+                    "Algorithm": self.algorithm_name,
+                    "Metric": "False Negative Rate CM",
+                    "Value": false_negative_rate_cm,
+                },
+            ]
+            
+        )
+        return results_df
+
 
     def plot(
         self,
@@ -184,6 +338,7 @@ class RolloutSuccessRateExperiment(Experiment):
 
         if display_plots:
             plt.show()
+            plt.savefig("plot_success_rate.png")
             return []
         else:
             return [fig_handle]

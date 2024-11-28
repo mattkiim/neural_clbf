@@ -273,7 +273,8 @@ class CLFController(Controller):
 
             # Define the cost
             Q = np.eye(n_controls)
-            u_ref_np = u_ref[batch_idx, :].detach().cpu().numpy()
+            print(u_ref.shape)
+            u_ref_np = u_ref[:].detach().cpu().numpy()
             objective = u @ Q @ u - 2 * u_ref_np @ Q @ u + u_ref_np @ Q @ u_ref_np
             if allow_relaxation:
                 relax_penalties = relaxation_penalty * np.ones(n_scenarios)
@@ -405,6 +406,10 @@ class CLFController(Controller):
         # Figure out if we need to use a differentiable solver (determined by whether
         # the input x requires a gradient or not) or if cvx should be used regardless
         # (e.g. due to gurobi licensing issues)
+
+        # print(x.dtype, u_ref.dtype, V.dtype, Lf_V.dtype)
+        # quit()
+
         if requires_grad or self.disable_gurobi:
             return self._solve_CLF_QP_cvxpylayers(
                 x, u_ref, V, Lf_V, Lg_V, relaxation_penalty
