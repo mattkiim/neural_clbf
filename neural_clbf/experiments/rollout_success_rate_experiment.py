@@ -161,7 +161,7 @@ class RolloutSuccessRateExperiment(Experiment):
 
         return results_df
 
-    def run(self, controller_under_test: "Controller") -> pd.DataFrame:
+    def run3(self, controller_under_test: "Controller") -> pd.DataFrame:
         """
         Run the experiment to compute false positives and false negatives based on the CBF.
 
@@ -238,6 +238,9 @@ class RolloutSuccessRateExperiment(Experiment):
                 while not controller_under_test.dynamics_model.unsafe_mask(x).all():
                     x = controller_under_test.dynamics_model.sample_unsafe(1)
 
+            if self.relative:
+                x = controller_under_test.dynamics_model.states_rel(x)
+
             # Reset the controller if necessary
             if hasattr(controller_under_test, "reset_controller"):
                 controller_under_test.reset_controller(x)
@@ -268,6 +271,119 @@ class RolloutSuccessRateExperiment(Experiment):
         # Compute rates
         false_positive_rate = num_false_positives / num_safe_rollouts if num_safe_rollouts > 0 else 0
         false_negative_rate = num_false_negatives / num_unsafe_rollouts if num_unsafe_rollouts > 0 else 0
+
+        false_positive_rate_cm = num_false_positives / (num_false_positives + num_true_negatives)
+        false_negative_rate_cm = num_false_negatives / (num_false_negatives + num_true_positives)
+
+        print("FP: ", false_positive_rate)
+        print("FN: ", false_negative_rate)
+
+        print("FP CM: ", false_positive_rate_cm)
+        print("FN CM: ", false_negative_rate_cm)
+
+
+        # Create a DataFrame with the results
+        results_df = pd.DataFrame(
+            [
+                {
+                    "Algorithm": self.algorithm_name,
+                    "Metric": "False Positive Rate",
+                    "Value": false_positive_rate,
+                },
+                {
+                    "Algorithm": self.algorithm_name,
+                    "Metric": "False Negative Rate",
+                    "Value": false_negative_rate,
+                },
+                {
+                    "Algorithm": self.algorithm_name,
+                    "Metric": "False Positive Rate CM",
+                    "Value": false_positive_rate_cm,
+                },
+                {
+                    "Algorithm": self.algorithm_name,
+                    "Metric": "False Negative Rate CM",
+                    "Value": false_negative_rate_cm,
+                },
+            ]
+            
+        )
+        return results_df
+
+    def run(self, controller_under_test: "Controller") -> pd.DataFrame:
+        """
+        Run the experiment to compute false positives and false negatives based on the CBF.
+
+        args:
+            controller_under_test: the controller with which to run the experiment.
+        returns:
+            a pandas DataFrame containing the results of the experiment.
+        """
+        # Metrics
+        num_false_positives = 0
+        num_false_negatives = 0
+        num_true_positives = 0
+        num_true_negatives = 0
+        num_safe_rollouts = 0
+        num_unsafe_rollouts = 0
+
+        # Simulation parameters
+        dt = controller_under_test.dynamics_model.dt
+        controller_update_freq = int(controller_under_test.controller_period / dt)
+        num_timesteps = int(self.t_sim // dt)
+
+        if self.initial_states is not None:
+            # TODO: take in the initial states numpy file
+            initial_states = self.initial_states
+            pass
+        
+        # False Positive Check: Initialize in safe states
+        for rollout_idx in range(self.n_sims):
+            # Initialize a safe state
+            x = initial_states[rollout_idx].view(1, 9) # TODO: hardcoded 
+            if self.relative:
+                x = controller_under_test.dynamics_model.states_rel(x)
+            # Reset the controller if necessary
+            if hasattr(controller_under_test, "reset_controller"):
+                controller_under_test.reset_controller(x)
+
+            initially_safe = False if controller_under_test.V(x) < 0 else True
+
+            # Simulate forward
+            safe_trajectory = True
+            for tstep in range(num_timesteps):
+                # Get control input if it's time
+                if tstep % controller_update_freq == 0:
+                    u_current = controller_under_test.u(x)
+
+                # Simulate dynamics
+                xdot = controller_under_test.dynamics_model.closed_loop_dynamics(x, u_current)
+                x = x + dt * xdot
+
+                # Check if the state becomes unsafe
+                if controller_under_test.dynamics_model.unsafe_mask(x).any():
+                    safe_trajectory = False
+                    break
+
+            # Accumulate metrics
+            if initially_safe:
+                num_safe_rollouts += 1
+                if safe_trajectory:
+                    num_true_positives += 1
+                else:
+                    num_false_positives += 1
+            else:
+                num_unsafe_rollouts += 1
+                if not safe_trajectory: 
+                    num_true_negatives += 1
+                else:
+                    num_false_negatives += 1
+
+        # Compute rates
+        print("TP FP TN FN: ", num_true_positives, num_false_positives, num_true_negatives, num_false_negatives)
+
+        false_positive_rate = num_false_positives / 500
+        false_negative_rate = num_false_negatives / 500
 
         false_positive_rate_cm = num_false_positives / (num_false_positives + num_true_negatives)
         false_negative_rate_cm = num_false_negatives / (num_false_negatives + num_true_positives)

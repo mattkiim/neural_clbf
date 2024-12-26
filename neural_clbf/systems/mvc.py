@@ -148,3 +148,4 @@ class MultiVehicleCollision(ControlAffineSystem):
         #     )
 
         return self.ref_u
+    

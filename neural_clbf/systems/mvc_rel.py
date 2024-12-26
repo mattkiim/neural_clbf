@@ -103,81 +103,96 @@ class MultiVehicleCollisionRelative(ControlAffineSystem):
         return all(param in params for param in ['velocity', 'omega_max', 'collisionR'])
 
     def _f(self, x: torch.Tensor, params: dict) -> torch.Tensor:
-        """
-        Return the control-independent part of the control-affine dynamics.
+        r"""
+        Return the "drift" part of the dynamics:  \dot{x} = f(x) + g(x) u.
 
-        args:
-            x: bs x self.n_dims tensor of state
-            params: a dictionary giving the parameter values for the system.
-                    If None, defaults to the nominal parameters used at initialization.
-        returns:
-            f: bs x self.n_dims x 1 tensor
+        In a reference-based approach with constant speed = v:
+        - Vehicle 1 (Ego):
+            \dot{x1}   = v cos(theta1)
+            \dot{y1}   = v sin(theta1)
+            \dot{theta1} = 0           (since heading rate is in g(x)*u1)
+        - Vehicle 2 relative coords:
+            rx2 = x2 - x1
+            ry2 = y2 - y1
+            => \dot{rx2} = v cos(theta1 + rtheta2) - v cos(theta1)
+                \dot{ry2} = v sin(theta1 + rtheta2) - v sin(theta1)
+            => \dot{rtheta2} = 0       (since (theta2 - theta1) depends on (u2 - u1))
+        - Vehicle 3 is analogous
         """
-        # Extract batch size and initialize the result tensor
         batch_size = x.shape[0]
-        f = torch.zeros((batch_size, self.n_dims, 1))
-        f = f.type_as(x)
+        f = torch.zeros((batch_size, self.n_dims, 1), dtype=x.dtype, device=x.device)
 
-        # Extract velocity parameter
-        v = params["velocity"]
+        # Unpack states
+        x1    = x[:, 0]
+        y1    = x[:, 1]
+        rx2   = x[:, 2]
+        ry2   = x[:, 3]
+        rx3   = x[:, 4]
+        ry3   = x[:, 5]
+        theta1= x[:, 6]
+        rtheta2 = x[:, 7]
+        rtheta3 = x[:, 8]
 
-        # Extract state variables
-        x1r, y1r, theta1 = x[:, 0], x[:, 1], x[:, 6]
-        x2r, y2r, theta2 = x[:, 2], x[:, 3], x[:, 7]
+        v = params['velocity']
 
-        # Relative dynamics for x1r, y1r
-        f[:, 0, 0] = v * torch.cos(theta1) - v
+        # 1) Vehicle 1 (Ego)
+        # dot{x1} = v cos(theta1)
+        # dot{y1} = v sin(theta1)
+        f[:, 0, 0] = v * torch.cos(theta1)
         f[:, 1, 0] = v * torch.sin(theta1)
+        # dot{theta1} = 0 because heading rate enters via g(x)*u1
 
-        # Relative dynamics for x2r, y2r
-        f[:, 2, 0] = v * torch.cos(theta2) - v
-        f[:, 3, 0] = v * torch.sin(theta2)
+        # 2) Vehicle 2 relative coords
+        # dot{rx2} = v[cos(theta1 + rtheta2) - cos(theta1)]
+        # dot{ry2} = v[sin(theta1 + rtheta2) - sin(theta1)]
+        f[:, 2, 0] = v*(torch.cos(theta1 + rtheta2) - torch.cos(theta1))
+        f[:, 3, 0] = v*(torch.sin(theta1 + rtheta2) - torch.sin(theta1))
+        # dot{rtheta2} = 0, heading difference is in g
 
-        # Relative dynamics for x3r, y3r (difference between vehicle 1 and vehicle 2 dynamics)
-        f[:, 4, 0] = f[:, 0, 0] - f[:, 2, 0]
-        f[:, 5, 0] = f[:, 1, 0] - f[:, 3, 0]
+        # 3) Vehicle 3 relative coords
+        f[:, 4, 0] = v*(torch.cos(theta1 + rtheta3) - torch.cos(theta1))
+        f[:, 5, 0] = v*(torch.sin(theta1 + rtheta3) - torch.sin(theta1))
+        # dot{rtheta3} = 0
 
         return f
 
     def _g(self, x: torch.Tensor, params: dict) -> torch.Tensor:
-        """
-        Return the control-dependent part of the control-affine dynamics.
+        r"""
+        The control-affine part:  \dot{x} = f(x) + g(x) u,  with u = [u1, u2, u3].
 
-        args:
-            x: bs x self.n_dims tensor of state
-            params: a dictionary giving the parameter values for the system.
-                    If None, defaults to the nominal parameters used at initialization.
-        returns:
-            g: bs x self.n_dims x self.n_controls tensor
+        We consider:
+        - \dot{\theta1}   = u1
+        - \dot{rtheta2}   = (u2 - u1)
+        - \dot{rtheta3}   = (u3 - u1)
+        So g(x) * [u1, u2, u3] should fill these angle derivatives accordingly.
+
+        x1, y1, rx2, ry2, rx3, ry3 have no *direct* linear control terms
+        in a standard Dubins model—because the speed v is constant, and
+        the heading angles appear in f(x).
+
+        => For the angles we get:
+
+            dot{theta1}   = 1 * u1 + 0 * u2 + 0 * u3
+            dot{rtheta2}  = -1 * u1 + 1 * u2 + 0 * u3
+            dot{rtheta3}  = -1 * u1 + 0 * u2 + 1 * u3
         """
-        # Extract batch size and initialize the result tensor
         batch_size = x.shape[0]
-        g = torch.zeros((batch_size, self.n_dims, self.n_controls))
-        g = g.type_as(x)
+        g = torch.zeros((batch_size, self.n_dims, self.n_controls), dtype=x.dtype, device=x.device)
 
-        # Extract state variables
-        x1r, y1r = x[:, 0], x[:, 1]
-        x2r, y2r = x[:, 2], x[:, 3]
+        # Indices: [0,1,2,3,4,5,6,7,8] => x1,y1,rx2,ry2,rx3,ry3,theta1,rtheta2,rtheta3
+        # For x1,y1,rx2,ry2,rx3,ry3 => no direct linear control terms
+        # For [theta1, rtheta2, rtheta3], define how each is controlled by [u1, u2, u3]
 
-        # Control terms for x1r, y1r
-        g[:, 0, 0] = y1r  # x1r_dot w.r.t u1
-        g[:, 1, 0] = -x1r  # y1r_dot w.r.t u1
+        # dot{theta1}   = u1 => g[:, 6, 0] = 1
+        g[:, 6, 0] = 1.0
 
-        # Control terms for x2r, y2r
-        g[:, 2, 1] = y2r  # x2r_dot w.r.t u2
-        g[:, 3, 1] = -x2r  # y2r_dot w.r.t u2
+        # dot{rtheta2}  = u2 - u1 => g[:, 7, 0] = -1,  g[:, 7, 1] = +1
+        g[:, 7, 0] = -1.0
+        g[:, 7, 1] =  1.0
 
-        # Control terms for x3r, y3r (difference of above)
-        g[:, 4, 0] = g[:, 0, 0] - g[:, 2, 1]  # x3r_dot w.r.t u1, u2
-        g[:, 4, 1] = -g[:, 2, 1]
-        g[:, 5, 0] = g[:, 1, 0] - g[:, 3, 1]  # y3r_dot w.r.t u1, u2
-        g[:, 5, 1] = -g[:, 3, 1]
-
-        # Control terms for relative orientation dynamics
-        g[:, 6, 0] = -1.0  # theta1_dot w.r.t u1
-        g[:, 7, 1] = -1.0  # theta2_dot w.r.t u2
-        g[:, 8, 0] = -1.0  # theta3_dot w.r.t u1
-        g[:, 8, 1] = 1.0   # theta3_dot w.r.t u2
+        # dot{rtheta3}  = u3 - u1 => g[:, 8, 0] = -1, g[:, 8, 2] = +1
+        g[:, 8, 0] = -1.0
+        g[:, 8, 2] =  1.0
 
         return g
 
@@ -191,18 +206,30 @@ class MultiVehicleCollisionRelative(ControlAffineSystem):
         return self.boundary_fn(x) < 0
     
     def boundary_fn(self, state: torch.Tensor) -> torch.Tensor:
-        # Relative distances
-        dist_1_2 = torch.norm(state[:, 0:2], dim=-1)  # Relative distance between 1 and 2
-        dist_2_3 = torch.norm(state[:, 2:4], dim=-1)  # Relative distance between 2 and 3
-        dist_1_3 = torch.norm(state[:, 4:6], dim=-1)  # Relative distance between 1 and 3
+            r"""
+            We store:
+            (x1, y1) for Ego's absolute position,
+            (rx2, ry2) = (x2 - x1, y2 - y1),
+            (rx3, ry3) = (x3 - x1, y3 - y1).
 
-        # Safety condition
-        boundary_values = torch.min(
-            torch.min(dist_1_2, dist_2_3),
-            dist_1_3
-        ) - self.collisionR
+            Distances to check:
+            - Ego <-> Vehicle2:  ||(rx2, ry2)||
+            - Ego <-> Vehicle3:  ||(rx3, ry3)||
+            - Vehicle2 <-> Vehicle3:  ||((rx3,ry3) - (rx2,ry2))||
+            Then subtract collisionR.
+            """
+            rx2 = state[:, 2]
+            ry2 = state[:, 3]
+            rx3 = state[:, 4]
+            ry3 = state[:, 5]
 
-        return boundary_values
+            dist_12 = torch.sqrt(rx2**2 + ry2**2)          # Ego->V2
+            dist_13 = torch.sqrt(rx3**2 + ry3**2)          # Ego->V3
+            dist_23 = torch.sqrt((rx3 - rx2)**2 + (ry3 - ry2)**2)
+
+            # Minimum distance minus collision radius
+            boundary_values = torch.min(torch.min(dist_12, dist_13), dist_23) - self.collisionR
+            return boundary_values
     
     def u_nominal(
         self, x: torch.Tensor, params: Optional[Scenario] = None
@@ -237,10 +264,45 @@ class MultiVehicleCollisionRelative(ControlAffineSystem):
         return self.ref_u
     
 
-    def states_rel(self, x):
-        x_rel = x.clone()
-        x_rel[:, 0:2] = x[:, 0:2] - x[:, 2:4]
-        x_rel[:, 2:4] = x[:, 4:6] - x[:, 0:2]
-        x_rel[:, 4:6] = x_rel[:, 0:2] - x_rel[:, 2:4]
-        
-        return x_rel
+    def states_rel(self, X_abs: torch.Tensor) -> torch.Tensor:
+            r"""
+            Convert absolute states -> reference-based states.
+
+            Suppose X_abs is shaped (B, 9), storing:
+            [x1, y1, x2, y2, x3, y3, theta1, theta2, theta3]
+            We want:
+            X_rel = [x1, y1, rx2, ry2, rx3, ry3, theta1, rtheta2, rtheta3]
+
+            where:
+            rx2 = x2 - x1
+            ry2 = y2 - y1
+            rx3 = x3 - x1
+            ry3 = y3 - y1
+            rtheta2 = theta2 - theta1
+            rtheta3 = theta3 - theta1
+            """
+            X_rel = X_abs.clone()
+
+            x1 = X_abs[:, 0]
+            y1 = X_abs[:, 1]
+            x2 = X_abs[:, 2]
+            y2 = X_abs[:, 3]
+            x3 = X_abs[:, 4]
+            y3 = X_abs[:, 5]
+            th1= X_abs[:, 6]
+            th2= X_abs[:, 7]
+            th3= X_abs[:, 8]
+
+            # Indices in X_rel:
+            #  [0: x1, 1: y1, 2: rx2, 3: ry2, 4: rx3, 5: ry3, 6: theta1, 7: rtheta2, 8: rtheta3]
+            X_rel[:, 0] = x1
+            X_rel[:, 1] = y1
+            X_rel[:, 2] = x2 - x1
+            X_rel[:, 3] = y2 - y1
+            X_rel[:, 4] = x3 - x1
+            X_rel[:, 5] = y3 - y1
+            X_rel[:, 6] = th1
+            X_rel[:, 7] = th2 - th1
+            X_rel[:, 8] = th3 - th1
+
+            return X_rel

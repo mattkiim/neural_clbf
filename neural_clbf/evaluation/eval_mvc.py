@@ -21,10 +21,9 @@ start_x = torch.tensor(
         # [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, np.pi / 2, np.pi / 4, -np.pi / 4],
         # [0.1, 0.1, 0.4, 0.1, 0.2, 0.4, 0, 0, 0],
         # [-0.2, 0.2, 0.1, -0.1, -0.2, 0.3, np.pi / 4, np.pi / 6, -np.pi / 6],
-        [0.0080, -0.5999,  0.5293, -0.2825, -0.4753, -0.3662,  1.5841,  2.6514,
-         0.6565]
-        # [-0.7498,  0.0176,  0.0857, -0.7451,  0.6371,  0.3958, -0.0235,
-        #    1.6853, -2.5857]
+        [0.0080, -0.5999,  0.5293, -0.2825, -0.4753, -0.3662,  1.5841,  2.6514, 0.6565],
+        # [0.0080, -0.5999,  0.5293, -0.2825, -0.4753, -0.3662,  1.5, 1.5, 1.5]
+        # [-0.3498,  0.0176,  0.0857, -0.3451,  0.6371,  0.3958, -0.0235, 1.6853, -2.5857]
     ]
 )
 
@@ -43,14 +42,22 @@ def plot_mvc_rel():
     # log_file = "../training/logs/multivehicle_collision/commit_97da873/clbf_1/checkpoints/epoch=50-step=1478.ckpt"
     # neural_controller = NeuralCLBFController.load_from_checkpoint(log_file)
 
-    # log_file = "../training/logs/multivehicle_collision/commit_97da873/cbf_3/checkpoints/epoch=100-step=2928.ckpt"
+    # log_file = "../training/logs/multivehicle_collision/commit_0af93dc/version_14/checkpoints/epoch=100-step=3029.ckpt"
     # neural_controller = NeuralCBFController.load_from_checkpoint(log_file)
 
-    # log_file = "../training/logs/multivehicle_collision/commit_97da873/cbf_1/checkpoints/epoch=50-step=1478.ckpt"
+    # log_file = "../training/logs/multivehicle_collision/commit_0af93dc/version_17/checkpoints/epoch=100-step=3029.ckpt"
     # neural_controller = NeuralCBFController.load_from_checkpoint(log_file)
 
-    log_file = "../training/logs/multivehicle_collision/commit_97da873/cbf_g1/checkpoints/epoch=50-step=1478.ckpt"
+    # log_file = "../training/logs/multivehicle_collision/commit_0af93dc/version_20/checkpoints/epoch=100-step=3029.ckpt"
+    # neural_controller = NeuralCBFController.load_from_checkpoint(log_file)
+
+    # log_file = "../training/logs/multivehicle_collision/commit_0af93dc/version_22/checkpoints/epoch=100-step=5857.ckpt"
+    # neural_controller = NeuralCBFController.load_from_checkpoint(log_file)
+
+    log_file = "../training/logs/multivehicle_collision/commit_0af93dc/version_25/checkpoints/epoch=200-step=3617.ckpt"
     neural_controller = NeuralCBFController.load_from_checkpoint(log_file)
+
+
 
     rollout_experiment = RolloutStateSpaceExperiment(
         "Rollout",
@@ -68,18 +75,18 @@ def plot_mvc_rel():
 
     h_contour_experiment = CBFContourExperiment(
         "h_Contour",
-        domain=[(-2.0, 2.0), (-2.0, 2.0)],  # Adjust the range if needed
+        domain=[(-1.0, 1.0), (-1.0, 1.0)],  # Adjust the range if needed
         n_grid=50,
         x_axis_index=0,  # Index for x position of vehicle 1
         y_axis_index=1,  # Index for y position of vehicle 1
         x_axis_label="$x$",
         y_axis_label="$y$",
-        plot_safe_region=True,  # Set to True if you want to visualize unsafe regions
+        plot_safe_region=False,  # Set to True if you want to visualize unsafe regions
     )
 
     rollout_success_experiment = RolloutSuccessRateExperiment(
         "Rollout Success",
-        "CLBF Controller",
+        "CBF Controller",
         n_sims=500,
         t_sim=1.0,
         initial_states=start_xs

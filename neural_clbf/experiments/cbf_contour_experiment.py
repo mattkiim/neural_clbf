@@ -8,6 +8,8 @@ import seaborn as sns
 import torch
 import torch.nn.functional as F
 import tqdm
+import numpy as np
+
 
 from neural_clbf.experiments import Experiment
 
@@ -120,19 +122,22 @@ class CBFContourExperiment(Experiment):
         for i in prog_bar_range:
             for j in range(self.n_grid):
                 # Adjust x to be at the current grid point
-                x[0, self.x_axis_index] = x_vals[i]
-                x[0, self.y_axis_index] = y_vals[j]
-                x[0, 2] = -0.4
-                x[0, 3] = 0.0
-                x[0, 4] = 0.4
-                x[0, 5] = 0.0
-                x[0, 6] = -3.14 / 2
-                x[0, 7] = 0.7854
-                x[0, 8] = 2.3562
+                x[:, self.x_axis_index] = x_vals[i]
+                x[:, self.y_axis_index] = y_vals[j]
+                # x[:, 2] = -0.4
+                # x[:, 3] = 0.0
+                # x[:, 4] = 0.4
+                # x[:, 5] = 0.0
+                # x[:, 6] = 3.14 
+                # x[:, 7] = 0.7854
+                # x[:, 8] = 2.3562
 
-                print(x)
+                # x[:, 2:] = torch.tensor([0.5293, -0.2825, -0.4753, -0.3662,  1.5841,  2.6514, 0.6565])
+
+                # print(x)
+                # quit()
                 
-                x = controller_under_test.dynamics_model.states_rel(x)
+                # x = controller_under_test.dynamics_model.states_rel(x)
 
                 # Get the value of the CBF
                 h = controller_under_test.V(x)
@@ -169,27 +174,59 @@ class CBFContourExperiment(Experiment):
         args:
             controller_under_test: the controller with which to run the experiment
             display_plots: defaults to False. If True, display the plots (blocks until
-                           the user responds).
+                        the user responds).
         returns: a list of tuples containing the name of each figure and the figure
-                 object.
+                object.
         """
-        # Set the color scheme
+        print(results_df)
+        quit()
+        # Set consistent styling and theme
         sns.set_theme(context="talk", style="white")
+        plt.rc('font', family='P052', size=18)  # Consistent font family and size
+        plt.rc('axes', titlesize=18)  # Title font size
+        plt.rc('axes', labelsize=18)  # Axes label font size
+        plt.rc('xtick', labelsize=18)  # X-tick font size
+        plt.rc('ytick', labelsize=18)  # Y-tick font size
 
         # Plot a contour of h
         fig, ax = plt.subplots(1, 1)
-        fig.set_size_inches(12, 8)
+        # fig.set_size_inches(12, 8)
+        ax.set_aspect('equal')
 
+        # Set axis limits and labels
+        ax.set_title(f"$\\lambda = 1$")
+        xl, xr = -0.75, 0.75
+        yl, yr = -0.75, 0.75
+        ax.set_xlim(xl, xr)
+        ax.set_ylim(yl, yr)
+        ax.set_xlabel(f"{self.x_axis_label}", fontweight='bold', labelpad=-15)
+        ax.set_ylabel(f"{self.y_axis_label}", fontweight='bold', labelpad=-25)
+
+        xticks = np.linspace(xl, xr, num=2)  # Adjust num to control the number of ticks
+        yticks = np.linspace(yl, yr, num=2)  # Adjust num to control the number of ticks
+        ax.set_yticks(yticks)
+        ax.set_xticks(xticks)
+
+
+        # Define consistent contour levels
+        value_min = results_df["CBF Value (h)"].min()
+        value_max = results_df["CBF Value (h)"].max()
+        contour_levels = np.linspace(-0.5, 0.5, 21)  # Same intervals as before
+
+        # Plot contours
         contours = ax.tricontourf(
             results_df[self.x_axis_label],
             results_df[self.y_axis_label],
-            results_df["CBF Value (h)"],
-            cmap=sns.color_palette("rocket", as_cmap=True),
-            levels=20,
+            results_df["CBF Value (h)"] * -1,
+            levels=contour_levels,
+            cmap='coolwarm',  # Match color map
         )
-        plt.colorbar(contours, ax=ax, orientation="vertical")
 
-        # Also overlay the safe/unsafe regions (if specified)
+        # Add color bar
+        cbar = fig.colorbar(contours, ax=ax, orientation="vertical")
+        # cbar.ax.set_ylabel("CBF Value (h)", rotation=270, labelpad=20)
+
+        # Overlay safe/unsafe regions if specified
         if self.plot_safe_region:
             ax.plot([], [], c="green", label="Safe Region")
             ax.tricontour(
@@ -208,12 +245,12 @@ class CBFContourExperiment(Experiment):
                 levels=[0.5],
             )
 
-        # Make the legend
-        ax.set_xlabel(self.x_axis_label)
-        ax.set_ylabel(self.y_axis_label)
+        # Add legend
+        # ax.legend(loc="upper right")
 
         fig_handle = ("CBF Contour", fig)
 
+        # Save and/or display plots
         if display_plots:
             plt.savefig("contours.png")
             plt.show()

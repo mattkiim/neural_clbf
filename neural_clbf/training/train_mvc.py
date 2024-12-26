@@ -34,7 +34,7 @@ start_x = torch.tensor(
 print(f"start_x dtype: {start_x.dtype}")
 print(f"start_x shape: {start_x.shape}")
 # quit()
-simulation_dt = 0.01
+simulation_dt = 0.0025
 
 def main(args):
     # Define the scenarios
@@ -51,12 +51,12 @@ def main(args):
 
     # Initialize the DataModule with appropriate initial conditions for MultiVehicleCollision
     initial_conditions = [
-        (-2, 2),  # x positions
-        (-2, 2),  # y positions
-        (-2, 2),  # x2 positions
-        (-2, 2),  # y2 positions
-        (-2, 2),  # x3 positions
-        (-2, 2),  # y3 positions
+        (-1, 1),  # x positions
+        (-1, 1),  # y positions
+        (-1, 1),  # x2 positions
+        (-1, 1),  # y2 positions
+        (-1, 1),  # x3 positions
+        (-1, 1),  # y3 positions
         (-np.pi, np.pi),  # angle 1
         (-np.pi, np.pi),  # angle 2
         (-np.pi, np.pi),  # angle 3
@@ -104,8 +104,8 @@ def main(args):
         t_sim=1.0,
     )
 
-    experiment_suite = ExperimentSuite([h_contour_experiment, rollout_experiment, rollout_success_experiment])
-    # experiment_suite = ExperimentSuite([rollout_experiment])
+    # experiment_suite = ExperimentSuite([h_contour_experiment, rollout_experiment, rollout_success_experiment])
+    experiment_suite = ExperimentSuite([h_contour_experiment])
 
 
     cbf_controller = NeuralCBFController(

@@ -5,16 +5,21 @@ from typing import cast, List, Tuple, Optional, TYPE_CHECKING
 
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import figure
+from matplotlib.lines import Line2D
+
 import pandas as pd
 import seaborn as sns
 import torch
 import tqdm
+
+import copy
 
 import numpy as np
 
 
 from neural_clbf.experiments import Experiment
 from neural_clbf.systems.utils import ScenarioList
+from neural_clbf.systems.mvc import MultiVehicleCollision
 
 if TYPE_CHECKING:
     from neural_clbf.controllers import Controller, NeuralObsBFController  # noqa
@@ -136,10 +141,10 @@ class RolloutStateSpaceExperiment(Experiment):
             device = controller_under_test.device  # type: ignore
         
         if self.relative:
-            x_non_rel = x_sim_start
+            x_non_rel = copy.deepcopy(x_sim_start)
             x_sim_start = controller_under_test.dynamics_model.states_rel(x_sim_start)
+            x_non_rel = x_non_rel.to(device)
         x_current = x_sim_start.to(device)
-        x_non_rel = x_non_rel.to(device)
 
         # Reset the controller if necessary
         if hasattr(controller_under_test, "reset_controller"):
@@ -231,57 +236,60 @@ class RolloutStateSpaceExperiment(Experiment):
                 )
                 x_current[i, :] = x_current[i, :] + delta_t * xdot.squeeze()
 
+        if self.relative:
+            # Rollout 2: x_non_rel
+            control_step = 0  # Index to track which control to use
+            for tstep in range(num_timesteps):
+                # Only update controls at intervals matching controller_update_freq
+                if tstep % controller_update_freq == 0:
+                    u_current = controls[control_step]
+                    control_step += 1  # Move to the next control step
 
+                # Simulate forward using the dynamics
+                mvc_instance = MultiVehicleCollision()
+                for i in range(n_sims):
+                    xdot = mvc_instance.closed_loop_dynamics(
+                        x_non_rel[i, :].unsqueeze(0),
+                        u_current[i, :].unsqueeze(0),
+                        random_scenarios[i],
+                    )
+                    # print(x_non_rel, u_current, random_scenarios[i])
+                    # print(xdot)
+                    x_non_rel[i, :] = x_non_rel[i, :] + delta_t * xdot.squeeze()
+                # quit()
+                # Log the current state and control for each simulation
+                for sim_index in range(n_sims):
+                    log_packet = {"t": tstep * delta_t, "Simulation": str(sim_index)}
 
-        # Rollout 2: x_non_rel
-        control_step = 0  # Index to track which control to use
-        for tstep in range(num_timesteps):
-            # Only update controls at intervals matching controller_update_freq
-            if tstep % controller_update_freq == 0:
-                u_current = controls[control_step]
-                control_step += 1  # Move to the next control step
+                    # Include the parameters
+                    param_string = ""
+                    for param_name, param_value in random_scenarios[sim_index].items():
+                        param_value_string = "{:.3g}".format(param_value)
+                        param_string += f"{param_name} = {param_value_string}, "
+                        log_packet[param_name] = param_value
+                    log_packet["Parameters"] = param_string[:-2]
 
-            # Simulate forward using the dynamics
-            for i in range(n_sims):
-                xdot = controller_under_test.dynamics_model.closed_loop_dynamics(
-                    x_non_rel[i, :].unsqueeze(0),
-                    u_current[i, :].unsqueeze(0),
-                    random_scenarios[i],
-                )
-                x_non_rel[i, :] = x_non_rel[i, :] + delta_t * xdot.squeeze()
+                    # Pick out the states to log and save them
+                    x_value = x_non_rel[sim_index, self.plot_x_index].cpu().numpy().item()
+                    y_value = x_non_rel[sim_index, self.plot_y_index].cpu().numpy().item()
+                    log_packet[self.plot_x_label] = x_value
+                    log_packet[self.plot_y_label] = y_value
+                    log_packet["state"] = x_non_rel[sim_index, :].cpu().detach().numpy()
 
-            # Log the current state and control for each simulation
-            for sim_index in range(n_sims):
-                log_packet = {"t": tstep * delta_t, "Simulation": str(sim_index)}
+                    for i, save_index in enumerate(self.other_index):
+                        value = x_non_rel[sim_index, save_index].cpu().numpy().item()
+                        log_packet[self.other_label[i]] = value
 
-                # Include the parameters
-                param_string = ""
-                for param_name, param_value in random_scenarios[sim_index].items():
-                    param_value_string = "{:.3g}".format(param_value)
-                    param_string += f"{param_name} = {param_value_string}, "
-                    log_packet[param_name] = param_value
-                log_packet["Parameters"] = param_string[:-2]
+                    # Log the barrier function if applicable
+                    if h is not None:
+                        log_packet["h"] = h[sim_index].cpu().numpy().item()
+                    # Log the Lyapunov function if applicable
+                    if V is not None:
+                        log_packet["V"] = V[sim_index].cpu().numpy().item()
 
-                # Pick out the states to log and save them
-                x_value = x_non_rel[sim_index, self.plot_x_index].cpu().numpy().item()
-                y_value = x_non_rel[sim_index, self.plot_y_index].cpu().numpy().item()
-                log_packet[self.plot_x_label] = x_value
-                log_packet[self.plot_y_label] = y_value
-                log_packet["state"] = x_non_rel[sim_index, :].cpu().detach().numpy()
-
-                for i, save_index in enumerate(self.other_index):
-                    value = x_non_rel[sim_index, save_index].cpu().numpy().item()
-                    log_packet[self.other_label[i]] = value
-
-                # Log the barrier function if applicable
-                if h is not None:
-                    log_packet["h"] = h[sim_index].cpu().numpy().item()
-                # Log the Lyapunov function if applicable
-                if V is not None:
-                    log_packet["V"] = V[sim_index].cpu().numpy().item()
-
-                results_non_rel.append(log_packet)
-
+                    results_non_rel.append(log_packet)
+        
+        print(results_non_rel)
         return pd.DataFrame(results_non_rel)
 
     def plot2(
@@ -449,13 +457,34 @@ class RolloutStateSpaceExperiment(Experiment):
         returns: a list of tuples containing the name of each figure and the figure
                 object.
         """
-        print(results_df)
         # Set the color scheme
         sns.set_theme(context="talk", style="white")
 
+        plt.rc('font', family='P052', size=18)  # Set font family and size globally
+        plt.rc('axes', titlesize=18)  # Title font size
+        plt.rc('axes', labelsize=18)  # Axes label font size
+        plt.rc('xtick', labelsize=18)  # X-tick font size
+        plt.rc('ytick', labelsize=18)  # Y-tick font size
+
         # Plot the state trajectories
         fig, rollout_ax = plt.subplots(1, 1)  # Single subplot
-        fig.set_size_inches(12, 8)
+
+        rollout_ax.set_aspect('equal')
+        # ax_2d.set_aspect('auto')
+
+        x_left = -1
+        x_right = 1
+        y_left = -1.
+        y_right = 0.5
+        xticks = np.linspace(x_left, x_right, num=2)  # Adjust num to control the number of ticks
+        yticks = np.linspace(y_left, y_right, num=2)  # Adjust num to control the number of ticks
+        rollout_ax.set_ylabel(f'$y$', fontweight='bold', labelpad=-25)
+        rollout_ax.set_xlabel(f'$x$', fontweight='bold', labelpad=-15)
+        rollout_ax.set_yticks(yticks)
+        rollout_ax.set_xticks(xticks)
+        # fig.set_size_inches(12, 8)
+        rollout_ax.set_xlim(-1, 1)
+        rollout_ax.set_ylim(-1, 0.5)
 
         # Assign colors for each trajectory
         colors = sns.color_palette(n_colors=3)  # 3 coordinate pairs (x1y1, x2y2, x3y3)
@@ -468,24 +497,75 @@ class RolloutStateSpaceExperiment(Experiment):
         ]
 
         # Plot each pair over time
+        violation_marked = False
         for idx, (label_x, label_y) in enumerate(coordinate_pairs):
+            # print()
+            # print(results_df['$x_1$'].iloc[-1], results_df['$y_1$'].iloc[-1])
+            # quit()
             x_data = results_df[label_x]
             y_data = results_df[label_y]
             rollout_ax.plot(
                 x_data,
                 y_data,
                 linestyle="-",
-                marker="o",
-                markersize=4,
+                # marker="-",
+                # markersize=4,
                 color=colors[idx],
-                label=f"{label_x} vs {label_y}"
+                label=None
             )
+
+            rollout_ax.scatter(
+                x_data.iloc[0], y_data.iloc[0], color="green", s=50, zorder=5, label="Start" if idx == 0 else None
+            )  # Start point
+            rollout_ax.scatter(
+                x_data.iloc[-1], y_data.iloc[-1], color="red", s=50, zorder=5, label="End" if idx == 0 else None
+            )  # End point
+
+            # Check pairwise distances and mark the first safety violation with 'X'
+        for i in range(len(results_df)):
+            xy_pairs = [
+                (results_df["$x_1$"].iloc[i], results_df["$y_1$"].iloc[i]),
+                (results_df["$x_2$"].iloc[i], results_df["$y_2$"].iloc[i]),
+                (results_df["$x_3$"].iloc[i], results_df["$y_3$"].iloc[i]),
+            ]
+            distances = [
+                np.linalg.norm(np.array(xy_pairs[0]) - np.array(xy_pairs[1])),
+                np.linalg.norm(np.array(xy_pairs[0]) - np.array(xy_pairs[2])),
+                np.linalg.norm(np.array(xy_pairs[1]) - np.array(xy_pairs[2])),
+            ]
+            if min(distances) < 0.25 and not violation_marked:  # Mark the first violation
+                for j, (x, y) in enumerate(xy_pairs):
+                    rollout_ax.scatter(
+                        x, y, color="black", marker="x", s=150, zorder=10, label="Safety Violation" if not violation_marked else None
+                    )
+                violation_marked = True  # Ensure only one violation is marked
+            
+
+        # Custom handles for the legend
+        custom_handles = [
+            # Line2D([0], [0], color="green", marker="o", linestyle="None", markersize=10, label="Start"),
+            # Line2D([0], [0], color="red", marker="o", linestyle="None", markersize=10, label="End"),
+            Line2D([0], [0], color="black", marker="x", linestyle="None", markersize=10, label="Safety Violation"),
+        ]
+
+        # Add the custom legend
+        rollout_ax.legend(
+            handles=custom_handles,
+            loc="upper right",
+            fontsize=14,
+            # title="Legend",
+            title_fontsize=16,
+            # frameon=True,
+            # shadow=True,
+            framealpha=0.8,
+            edgecolor="black",
+        )
 
         # Set axis labels and title
         rollout_ax.set_xlabel("x")
         rollout_ax.set_ylabel("y")
-        rollout_ax.legend()
-        rollout_ax.set_title("State Space Trajectories")
+        # rollout_ax.legend()
+        rollout_ax.set_title("$\\lambda=1.00$")
 
         # Optionally display the plot
         if display_plots:
@@ -545,7 +625,7 @@ class RolloutStateSpaceExperiment(Experiment):
                 x_data = state_array[:, x_idx]
                 y_data = state_array[:, y_idx]
 
-                print(x_data)
+                # print(x_data)
 
                 # Plot x and y over time
                 ax.plot(x_data, y_data, linestyle="-", marker="o", markersize=3, color=colors[idx], label=label_x)
