@@ -42,8 +42,8 @@ def plot_mvc_rel():
     # log_file = "../training/logs/multivehicle_collision/commit_97da873/clbf_1/checkpoints/epoch=50-step=1478.ckpt"
     # neural_controller = NeuralCLBFController.load_from_checkpoint(log_file)
 
-    # log_file = "../training/logs/multivehicle_collision/commit_0af93dc/version_14/checkpoints/epoch=100-step=3029.ckpt"
-    # neural_controller = NeuralCBFController.load_from_checkpoint(log_file)
+    log_file = "../training/logs/multivehicle_collision/commit_0af93dc/version_14/checkpoints/epoch=100-step=3029.ckpt"
+    neural_controller = NeuralCBFController.load_from_checkpoint(log_file)
 
     # log_file = "../training/logs/multivehicle_collision/commit_0af93dc/version_17/checkpoints/epoch=100-step=3029.ckpt"
     # neural_controller = NeuralCBFController.load_from_checkpoint(log_file)
@@ -54,8 +54,17 @@ def plot_mvc_rel():
     # log_file = "../training/logs/multivehicle_collision/commit_0af93dc/version_22/checkpoints/epoch=100-step=5857.ckpt"
     # neural_controller = NeuralCBFController.load_from_checkpoint(log_file)
 
-    log_file = "../training/logs/multivehicle_collision/commit_0af93dc/version_25/checkpoints/epoch=200-step=3617.ckpt"
+    # log_file = "../training/logs/multivehicle_collision/commit_0af93dc/version_25/checkpoints/epoch=200-step=3617.ckpt"
+    # neural_controller = NeuralCBFController.load_from_checkpoint(log_file)
+
+    # log_file = "../training/logs/multivehicle_collision/commit_0af93dc/version_26/checkpoints/epoch=300-step=5417.ckpt"
+    # neural_controller = NeuralCBFController.load_from_checkpoint(log_file)
+
+    log_file = "/home/mk0617/Documents/dev/research/SASLab/neural_clbf/neural_clbf/training/logs/multivehicle_collision/commit_c3947d8/version_0/checkpoints/epoch=101-step=17951.ckpt"
     neural_controller = NeuralCBFController.load_from_checkpoint(log_file)
+
+    # log_file = "/home/mk0617/Documents/dev/research/SASLab/neural_clbf/neural_clbf/training/logs/multivehicle_collision/commit_c3947d8/version_1/checkpoints/epoch=101-step=17951.ckpt"
+    # neural_controller = NeuralCBFController.load_from_checkpoint(log_file)
 
 
 
@@ -92,8 +101,8 @@ def plot_mvc_rel():
         initial_states=start_xs
     )
 
-    # experiment_suite = ExperimentSuite([rollout_experiment, h_contour_experiment])
-    experiment_suite = ExperimentSuite([rollout_experiment, rollout_success_experiment])
+    experiment_suite = ExperimentSuite([rollout_experiment, h_contour_experiment])
+    # experiment_suite = ExperimentSuite([rollout_experiment, rollout_success_experiment])
     # experiment_suite = ExperimentSuite([h_contour_experiment])
     # experiment_suite = ExperimentSuite([rollout_success_experiment])
     # experiment_suite = ExperimentSuite([rollout_experiment])
