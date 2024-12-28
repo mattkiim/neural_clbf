@@ -40,7 +40,7 @@ class MultiVehicleCollisionRelative(ControlAffineSystem):
         self.ref_x = ref_x
 
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.ref_u = ref_u.to("cpu")
+        self.ref_u = ref_u.to(device)
 
         v = self.velocity
         

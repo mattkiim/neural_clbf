@@ -65,7 +65,8 @@ def main(args):
         max_points=50000,
         val_split=0.1,
         batch_size=batch_size,
-        quotas={"goal": 0.4, "safe": 0.2},
+        # quotas={"goal": 0.1, "safe": 0.2, "unsafe": 0.4, "boundary": 0.1},
+        quotas={"safe": 0.4, "unsafe": 0.4},
     )
 
     experiment_suite = ExperimentSuite([])
@@ -83,7 +84,7 @@ def main(args):
         controller_period=controller_period,
         primal_learning_rate=1e-4,
         scale_parameter=1.0, # ?
-        learn_shape_epochs=100,
+        learn_shape_epochs=0,
         use_relu=True,
     )
 
@@ -115,6 +116,8 @@ def main(args):
         reload_dataloaders_every_epoch=True,
         max_epochs=201,
     )
+
+    # quit()
 
     # Train
     torch.autograd.set_detect_anomaly(True)
