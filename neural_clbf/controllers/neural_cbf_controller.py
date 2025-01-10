@@ -65,6 +65,19 @@ class NeuralCBFController(pl.LightningModule, CBFController):
             learn_shape_epochs: number of epochs to spend just learning the shape
             use_relu: if True, use a ReLU network instead of Tanh
         """
+        # pl.LightningModule.__init__(self)
+        
+        # # Initialize CBFController
+        # CBFController.__init__(
+        #     self,
+        #     dynamics_model=dynamics_model,
+        #     scenarios=scenarios,
+        #     experiment_suite=experiment_suite,
+        #     cbf_lambda=cbf_lambda,
+        #     cbf_relaxation_penalty=cbf_relaxation_penalty,
+        #     controller_period=controller_period,
+        # )
+
         super(NeuralCBFController, self).__init__(
             dynamics_model=dynamics_model,
             scenarios=scenarios,
@@ -422,7 +435,7 @@ class NeuralCBFController(pl.LightningModule, CBFController):
             self, self.logger, self.current_epoch
         )
 
-    @pl.core.decorators.auto_move_data
+    # @pl.core.decorators.auto_move_data
     def simulator_fn(
         self,
         x_init: torch.Tensor,

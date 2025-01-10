@@ -6,8 +6,8 @@ from matplotlib.pyplot import figure
 import pandas as pd
 import seaborn as sns
 import torch
-import tqdm
 import numpy as np
+import time
 
 from neural_clbf.experiments import Experiment
 from neural_clbf.systems.planar_lidar_system import Scene
@@ -29,8 +29,8 @@ class RolloutSuccessRateExperiment(Experiment):
         algorithm_name: str,
         n_sims: int = 500,
         t_sim: float = 10.0,
-        initial_states = None,
-        relative = True
+        initial_states=None,
+        relative=True,
     ):
         """Initialize an experiment for simulating controller performance.
 
@@ -40,7 +40,7 @@ class RolloutSuccessRateExperiment(Experiment):
             n_sims: the number of random simulations to run
             t_sim: the amount of time to simulate for
         """
-        super(RolloutSuccessRateExperiment, self).__init__(name)
+        super().__init__(name)
 
         # Save parameters
         self.algorithm_name = algorithm_name
@@ -50,266 +50,6 @@ class RolloutSuccessRateExperiment(Experiment):
         self.relative = relative
 
     @torch.no_grad()
-    def run2(self, controller_under_test: "Controller") -> pd.DataFrame:
-        """
-        Run the experiment, likely by evaluating the controller, but the experiment
-        has freedom to call other functions of the controller as necessary (if these
-        functions are not supported by all controllers, then experiments will be
-        responsible for checking compatibility with the provided controller)
-
-        args:
-            controller_under_test: the controller with which to run the experiment
-        returns:
-            a pandas DataFrame containing the results of the experiment, in tidy data
-            format (i.e. each row should correspond to a single observation from the
-            experiment).
-        """
-        # We want to track these metrics, averaged over all simulations
-        num_collisions = 0
-        num_goals_reached = 0
-        total_time_to_goal = 0.0
-
-        # Back up the original scene
-        if hasattr(controller_under_test.dynamics_model, "scene"):
-            original_scene = controller_under_test.dynamics_model.scene  # type: ignore
-
-        prog_bar_range = tqdm.trange(
-            0, self.n_sims, desc="Computing Success Rate...", leave=True
-        )
-        for sim_idx in prog_bar_range:
-            # Generate a random environment
-            if hasattr(controller_under_test.dynamics_model, "scene"):
-                room_size = 10.0
-                num_obstacles = 8
-                box_size_range = (0.75, 1.75)
-                position_range = (-4.0, 4.0)
-                rotation_range = (-np.pi, np.pi)
-                scene = Scene([])
-                scene.add_walls(room_size)
-                scene.add_random_boxes(
-                    num_obstacles,
-                    box_size_range,
-                    position_range,
-                    position_range,
-                    rotation_range,
-                )
-                controller_under_test.dynamics_model.scene = scene  # type: ignore
-
-            # Generate a safe starting state
-            if self.initial_states is not None:
-                # TODO: take in the initial states numpy file
-                pass
-            x = controller_under_test.dynamics_model.sample_safe(1)
-            while controller_under_test.dynamics_model.unsafe_mask(x).any():
-                x = controller_under_test.dynamics_model.sample_safe(1)
-
-            # Reset the controller if necessary
-            if hasattr(controller_under_test, "reset_controller"):
-                controller_under_test.reset_controller(x)  # type: ignore
-
-            # Simulate forward. Stop if we reach the goal or hit something
-            dt = controller_under_test.dynamics_model.dt
-            controller_update_freq = int(controller_under_test.controller_period / dt)
-            num_timesteps = int(self.t_sim // dt)
-            for tstep in range(num_timesteps):
-                # Get the control input at the current state if it's time
-                if tstep % controller_update_freq == 0:
-                    u_current = controller_under_test.u(x)
-
-                # Simulate forward using the dynamics
-                xdot = controller_under_test.dynamics_model.closed_loop_dynamics(
-                    x,
-                    u_current,
-                )
-                x = x + dt * xdot
-
-                # Check if we're safe or not
-                if controller_under_test.dynamics_model.failure(x).any():
-                    num_collisions += 1
-                    break
-
-                # Check if we're at the goal or not
-                if controller_under_test.dynamics_model.goal_mask(x).any():
-                    num_goals_reached += 1
-                    total_time_to_goal += tstep * dt
-                    break
-
-        # Create a dataframe for storing the results
-        results_df = pd.DataFrame(
-            [
-                {
-                    "Algorithm": self.algorithm_name,
-                    "Metric": "Goal-reaching rate",
-                    "Value": num_goals_reached / self.n_sims,
-                },
-                {
-                    "Algorithm": self.algorithm_name,
-                    "Metric": "Safety rate",
-                    "Value": 1 - num_collisions / self.n_sims,
-                }, # TODO: implement false positives and false negatives: if value
-                {
-                    "Algorithm": self.algorithm_name,
-                    "Metric": "Time to goal",
-                    "Value": total_time_to_goal / num_goals_reached if num_goals_reached != 0 else -1, # TODO: implement concept of goal?
-                },
-            ]
-        )
-
-        # Restore the original scene
-        if hasattr(controller_under_test.dynamics_model, "scene"):
-            controller_under_test.dynamics_model.scene = original_scene  # type: ignore
-
-        return results_df
-
-    def run3(self, controller_under_test: "Controller") -> pd.DataFrame:
-        """
-        Run the experiment to compute false positives and false negatives based on the CBF.
-
-        args:
-            controller_under_test: the controller with which to run the experiment.
-        returns:
-            a pandas DataFrame containing the results of the experiment.
-        """
-        # Metrics
-        num_false_positives = 0
-        num_false_negatives = 0
-        num_true_positives = 0
-        num_true_negatives = 0
-        num_safe_rollouts = 0
-        num_unsafe_rollouts = 0
-
-        # Simulation parameters
-        dt = controller_under_test.dynamics_model.dt
-        controller_update_freq = int(controller_under_test.controller_period / dt)
-        num_timesteps = int(self.t_sim // dt)
-
-        if self.initial_states is not None:
-            # TODO: take in the initial states numpy file
-            initial_states = self.initial_states
-            pass
-        
-        # False Positive Check: Initialize in safe states
-        for rollout_idx in range(self.n_sims):
-            # Initialize a safe state
-            if self.initial_states is not None:
-                x = initial_states[rollout_idx].view(1, 9) # TODO: hardcoded 
-                # print(x.shape)
-            else:
-                x = controller_under_test.dynamics_model.sample_safe(1)
-                while not controller_under_test.dynamics_model.safe_mask(x).all():
-                    x = controller_under_test.dynamics_model.sample_safe(1)
-            if self.relative:
-                x = controller_under_test.dynamics_model.states_rel(x)
-            # Reset the controller if necessary
-            if hasattr(controller_under_test, "reset_controller"):
-                controller_under_test.reset_controller(x)
-
-            # Simulate forward
-            safe_trajectory = True
-            for tstep in range(num_timesteps):
-                # Get control input if it's time
-                if tstep % controller_update_freq == 0:
-                    u_current = controller_under_test.u(x)
-
-                # Simulate dynamics
-                xdot = controller_under_test.dynamics_model.closed_loop_dynamics(x, u_current)
-                x = x + dt * xdot
-
-                # Check if the state becomes unsafe
-                if controller_under_test.dynamics_model.unsafe_mask(x).any():
-                    safe_trajectory = False
-                    break
-
-            # Accumulate metrics
-            num_safe_rollouts += 1
-            if not safe_trajectory:
-                num_false_positives += 1
-            else:
-                num_true_positives += 1
-
-        # False Negative Check: Initialize in unsafe states
-        for rollout_idx in range(self.n_sims):
-            # Initialize an unsafe state
-            if self.initial_states is not None:
-                x = initial_states[rollout_idx].view(1, 9) # TODO: hardcoded 
-                # print(x.shape)
-            else:
-                x = controller_under_test.dynamics_model.sample_unsafe(1)
-                while not controller_under_test.dynamics_model.unsafe_mask(x).all():
-                    x = controller_under_test.dynamics_model.sample_unsafe(1)
-
-            if self.relative:
-                x = controller_under_test.dynamics_model.states_rel(x)
-
-            # Reset the controller if necessary
-            if hasattr(controller_under_test, "reset_controller"):
-                controller_under_test.reset_controller(x)
-
-            # Simulate forward
-            safe_trajectory = True
-            for tstep in range(num_timesteps):
-                # Get control input if it's time
-                if tstep % controller_update_freq == 0:
-                    u_current = controller_under_test.u(x)
-
-                # Simulate dynamics
-                xdot = controller_under_test.dynamics_model.closed_loop_dynamics(x, u_current)
-                x = x + dt * xdot
-
-                # Check if the state remains safe
-                if controller_under_test.dynamics_model.safe_mask(x).all():
-                    safe_trajectory = False
-                    break
-
-            # Accumulate metrics
-            num_unsafe_rollouts += 1
-            if safe_trajectory:
-                num_false_negatives += 1
-            else: 
-                num_true_negatives += 1
-
-        # Compute rates
-        false_positive_rate = num_false_positives / num_safe_rollouts if num_safe_rollouts > 0 else 0
-        false_negative_rate = num_false_negatives / num_unsafe_rollouts if num_unsafe_rollouts > 0 else 0
-
-        false_positive_rate_cm = num_false_positives / (num_false_positives + num_true_negatives)
-        false_negative_rate_cm = num_false_negatives / (num_false_negatives + num_true_positives)
-
-        print("FP: ", false_positive_rate)
-        print("FN: ", false_negative_rate)
-
-        print("FP CM: ", false_positive_rate_cm)
-        print("FN CM: ", false_negative_rate_cm)
-
-
-        # Create a DataFrame with the results
-        results_df = pd.DataFrame(
-            [
-                {
-                    "Algorithm": self.algorithm_name,
-                    "Metric": "False Positive Rate",
-                    "Value": false_positive_rate,
-                },
-                {
-                    "Algorithm": self.algorithm_name,
-                    "Metric": "False Negative Rate",
-                    "Value": false_negative_rate,
-                },
-                {
-                    "Algorithm": self.algorithm_name,
-                    "Metric": "False Positive Rate CM",
-                    "Value": false_positive_rate_cm,
-                },
-                {
-                    "Algorithm": self.algorithm_name,
-                    "Metric": "False Negative Rate CM",
-                    "Value": false_negative_rate_cm,
-                },
-            ]
-            
-        )
-        return results_df
-
     def run(self, controller_under_test: "Controller") -> pd.DataFrame:
         """
         Run the experiment to compute false positives and false negatives based on the CBF.
@@ -319,81 +59,134 @@ class RolloutSuccessRateExperiment(Experiment):
         returns:
             a pandas DataFrame containing the results of the experiment.
         """
-        # Metrics
-        num_false_positives = 0
-        num_false_negatives = 0
-        num_true_positives = 0
-        num_true_negatives = 0
-        num_safe_rollouts = 0
-        num_unsafe_rollouts = 0
-
         # Simulation parameters
         dt = controller_under_test.dynamics_model.dt
         controller_update_freq = int(controller_under_test.controller_period / dt)
         num_timesteps = int(self.t_sim // dt)
 
-        if self.initial_states is not None:
-            # TODO: take in the initial states numpy file
-            initial_states = self.initial_states
-            pass
-        
-        # False Positive Check: Initialize in safe states
-        for rollout_idx in range(self.n_sims):
-            # Initialize a safe state
-            x = initial_states[rollout_idx].view(1, 9) # TODO: hardcoded 
-            if self.relative:
-                x = controller_under_test.dynamics_model.states_rel(x)
-            # Reset the controller if necessary
-            if hasattr(controller_under_test, "reset_controller"):
-                controller_under_test.reset_controller(x)
+        # Metrics we will compute
+        num_false_positives = 0
+        num_false_negatives = 0
+        num_true_positives = 0
+        num_true_negatives = 0
 
-            initially_safe = False if controller_under_test.V(x) < 0 else True
+        # Grab initial states
+        # expected shape: [n_sims, state_dim], e.g. [500, 9]
+        if self.initial_states is None:
+            raise ValueError("No initial states provided to the experiment.")
 
-            # Simulate forward
-            safe_trajectory = True
-            for tstep in range(num_timesteps):
-                # Get control input if it's time
-                if tstep % controller_update_freq == 0:
-                    u_current = controller_under_test.u(x)
+        # Make sure it's a tensor on the same device as the controller
+        device = next(controller_under_test.parameters()).device
 
-                # Simulate dynamics
-                xdot = controller_under_test.dynamics_model.closed_loop_dynamics(x, u_current)
-                x = x + dt * xdot
+        # print(self.initial_states)
 
-                # Check if the state becomes unsafe
-                if controller_under_test.dynamics_model.unsafe_mask(x).any():
-                    safe_trajectory = False
-                    break
+        # self.n_sims = 1
+        # self.initial_states = np.array([[0.0080, -0.5999,  0.5293, -0.2825, -0.4753, -0.3662,  1.5841,  2.6514, 0.6565]])
+        # self.initial_states = torch.tensor(self.initial_states, dtype=torch.float32)
+        # print(self.initial_states)
+        # print(self.initial_states.dtype)
+        # quit()
 
-            # Accumulate metrics
-            if initially_safe:
-                num_safe_rollouts += 1
-                if safe_trajectory:
-                    num_true_positives += 1
-                else:
-                    num_false_positives += 1
-            else:
-                num_unsafe_rollouts += 1
-                if not safe_trajectory: 
-                    num_true_negatives += 1
-                else:
-                    num_false_negatives += 1
+        x = self.initial_states.to(device)
 
-        # Compute rates
-        print("TP FP TN FN: ", num_true_positives, num_false_positives, num_true_negatives, num_false_negatives)
+        # If needed, transform states into 'relative' form
+        if self.relative:
+            x = controller_under_test.dynamics_model.states_rel(x)
 
-        false_positive_rate = num_false_positives / 500
-        false_negative_rate = num_false_negatives / 500
+        # If the controller has an internal RNN state or something similar,
+        # you may need a batched reset. But for simplicity, we skip that here.
+        # if hasattr(controller_under_test, "reset_controller"):
+        #     # If you absolutely must reset in a loop, you'd do it once per trajectory,
+        #     # but that kills parallelization. If possible, implement a batched reset.
+        #     pass
 
-        false_positive_rate_cm = num_false_positives / (num_false_positives + num_true_negatives)
-        false_negative_rate_cm = num_false_negatives / (num_false_negatives + num_true_positives)
+        # Determine which trajectories are initially "safe" vs "unsafe"
+        # We'll define "safe" if V(x) >= 0
+        V_init = controller_under_test.V(x)
+        initially_safe_mask = V_init >= 0 # TODO: check if this is right. Maybe need to retrain model
 
-        print("FP: ", false_positive_rate)
-        print("FN: ", false_negative_rate)
 
-        print("FP CM: ", false_positive_rate_cm)
-        print("FN CM: ", false_negative_rate_cm)
+        # Keep a boolean mask of which trajectories are still safe
+        # i.e., haven't gone into the unsafe set yet
+        still_safe = torch.ones(self.n_sims, dtype=torch.bool, device=device)
 
+        start = time.time()
+        # Batched simulation
+        for tstep in range(num_timesteps):
+            # Update control if it's a control timestep
+            if tstep % controller_update_freq == 0:
+                u_current = controller_under_test.u(x)  # shape: [n_sims, u_dim]
+
+            # Step forward
+            xdot = controller_under_test.dynamics_model.closed_loop_dynamics(x, u_current)
+
+            x = x + dt * xdot
+            # print(x, dt, xdot)
+            # quit()
+
+            # Check which have become unsafe
+            unsafe_mask = controller_under_test.dynamics_model.unsafe_mask(x)  # shape [n_sims] 
+            # TODO: verify this is right with simple test cases (i.e. straight line initial points)
+            # print(unsafe_mask.shape)
+            # print(x.shape)
+            # quit()
+            still_safe = still_safe & (~unsafe_mask)
+
+            # if tstep == 5: quit()
+
+        print("TIME:", time.time() - start)
+
+        # Now figure out the confusion matrix
+        # True Positive (TP): started safe, ended safe
+        # False Positive (FP): started safe, ended unsafe
+        # True Negative (TN): started unsafe, ended unsafe
+        # False Negative (FN): started unsafe, ended safe
+        n_safe = initially_safe_mask.sum().item()
+
+        print(n_safe)
+        n_unsafe = self.n_sims - n_safe
+
+        still_safe = still_safe.view(-1, 1)  # shape [n_sims, 1]
+        print(initially_safe_mask.shape, still_safe.shape)
+
+        # TP: (initially safe) & (still safe)
+        num_true_positives = (initially_safe_mask & still_safe).sum().item()
+        # FP: (initially safe) & (became unsafe)
+        num_false_positives = n_safe - num_true_positives
+
+        # FN: (initially unsafe) & (ended safe)
+        num_false_negatives = ((~initially_safe_mask) & still_safe).sum().item()
+        # TN: (initially unsafe) & (ended unsafe)
+        num_true_negatives = n_unsafe - num_false_negatives
+
+        # Print debug
+        print("TP, FP, TN, FN:", num_true_positives, num_false_positives, num_true_negatives, num_false_negatives)
+
+        # Overall rates out of 500 (or self.n_sims)
+        false_positive_rate = num_false_positives / self.n_sims
+        false_negative_rate = num_false_negatives / self.n_sims
+
+        # Rates out of their respective confusion matrix rows
+        # FP rate = FP / (FP + TN) = FP / ( # initially safe? ) depending on definition
+        # but let's keep your original definitions
+        if (num_false_positives + num_true_negatives) > 0:
+            false_positive_rate_cm = (
+                num_false_positives / (num_false_positives + num_true_negatives)
+            )
+        else:
+            false_positive_rate_cm = 0.0
+
+        if (num_false_negatives + num_true_positives) > 0:
+            false_negative_rate_cm = (
+                num_false_negatives / (num_false_negatives + num_true_positives)
+            )
+        else:
+            false_negative_rate_cm = 0.0
+
+        print("FPR (overall): ", false_positive_rate)
+        print("FNR (overall): ", false_negative_rate)
+        print("FPR (CM): ", false_positive_rate_cm)
+        print("FNR (CM): ", false_negative_rate_cm)
 
         # Create a DataFrame with the results
         results_df = pd.DataFrame(
@@ -419,10 +212,9 @@ class RolloutSuccessRateExperiment(Experiment):
                     "Value": false_negative_rate_cm,
                 },
             ]
-            
         )
-        return results_df
 
+        return results_df
 
     def plot(
         self,
@@ -441,7 +233,6 @@ class RolloutSuccessRateExperiment(Experiment):
         returns: a list of tuples containing the name of each figure and the figure
                  object.
         """
-
         # Set the color scheme
         sns.set_theme(context="talk", style="white")
 
@@ -454,6 +245,7 @@ class RolloutSuccessRateExperiment(Experiment):
 
         if display_plots:
             plt.show()
+            # Save the figure only if you truly want to—be mindful that it blocks if plt.show() is used
             plt.savefig("plot_success_rate.png")
             return []
         else:

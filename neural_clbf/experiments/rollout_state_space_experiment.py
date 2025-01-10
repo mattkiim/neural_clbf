@@ -235,6 +235,8 @@ class RolloutStateSpaceExperiment(Experiment):
                     random_scenarios[i],
                 )
                 x_current[i, :] = x_current[i, :] + delta_t * xdot.squeeze()
+                print(x_current, delta_t, xdot)
+                quit()
 
         if self.relative:
             # Rollout 2: x_non_rel

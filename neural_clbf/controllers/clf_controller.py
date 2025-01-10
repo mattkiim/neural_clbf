@@ -104,6 +104,8 @@ class CLFController(Controller):
 
         # Control limit constraints
         upper_lim, lower_lim = self.dynamics_model.control_limits
+        upper_lim, lower_lim = upper_lim.numpy(), lower_lim.numpy()
+
         for control_idx in range(self.dynamics_model.n_controls):
             constraints.append(u[control_idx] >= lower_lim[control_idx])
             constraints.append(u[control_idx] <= upper_lim[control_idx])
@@ -309,6 +311,8 @@ class CLFController(Controller):
             if allow_relaxation:
                 for i in range(n_scenarios):
                     r_result[batch_idx, i] = torch.tensor(r[i].x)
+
+        # quit()
 
         return u_result.type_as(x), r_result.type_as(x)
 

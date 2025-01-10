@@ -52,6 +52,7 @@ neural_clbf/evaluation/turtle2d/scenes.py
 neural_clbf/experiments/__init__.py
 neural_clbf/experiments/bf_contour_experiment.py
 neural_clbf/experiments/car_s_curve_experiment.py
+neural_clbf/experiments/cbf_contour_experiment.py
 neural_clbf/experiments/clf_contour_experiment.py
 neural_clbf/experiments/clf_verification_experiment.py
 neural_clbf/experiments/experiment.py
@@ -79,6 +80,8 @@ neural_clbf/systems/inverted_pendulum.py
 neural_clbf/systems/kinematic_single_track_car.py
 neural_clbf/systems/linear_satellite.py
 neural_clbf/systems/mvc.py
+neural_clbf/systems/mvc_observable.py
+neural_clbf/systems/mvc_rel.py
 neural_clbf/systems/neural_lander.py
 neural_clbf/systems/observable_system.py
 neural_clbf/systems/planar_lidar_system.py
@@ -103,11 +106,14 @@ neural_clbf/systems/tests/test_single_integrator.py
 neural_clbf/systems/tests/test_single_track_car.py
 neural_clbf/systems/tests/test_turtlebot.py
 neural_clbf/training/__init__.py
+neural_clbf/training/testing.py
+neural_clbf/training/train.py
 neural_clbf/training/train_autorally.py
 neural_clbf/training/train_inverted_pendulum.py
 neural_clbf/training/train_kinematic_car.py
 neural_clbf/training/train_linear_satellite.py
 neural_clbf/training/train_mvc.py
+neural_clbf/training/train_mvc_rel.py
 neural_clbf/training/train_single_integrator_lidar.py
 neural_clbf/training/train_single_track_car.py
 neural_clbf/training/train_turtlebot_lidar.py

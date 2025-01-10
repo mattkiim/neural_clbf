@@ -19,7 +19,7 @@ from neural_clbf.training.utils import current_git_hash
 
 torch.multiprocessing.set_sharing_strategy("file_system")
 
-batch_size = 512
+batch_size = 64
 controller_period = 0.01
 
 def main(args):
@@ -30,7 +30,7 @@ def main(args):
     ]
 
     # Initialize the dynamics model with MultiVehicleCollision
-    dynamics_model = MultiVehicleCollisionRelative()
+    dynamics_model = MultiVehicleCollisionRelative(dt=0.001)
 
     # Initialize the DataModule with appropriate initial conditions for MultiVehicleCollision
     initial_conditions = [
@@ -45,28 +45,17 @@ def main(args):
         (-np.pi, np.pi),  # angle 3
     ]
     
-    # data_module = EpisodicDataModule(
-    #     dynamics_model,
-    #     initial_conditions,
-    #     trajectories_per_episode=100,
-    #     trajectory_length=1,
-    #     fixed_samples=2000,
-    #     max_points=20000,
-    #     val_split=0.1,
-    #     batch_size=batch_size,
-    # )
-
     data_module = EpisodicDataModule(
         dynamics_model,
         initial_conditions,
         trajectories_per_episode=0,
         trajectory_length=1,
-        fixed_samples=100000,
+        fixed_samples=3000000,
         max_points=50000,
         val_split=0.1,
         batch_size=batch_size,
-        # quotas={"goal": 0.1, "safe": 0.2, "unsafe": 0.4, "boundary": 0.1},
-        quotas={"safe": 0.4, "unsafe": 0.4},
+        quotas={"safe": 0.3, "unsafe": 0.4, "boundary": 0.1},
+        # quotas={"safe": 0.4, "unsafe": 0.4},
     )
 
     experiment_suite = ExperimentSuite([])
@@ -83,27 +72,10 @@ def main(args):
         cbf_relaxation_penalty=1e4,
         controller_period=controller_period,
         primal_learning_rate=1e-4,
-        scale_parameter=1.0, # ?
-        learn_shape_epochs=0,
+        scale_parameter=1.0, 
+        learn_shape_epochs=51,
         use_relu=True,
     )
-
-
-    # clbf_controller = NeuralCLBFController(
-    #     dynamics_model,
-    #     scenarios,
-    #     data_module,
-    #     experiment_suite=experiment_suite,
-    #     cbf_hidden_layers=3,
-    #     cbf_hidden_size=64,
-    #     cbf_lambda=1.0,
-    #     cbf_relaxation_penalty=50.0, # ?
-    #     controller_period=controller_period,
-    #     primal_learning_rate=1e-3,
-    #     scale_parameter=10.0, # ?
-    #     learn_shape_epochs=0,
-    #     use_relu=False,
-    # )
 
     # Initialize the logger and trainer
     tb_logger = pl_loggers.TensorBoardLogger(
@@ -113,11 +85,10 @@ def main(args):
     trainer = pl.Trainer.from_argparse_args(
         args,
         logger=tb_logger,
+        # reload_dataloaders_every_n_epochs=True,
         reload_dataloaders_every_epoch=True,
-        max_epochs=201,
+        max_epochs=61,
     )
-
-    # quit()
 
     # Train
     torch.autograd.set_detect_anomaly(True)

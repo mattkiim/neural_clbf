@@ -115,27 +115,28 @@ class CBFContourExperiment(Experiment):
             .reshape(1, controller_under_test.dynamics_model.n_dims)
         )
 
-        print(x.shape)
+        # print(x.shape)
 
         # Loop through the grid
         prog_bar_range = tqdm.trange(self.n_grid, desc="Plotting CBF", leave=True)
         for i in prog_bar_range:
             for j in range(self.n_grid):
                 # Adjust x to be at the current grid point
-                x[:, self.x_axis_index] = x_vals[i]
-                x[:, self.y_axis_index] = y_vals[j]
-                # x[:, 2] = -0.4
-                # x[:, 3] = 0.0
-                # x[:, 4] = 0.4
-                # x[:, 5] = 0.0
-                # x[:, 6] = 3.14 
-                # x[:, 7] = 0.7854
-                # x[:, 8] = 2.3562
 
-                # x[:, 2:] = torch.tensor([0.5293, -0.2825, -0.4753, -0.3662,  1.5841,  2.6514, 0.6565])
+                # x_old = torch.tensor([[x_vals[i], y_vals[j], -0.4000,  0.0000,  0.4000,  0.0000,  3.1400, 0.7854, 2.3562]])
+                x_old = torch.tensor([[x_vals[i], y_vals[j], 0.5293, -0.2825, -0.4753, -0.3662, 1.5841, 2.6514, 0.6565]])
+                x_new = controller_under_test.dynamics_model.states_rel(x_old)[0]
+                # print(x_new)
 
-                # print(x)
-                # quit()
+                x[:, self.x_axis_index] = x_new[0]
+                x[:, self.y_axis_index] = x_new[1]
+                x[:, 2] = x_new[2]
+                x[:, 3] = x_new[3]
+                x[:, 4] = x_new[4]
+                x[:, 5] = x_new[5]
+                x[:, 6] = x_new[6]
+                x[:, 7] = x_new[7]
+                x[:, 8] = x_new[8]
                 
                 # x = controller_under_test.dynamics_model.states_rel(x)
 
@@ -165,7 +166,7 @@ class CBFContourExperiment(Experiment):
         self,
         controller_under_test: "Controller",
         results_df: pd.DataFrame,
-        display_plots: bool = False,
+        display_plots: bool = True,
     ) -> List[Tuple[str, figure]]:
         """
         Plot the results, and return the plot handles. Optionally
@@ -178,8 +179,8 @@ class CBFContourExperiment(Experiment):
         returns: a list of tuples containing the name of each figure and the figure
                 object.
         """
-        print(results_df)
-        quit()
+        # print(results_df) 
+        # quit()
         # Set consistent styling and theme
         sns.set_theme(context="talk", style="white")
         plt.rc('font', family='P052', size=18)  # Consistent font family and size
@@ -197,6 +198,10 @@ class CBFContourExperiment(Experiment):
         ax.set_title(f"$\\lambda = 1$")
         xl, xr = -0.75, 0.75
         yl, yr = -0.75, 0.75
+
+        xl, xr = -1.0, 1.0
+        yl, yr = -1.0, 0.5
+
         ax.set_xlim(xl, xr)
         ax.set_ylim(yl, yr)
         ax.set_xlabel(f"{self.x_axis_label}", fontweight='bold', labelpad=-15)

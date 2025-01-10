@@ -27,7 +27,7 @@ start_x = torch.tensor(
     ]
 )
 
-file_path = 'initial_conditions.npy'
+file_path = 'initial_conditions_2.npy'
 initial_conditions = np.load(file_path)
 
 start_xs = torch.tensor(initial_conditions[:, :-1], dtype=torch.float32)
@@ -39,32 +39,15 @@ scenarios = [
 
 
 def plot_mvc_rel():
-    # log_file = "../training/logs/multivehicle_collision/commit_97da873/clbf_1/checkpoints/epoch=50-step=1478.ckpt"
-    # neural_controller = NeuralCLBFController.load_from_checkpoint(log_file)
-
-    log_file = "../training/logs/multivehicle_collision/commit_0af93dc/version_14/checkpoints/epoch=100-step=3029.ckpt"
+    # log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_f07d8f3/version_28/checkpoints/epoch=200-step=113162.ckpt"
+    # log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_f07d8f3/version_31/checkpoints/epoch=50-step=71756.ckpt"
+    log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_f07d8f3/version_32/checkpoints/epoch=100-step=284112.ckpt"
+    # log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_f07d8f3/version_33/checkpoints/epoch=60-step=85826.ckpt"
+    # log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_f07d8f3/version_34/checkpoints/epoch=60-step=85826.ckpt"
+    # log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_f07d8f3/version_35/checkpoints/epoch=60-step=85826.ckpt"
+    # log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_f07d8f3/version_36/checkpoints/epoch=52-step=74570.ckpt"
+    log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_f07d8f3/version_37/checkpoints/epoch=51-step=219387.ckpt"
     neural_controller = NeuralCBFController.load_from_checkpoint(log_file)
-
-    # log_file = "../training/logs/multivehicle_collision/commit_0af93dc/version_17/checkpoints/epoch=100-step=3029.ckpt"
-    # neural_controller = NeuralCBFController.load_from_checkpoint(log_file)
-
-    # log_file = "../training/logs/multivehicle_collision/commit_0af93dc/version_20/checkpoints/epoch=100-step=3029.ckpt"
-    # neural_controller = NeuralCBFController.load_from_checkpoint(log_file)
-
-    # log_file = "../training/logs/multivehicle_collision/commit_0af93dc/version_22/checkpoints/epoch=100-step=5857.ckpt"
-    # neural_controller = NeuralCBFController.load_from_checkpoint(log_file)
-
-    # log_file = "../training/logs/multivehicle_collision/commit_0af93dc/version_25/checkpoints/epoch=200-step=3617.ckpt"
-    # neural_controller = NeuralCBFController.load_from_checkpoint(log_file)
-
-    # log_file = "../training/logs/multivehicle_collision/commit_0af93dc/version_26/checkpoints/epoch=300-step=5417.ckpt"
-    # neural_controller = NeuralCBFController.load_from_checkpoint(log_file)
-
-    log_file = "/home/mk0617/Documents/dev/research/SASLab/neural_clbf/neural_clbf/training/logs/multivehicle_collision/commit_c3947d8/version_0/checkpoints/epoch=101-step=17951.ckpt"
-    neural_controller = NeuralCBFController.load_from_checkpoint(log_file)
-
-    # log_file = "/home/mk0617/Documents/dev/research/SASLab/neural_clbf/neural_clbf/training/logs/multivehicle_collision/commit_c3947d8/version_1/checkpoints/epoch=101-step=17951.ckpt"
-    # neural_controller = NeuralCBFController.load_from_checkpoint(log_file)
 
 
 
@@ -85,7 +68,7 @@ def plot_mvc_rel():
     h_contour_experiment = CBFContourExperiment(
         "h_Contour",
         domain=[(-1.0, 1.0), (-1.0, 1.0)],  # Adjust the range if needed
-        n_grid=50,
+        n_grid=25,
         x_axis_index=0,  # Index for x position of vehicle 1
         y_axis_index=1,  # Index for y position of vehicle 1
         x_axis_label="$x$",
@@ -96,15 +79,15 @@ def plot_mvc_rel():
     rollout_success_experiment = RolloutSuccessRateExperiment(
         "Rollout Success",
         "CBF Controller",
-        n_sims=500,
+        n_sims=start_xs.shape[0],
         t_sim=1.0,
         initial_states=start_xs
     )
 
-    experiment_suite = ExperimentSuite([rollout_experiment, h_contour_experiment])
+    # experiment_suite = ExperimentSuite([rollout_experiment, h_contour_experiment])
     # experiment_suite = ExperimentSuite([rollout_experiment, rollout_success_experiment])
     # experiment_suite = ExperimentSuite([h_contour_experiment])
-    # experiment_suite = ExperimentSuite([rollout_success_experiment])
+    experiment_suite = ExperimentSuite([rollout_success_experiment])
     # experiment_suite = ExperimentSuite([rollout_experiment])
 
 
