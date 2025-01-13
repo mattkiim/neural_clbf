@@ -51,7 +51,7 @@ def main(args):
         trajectories_per_episode=0,
         trajectory_length=1,
         fixed_samples=3000000,
-        max_points=50000,
+        max_points=100000,
         val_split=0.1,
         batch_size=batch_size,
         quotas={"safe": 0.3, "unsafe": 0.4, "boundary": 0.1},
@@ -68,12 +68,12 @@ def main(args):
         experiment_suite=experiment_suite,
         cbf_hidden_layers=3,
         cbf_hidden_size=512,
-        cbf_lambda=0.0,
+        cbf_lambda=0.1,
         cbf_relaxation_penalty=1e4,
         controller_period=controller_period,
         primal_learning_rate=1e-4,
         scale_parameter=1.0, 
-        learn_shape_epochs=51,
+        learn_shape_epochs=101,
         use_relu=True,
     )
 
@@ -87,7 +87,7 @@ def main(args):
         logger=tb_logger,
         # reload_dataloaders_every_n_epochs=True,
         reload_dataloaders_every_epoch=True,
-        max_epochs=61,
+        max_epochs=111,
     )
 
     # Train
