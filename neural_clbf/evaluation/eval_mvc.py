@@ -40,13 +40,14 @@ scenarios = [
 
 def plot_mvc_rel():
     # log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_f07d8f3/version_28/checkpoints/epoch=200-step=113162.ckpt"
-    # log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_f07d8f3/version_31/checkpoints/epoch=50-step=71756.ckpt"
-    log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_f07d8f3/version_32/checkpoints/epoch=100-step=284112.ckpt"
+    log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_f07d8f3/version_31/checkpoints/epoch=50-step=71756.ckpt"
+    # log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_f07d8f3/version_32/checkpoints/epoch=100-step=284112.ckpt"
     # log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_f07d8f3/version_33/checkpoints/epoch=60-step=85826.ckpt"
     # log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_f07d8f3/version_34/checkpoints/epoch=60-step=85826.ckpt"
     # log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_f07d8f3/version_35/checkpoints/epoch=60-step=85826.ckpt"
     # log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_f07d8f3/version_36/checkpoints/epoch=52-step=74570.ckpt"
-    log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_f07d8f3/version_37/checkpoints/epoch=51-step=219387.ckpt"
+    log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_f07d8f3/version_38/checkpoints/epoch=51-step=2193775.ckpt"
+    log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_02e5302/version_0/checkpoints/epoch=110-step=4682867.ckpt"
     neural_controller = NeuralCBFController.load_from_checkpoint(log_file)
 
 
