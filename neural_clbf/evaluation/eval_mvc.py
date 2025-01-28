@@ -17,13 +17,7 @@ from neural_clbf.experiments import (
 
 start_x = torch.tensor(
     [
-        # [0.0, -1.0, 0.0, 0.0, 0.0, 1.0, 1.107, 0.0, -1.107],
-        # [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, np.pi / 2, np.pi / 4, -np.pi / 4],
-        # [0.1, 0.1, 0.4, 0.1, 0.2, 0.4, 0, 0, 0],
-        # [-0.2, 0.2, 0.1, -0.1, -0.2, 0.3, np.pi / 4, np.pi / 6, -np.pi / 6],
-        [0.0080, -0.5999,  0.5293, -0.2825, -0.4753, -0.3662,  1.5841,  2.6514, 0.6565],
-        # [0.0080, -0.5999,  0.5293, -0.2825, -0.4753, -0.3662,  1.5, 1.5, 1.5]
-        # [-0.3498,  0.0176,  0.0857, -0.3451,  0.6371,  0.3958, -0.0235, 1.6853, -2.5857]
+        [0.0080, -0.5999,  0.5293, -0.2825, -0.4753, -0.3662,  1.5841-0.5,  2.6514-0.5, 0.6565-0.5],
     ]
 )
 
@@ -39,15 +33,9 @@ scenarios = [
 
 
 def plot_mvc_rel():
-    # log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_f07d8f3/version_28/checkpoints/epoch=200-step=113162.ckpt"
-    log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_f07d8f3/version_31/checkpoints/epoch=50-step=71756.ckpt"
-    # log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_f07d8f3/version_32/checkpoints/epoch=100-step=284112.ckpt"
-    # log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_f07d8f3/version_33/checkpoints/epoch=60-step=85826.ckpt"
-    # log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_f07d8f3/version_34/checkpoints/epoch=60-step=85826.ckpt"
-    # log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_f07d8f3/version_35/checkpoints/epoch=60-step=85826.ckpt"
-    # log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_f07d8f3/version_36/checkpoints/epoch=52-step=74570.ckpt"
-    log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_f07d8f3/version_38/checkpoints/epoch=51-step=2193775.ckpt"
-    log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_02e5302/version_0/checkpoints/epoch=110-step=4682867.ckpt"
+    log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_3a414cf/version_71/checkpoints/epoch=100-step=372731.ckpt" # combined_states
+    # log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_3a414cf/version_73/checkpoints/epoch=100-step=369881.ckpt" # generated_states_with_boundary
+    # log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_3a414cf/version_74/checkpoints/epoch=100-step=383981.ckpt" # combined_states + generated_states_with_boundary
     neural_controller = NeuralCBFController.load_from_checkpoint(log_file)
 
 
@@ -88,8 +76,8 @@ def plot_mvc_rel():
     # experiment_suite = ExperimentSuite([rollout_experiment, h_contour_experiment])
     # experiment_suite = ExperimentSuite([rollout_experiment, rollout_success_experiment])
     # experiment_suite = ExperimentSuite([h_contour_experiment])
-    experiment_suite = ExperimentSuite([rollout_success_experiment])
-    # experiment_suite = ExperimentSuite([rollout_experiment])
+    # experiment_suite = ExperimentSuite([rollout_success_experiment])
+    experiment_suite = ExperimentSuite([rollout_experiment])
 
 
 
