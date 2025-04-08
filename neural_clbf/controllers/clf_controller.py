@@ -189,7 +189,7 @@ class CLFController(Controller):
 
             # Multiply these with the Jacobian to get the Lie derivatives
             Lf_V[:, i, :] = torch.bmm(gradV, f).squeeze(1)
-            Lg_V[:, i, :] = torch.bmm(gradV, g).squeeze(1)
+            Lg_V[:, i, :] = torch.bmm(gradV.to("cuda"), g.to("cuda")).squeeze(1)
 
         # return the Lie derivatives
         return Lf_V, Lg_V
@@ -265,6 +265,7 @@ class CLFController(Controller):
 
             # Instantiate the model
             model = gp.Model("clf_qp")
+            # model.setParam("Method", 2)  # Barrier method
             # Create variables for control input and (optionally) the relaxations
             upper_lim, lower_lim = self.dynamics_model.control_limits
             upper_lim = upper_lim.cpu().numpy()
@@ -274,9 +275,8 @@ class CLFController(Controller):
                 r = model.addMVar(n_scenarios, lb=0, ub=GRB.INFINITY)
 
             # Define the cost
-            Q = np.eye(n_controls)
-            print(u_ref.shape)
-            u_ref_np = u_ref[:].detach().cpu().numpy()
+            Q = np.eye(n_controls) 
+            u_ref_np = u_ref[batch_idx, :].detach().cpu().numpy()
             objective = u @ Q @ u - 2 * u_ref_np @ Q @ u + u_ref_np @ Q @ u_ref_np
             if allow_relaxation:
                 relax_penalties = relaxation_penalty * np.ones(n_scenarios)
@@ -311,9 +311,9 @@ class CLFController(Controller):
             if allow_relaxation:
                 for i in range(n_scenarios):
                     r_result[batch_idx, i] = torch.tensor(r[i].x)
-
+        # print("u:", u_result[:50], "x:", x[:50])
+        # print(u_result.shape)
         # quit()
-
         return u_result.type_as(x), r_result.type_as(x)
 
     def _solve_CLF_QP_cvxpylayers(
@@ -425,5 +425,7 @@ class CLFController(Controller):
 
     def u(self, x):
         """Get the control input for a given state"""
-        u, _ = self.solve_CLF_QP(x)
+        u, relaxation = self.solve_CLF_QP(x)
+        print(u, relaxation)
+        # u = self.dynamics_model.u_nominal(x)
         return u

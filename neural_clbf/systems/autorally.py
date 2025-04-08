@@ -204,6 +204,9 @@ class AutoRally(ControlAffineSystem):
         tracking_error_too_big = tracking_error.norm(dim=-1) >= max_safe_tracking_error
         unsafe_mask.logical_or_(tracking_error_too_big)
 
+        print(unsafe_mask)
+        quit()
+
         return unsafe_mask
 
     def goal_mask(self, x):

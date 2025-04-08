@@ -123,6 +123,8 @@ class CLFContourExperiment(Experiment):
                 # Adjust x to be at the current grid point
                 x[0, self.x_axis_index] = x_vals[i]
                 x[0, self.y_axis_index] = y_vals[j]
+                x[0, 2:] = torch.tensor([0.5293, -0.2825, -0.4753, -0.3662, 0, 2.6514, 0.6565])
+                # print(x); quit()
 
                 # Get the value of the CLF
                 V = controller_under_test.V(x)
@@ -275,6 +277,7 @@ class CLFContourExperiment(Experiment):
         ax.set_ylabel(self.y_axis_label)
 
         fig_handle = ("V Contour", fig)
+        plt.savefig("contours_clf.png")
 
         if display_plots:
             plt.show()

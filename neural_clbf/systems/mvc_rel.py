@@ -61,6 +61,7 @@ class MultiVehicleCollisionRelative(ControlAffineSystem):
     @property
     def angle_dims(self) -> list:
         return [6, 7, 8]  # Indices for theta angles of each vehicle
+        # return []
 
     @property
     def state_limits(self) -> Tuple[torch.Tensor, torch.Tensor]:

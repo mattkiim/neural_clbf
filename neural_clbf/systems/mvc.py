@@ -1,12 +1,20 @@
 from .control_affine_system import ControlAffineSystem
 import torch
 import math
+import numpy as np
 from typing import Optional, Tuple
 from abc import abstractmethod
-from neural_clbf.systems.utils import Scenario, lqr
+from neural_clbf.systems.utils import Scenario, lqr, ScenarioList
+import matplotlib.pyplot as plt
 
 class MultiVehicleCollision(ControlAffineSystem):
-    def __init__(self):
+    def __init__(
+        self, 
+        nominal_params: Scenario,
+        dt: float = 0.01,
+        controller_dt: Optional[float] = None,
+        scenarios: Optional[ScenarioList] = None,
+    ):
         # Define vehicle-specific parameters 
         self.angle_alpha_factor = 1.2
         self.velocity = 0.6
@@ -14,17 +22,12 @@ class MultiVehicleCollision(ControlAffineSystem):
         self.collisionR = 0.25
         self.obs_dim = 9
 
-        self.ref_u = torch.tensor([0.0, 0.0, 0.0])  
         
-        # Define state properties
-        nominal_params = {
-            'velocity': self.velocity,
-            'omega_max': self.omega_max,
-            'collisionR': self.collisionR
-        }
         super().__init__(
             nominal_params=nominal_params,
             dt=0.01,
+            controller_dt=controller_dt,
+            scenarios=scenarios
         )
     
     @property
@@ -43,6 +46,7 @@ class MultiVehicleCollision(ControlAffineSystem):
     def state_limits(self) -> Tuple[torch.Tensor, torch.Tensor]:
         lower_limits = torch.tensor([-1, -1, -1, -1, -1, -1, -math.pi, -math.pi, -math.pi])
         upper_limits = torch.tensor([1, 1, 1, 1, 1, 1, math.pi, math.pi, math.pi])
+
         return (upper_limits, lower_limits)
 
     @property
@@ -70,7 +74,6 @@ class MultiVehicleCollision(ControlAffineSystem):
         velocity = params['velocity']
 
         # Dynamics for each vehicle (f1, f2, f3 for x, y components and theta)
-        # Assuming x[:, 6], x[:, 7], x[:, 8] are the theta values for the 3 vehicles
         f[:, 0, 0] = velocity * torch.cos(x[:, 6])  # Vehicle 1 x-velocity
         f[:, 1, 0] = velocity * torch.sin(x[:, 6])  # Vehicle 1 y-velocity
         f[:, 2, 0] = velocity * torch.cos(x[:, 7])  # Vehicle 2 x-velocity
@@ -92,7 +95,7 @@ class MultiVehicleCollision(ControlAffineSystem):
 
     def safe_mask(self, x: torch.Tensor) -> torch.Tensor:
         # Defines safe regions based on collision distance
-        return self.boundary_fn(x) > 0
+        return self.boundary_fn(x) > 0 + 0.25
 
     def unsafe_mask(self, x: torch.Tensor) -> torch.Tensor:
         # Unsafe region if boundary function is less than zero
@@ -100,24 +103,34 @@ class MultiVehicleCollision(ControlAffineSystem):
 
     def boundary_fn(self, state: torch.Tensor) -> torch.Tensor:
         """
-        MattKiim: the NON-RELATIVE boundary function (original). Not currently being used. 
+        Computes the collision boundary function based on the minimum pairwise distance 
+        between three vehicles.
+
+        args:
+            state: (batch_size, 9) tensor representing (x1, y1, x2, y2, x3, y3, θ1, θ2, θ3)
+        returns:
+            boundary_values: (batch_size,) tensor representing the closest safe distance
+                            before a collision.
         """
-        # Computes the minimum distance to maintain safety (collision avoidance)
-        boundary_values = torch.norm(state[:, 0:2] - state[:, 2:4], dim=-1) - self.collisionR
-        for i in range(1, 2):
-            boundary_values_current = torch.norm(state[:, 0:2] - state[:, 2*(i+1):2*(i+1)+2], dim=-1) - self.collisionR
-            boundary_values = torch.min(boundary_values, boundary_values_current)
-        # Check collision between other vehicles
-        for i in range(2):
-            for j in range(i+1, 2):
-                evader1_coords_index = (i+1)*2
-                evader2_coords_index = (j+1)*2
-                boundary_values_current = torch.norm(state[:, evader1_coords_index:evader1_coords_index+2] - state[:, evader2_coords_index:evader2_coords_index+2], dim=-1) - self.collisionR
-                boundary_values = torch.min(boundary_values, boundary_values_current)
+        # Extract vehicle positions
+        xy1 = state[:, 0:2]  # (x1, y1)
+        xy2 = state[:, 2:4]  # (x2, y2)
+        xy3 = state[:, 4:6]  # (x3, y3)
+
+        # Compute pairwise distances
+        dist_12 = torch.norm(xy1 - xy2, dim=-1) - self.collisionR
+        dist_13 = torch.norm(xy1 - xy3, dim=-1) - self.collisionR
+        dist_23 = torch.norm(xy2 - xy3, dim=-1) - self.collisionR
+
+        # Return the **minimum pairwise distance**
+        boundary_values = torch.min(torch.min(dist_12, dist_13), dist_23)
+
         return boundary_values
+
+
     
 
-    def u_nominal(
+    def u_nominal2(
         self, x: torch.Tensor, params: Optional[Scenario] = None
     ) -> torch.Tensor:
         """
@@ -149,3 +162,44 @@ class MultiVehicleCollision(ControlAffineSystem):
 
         return self.ref_u
     
+    def u_nominal(self, x: torch.Tensor, params: Optional[Scenario] = None) -> torch.Tensor:
+        """
+        A simple nominal controller for three Dubins vehicles stacked in one state.
+        Each vehicle has (x, y, theta) with fixed forward speed and an angular rate as control.
+        
+        We steer each vehicle toward the origin (0, 0).
+        """
+        # x shape: [batch_size, 9], grouped as:
+        #  vehicle1: (x0, y0, theta0) at indices 0,1,6
+        #  vehicle2: (x1, y1, theta1) at indices 2,3,7
+        #  vehicle3: (x2, y2, theta2) at indices 4,5,8
+
+        batch_size = x.shape[0]
+        u = torch.zeros(batch_size, self.n_controls, device=x.device, dtype=x.dtype)
+        # u will be [batch_size, 3], each column is the angular velocity for vehicle i.
+
+        # gain for heading control
+        k_p = 1.0  
+
+        for i in range(3):
+            # Indices for (x_i, y_i, theta_i)
+            x_idx = 2 * i      # 0->(x0,y0), 1->(x1,y1), 2->(x2,y2)
+            y_idx = 2 * i + 1
+            theta_idx = 6 + i  # angles start at 6,7,8
+
+            x_i = x[:, x_idx]       # shape [batch_size]
+            y_i = x[:, y_idx]       # shape [batch_size]
+            theta_i = x[:, theta_idx]
+
+            desired_heading = torch.atan2(-y_i, -x_i)
+
+            heading_error = desired_heading - theta_i
+            heading_error = torch.atan2(torch.sin(heading_error), torch.cos(heading_error))
+
+            w_cmd = k_p * heading_error
+            w_cmd = torch.clamp(w_cmd, -self.omega_max, self.omega_max)
+
+            # Assign the i-th control
+            u[:, i] = w_cmd
+
+        return u

@@ -1,40 +1,31 @@
 import torch
-import numpy as np
 import matplotlib
 matplotlib.use('TkAgg')
 
-from neural_clbf.controllers import NeuralCLBFController, NeuralCBFController
+import glob
+import os
+
+from neural_clbf.controllers import NeuralCBFController
 
 
-import matplotlib.pyplot as plt
-from neural_clbf.experiments import (
-    ExperimentSuite,
-    CBFContourExperiment,
-    RolloutStateSpaceExperiment,
-    RolloutSuccessRateExperiment
-)
+# checkpoint_dir = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_c69834e/version_56/checkpoints/" # best
+# checkpoint_dir = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_c69834e/version_58/checkpoints/" # gamma=0.5
+checkpoint_dir = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_c69834e/version_61/checkpoints/" # r=0.4
+checkpoint_dir = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_c69834e/version_67/checkpoints/" # r=0.4
 
 
-file_path = 'initial_conditions_2.npy'
-initial_conditions = np.load(file_path)
+ckpt_files = glob.glob(os.path.join(checkpoint_dir, "*.ckpt"))
 
-start_xs = torch.tensor(initial_conditions[:, :-1], dtype=torch.float32)
+# Select the latest checkpoint file and store it in log_file
+log_file = max(ckpt_files, key=os.path.getctime) if ckpt_files else None
 
-nominal_params = {"angle_alpha_factor": 1.2, "velocity": 0.6, "omega_max": 1.1, "collisionR": 0.25}
-scenarios = [
-    nominal_params, # add more for robustness
-]
+neural_controller = NeuralCBFController.load_from_checkpoint(log_file)
 
 
-def plot_mvc_rel():
-    log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_3a414cf/version_71/checkpoints/epoch=100-step=372731.ckpt" # combined_states
-    neural_controller = NeuralCBFController.load_from_checkpoint(log_file)
+# Load the full PyTorch Lightning checkpoint
+checkpoint = torch.load(log_file, map_location=torch.device("cpu"))
 
-    print()
-    torch.save(neural_controller.V_nn.state_dict(), 'mvc9d_neural_cbf.pth')
+# Extract and save only the model state_dict (weights)
+torch.save(checkpoint["state_dict"], "model.pth")
 
-
-
-
-if __name__ == "__main__":
-    plot_mvc_rel()
+print("Model weights extracted and saved as model.pth")

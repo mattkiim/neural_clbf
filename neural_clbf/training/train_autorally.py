@@ -46,7 +46,7 @@ def main(args):
         initial_conditions,
         trajectories_per_episode=0,
         trajectory_length=500,
-        fixed_samples=10000,
+        fixed_samples=10,
         max_points=100000,
         val_split=0.1,
         batch_size=512,
@@ -111,7 +111,7 @@ def main(args):
         "logs/autorally/", name=f"commit_{current_git_hash}"
     )
     trainer = pl.Trainer.from_argparse_args(
-        args, logger=tb_logger, reload_dataloaders_every_epoch=True, max_epochs=201
+        args, logger=tb_logger, reload_dataloaders_every_epoch=True, max_epochs=51 # 201
     )
 
     # Train

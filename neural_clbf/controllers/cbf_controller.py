@@ -60,6 +60,56 @@ class CBFController(CLFController):
         """
         # To make a simple barrier function, use the Lyapunov function shifted down
         V, JV = super().V_with_jacobian(x)
-        V -= 1.0
+        # V -= 1.0
 
         return V, JV
+
+    # def solve_CLF_QP(
+    #     self,
+    #     x: torch.Tensor,
+    #     relaxation_penalty: float = None,
+    #     u_ref: torch.Tensor = None,
+    #     requires_grad: bool = False,
+    # ) -> Tuple[torch.Tensor, torch.Tensor]:
+    #     """
+    #     OVERRIDE the parent's QP-based solver with a bang-bang approach.
+    #     We'll interpret the parent's 'V' as 'h(x)' (the barrier).
+    #     """
+    #     # 1) Compute the barrier function h(x) and its derivatives
+    #     Lf_h, Lg_h = self.V_lie_derivatives(x)  
+
+    #     # 2) Get reference control, or fallback to parent's nominal if none provided
+    #     if u_ref is None:
+    #         u_ref = self.u_reference(x)  # shape: (bs, n_controls)
+
+    #     # 3) Ignore QP and do bang-bang:
+    #     bs = x.shape[0]
+    #     n_scenarios = self.n_scenarios
+    #     n_controls = self.dynamics_model.n_controls
+
+    #     # Example: define a single control limit or use system's control limits
+    #     upper_lim, lower_lim = self.dynamics_model.control_limits
+    #     # We'll store the final controls in a tensor
+    #     u_result = torch.zeros(bs, n_controls, device=x.device, dtype=x.dtype)
+    #     # Barrier relaxation is meaningless here, so return zeros
+    #     relaxation_result = torch.zeros(bs, 1, device=x.device, dtype=x.dtype)
+
+    #     for i in range(bs):
+    #         # Summation across scenarios (heuristic example):
+    #         # sum over scenario dimension => shape: (n_controls,)
+    #         sum_scenarios = Lg_h[i].sum(dim=0).squeeze(-1)  
+    #         # sign(...) => +1 or -1 (or 0)
+    #         sign_dir = torch.sign(sum_scenarios)  
+
+    #         # We do a bang-bang by picking either upper_lim or lower_lim
+    #         # If sign_dir[j] > 0 => pick upper_lim[j], else lower_lim[j]
+    #         # (This is a naive approach; adapt as you see fit.)
+    #         u_candidate = torch.where(
+    #             sign_dir > 0,
+    #             upper_lim.type_as(x),  # pick upper limit
+    #             lower_lim.type_as(x),  # pick lower limit
+    #         )
+
+    #         u_result[i, :] = u_candidate
+
+    #     return u_result, relaxation_result

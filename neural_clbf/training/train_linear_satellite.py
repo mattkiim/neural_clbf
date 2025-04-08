@@ -79,7 +79,7 @@ def main(args):
         initial_conditions,
         trajectories_per_episode=0,
         trajectory_length=1,
-        fixed_samples=100000,
+        fixed_samples=10,
         max_points=50000,
         val_split=0.1,
         batch_size=batch_size,
@@ -114,7 +114,6 @@ def main(args):
         ]
     )
 
-    # Initialize the controller
     clbf_controller = NeuralCBFController(
         dynamics_model,
         scenarios,

@@ -115,50 +115,89 @@ class CBFContourExperiment(Experiment):
             .reshape(1, controller_under_test.dynamics_model.n_dims)
         )
 
-        # print(x.shape)
+        air3d = False
+        
+        if air3d:
+            # Loop through the grid
+            prog_bar_range = tqdm.trange(self.n_grid, desc="Plotting CBF", leave=True)
+            for i in prog_bar_range:
+                for j in range(self.n_grid):
+                    # Adjust x to be at the current grid point
 
-        # Loop through the grid
-        prog_bar_range = tqdm.trange(self.n_grid, desc="Plotting CBF", leave=True)
-        for i in prog_bar_range:
-            for j in range(self.n_grid):
-                # Adjust x to be at the current grid point
+                    x_old = torch.tensor([[x_vals[i], y_vals[j], -np.pi]])
+                    x_new = x_old[0]
 
-                # x_old = torch.tensor([[x_vals[i], y_vals[j], -0.4000,  0.0000,  0.4000,  0.0000,  3.1400, 0.7854, 2.3562]])
-                x_old = torch.tensor([[x_vals[i], y_vals[j], 0.5293, -0.2825, -0.4753, -0.3662, 1.5841, 2.6514, 0.6565]])
-                x_new = controller_under_test.dynamics_model.states_rel(x_old)[0]
-                # print(x_new)
+                    x[:, self.x_axis_index] = x_new[0]
+                    x[:, self.y_axis_index] = x_new[1]
+                    x[:, 2] = x_new[2]
+                    
+                    # Get the value of the CBF
+                    h = controller_under_test.V(x)
 
-                x[:, self.x_axis_index] = x_new[0]
-                x[:, self.y_axis_index] = x_new[1]
-                x[:, 2] = x_new[2]
-                x[:, 3] = x_new[3]
-                x[:, 4] = x_new[4]
-                x[:, 5] = x_new[5]
-                x[:, 6] = x_new[6]
-                x[:, 7] = x_new[7]
-                x[:, 8] = x_new[8]
-                
-                # x = controller_under_test.dynamics_model.states_rel(x)
+                    # Get the goal, safe, or unsafe classification
+                    is_goal = controller_under_test.dynamics_model.goal_mask(x).all()
+                    is_safe = controller_under_test.dynamics_model.safe_mask(x).all()
+                    is_unsafe = controller_under_test.dynamics_model.unsafe_mask(x).all()
 
-                # Get the value of the CBF
-                h = controller_under_test.V(x)
+                    # Store the results
+                    results.append(
+                        {
+                            self.x_axis_label: x_vals[i].cpu().numpy().item(),
+                            self.y_axis_label: y_vals[j].cpu().numpy().item(),
+                            "CBF Value (h)": h.cpu().numpy().item() * -1,
+                            "Goal region": is_goal.cpu().numpy().item(),
+                            "Safe region": is_safe.cpu().numpy().item(),
+                            "Unsafe region": is_unsafe.cpu().numpy().item(),
+                        }
+                    )
 
-                # Get the goal, safe, or unsafe classification
-                is_goal = controller_under_test.dynamics_model.goal_mask(x).all()
-                is_safe = controller_under_test.dynamics_model.safe_mask(x).all()
-                is_unsafe = controller_under_test.dynamics_model.unsafe_mask(x).all()
+        else:
+            # Loop through the grid
+            prog_bar_range = tqdm.trange(self.n_grid, desc="Plotting CBF", leave=True)
+            for i in prog_bar_range:
+                for j in range(self.n_grid):
+                    # Adjust x to be at the current grid point
 
-                # Store the results
-                results.append(
-                    {
-                        self.x_axis_label: x_vals[i].cpu().numpy().item(),
-                        self.y_axis_label: y_vals[j].cpu().numpy().item(),
-                        "CBF Value (h)": h.cpu().numpy().item(),
-                        "Goal region": is_goal.cpu().numpy().item(),
-                        "Safe region": is_safe.cpu().numpy().item(),
-                        "Unsafe region": is_unsafe.cpu().numpy().item(),
-                    }
-                )
+                    x_old = torch.tensor([[x_vals[i], y_vals[j], -0.4000,  0.0000,  0.4000,  0.0000, 3.1415, 0.7854, 2.3562]])
+                    # x_old = torch.tensor([[x_vals[i], y_vals[j], 0.5293, -0.2825, -0.4753, -0.3662, 1.5841, 2.6514, 0.6565]])
+                    # x_new = controller_under_test.dynamics_model.states_rel(x_old)[0]
+                    x_new = x_old[0]
+                    # print(x_new.shape)
+                    # quit()
+                    # print(x_old[0, -3:])
+                    # x_new[-1] = 0
+
+
+                    x[:, self.x_axis_index] = x_new[0]
+                    x[:, self.y_axis_index] = x_new[1]
+                    x[:, 2] = x_new[2]
+                    x[:, 3] = x_new[3]
+                    x[:, 4] = x_new[4]
+                    x[:, 5] = x_new[5]
+                    x[:, 6] = x_new[6]
+                    x[:, 7] = x_new[7]
+                    x[:, 8] = x_new[8]
+                    
+                    # Get the value of the CBF
+                    h = controller_under_test.V(x)
+                    np.save("values", h)
+
+                    # Get the goal, safe, or unsafe classification
+                    is_goal = controller_under_test.dynamics_model.goal_mask(x).all()
+                    is_safe = controller_under_test.dynamics_model.safe_mask(x).all()
+                    is_unsafe = controller_under_test.dynamics_model.unsafe_mask(x).all()
+
+                    # Store the results
+                    results.append(
+                        {
+                            self.x_axis_label: x_vals[i].cpu().numpy().item(),
+                            self.y_axis_label: y_vals[j].cpu().numpy().item(),
+                            "CBF Value (h)": h.cpu().numpy().item() * -1,
+                            "Goal region": is_goal.cpu().numpy().item(),
+                            "Safe region": is_safe.cpu().numpy().item(),
+                            "Unsafe region": is_unsafe.cpu().numpy().item(),
+                        }
+                    )
 
         return pd.DataFrame(results)
 
@@ -195,7 +234,8 @@ class CBFContourExperiment(Experiment):
         ax.set_aspect('equal')
 
         # Set axis limits and labels
-        ax.set_title(f"$\\lambda = 1$")
+        ax.set_title(f"$\\gamma = 1.00$")
+
         xl, xr = -0.75, 0.75
         yl, yr = -0.75, 0.75
 
@@ -222,13 +262,14 @@ class CBFContourExperiment(Experiment):
         contours = ax.tricontourf(
             results_df[self.x_axis_label],
             results_df[self.y_axis_label],
-            results_df["CBF Value (h)"] * -1,
+            results_df["CBF Value (h)"],
             levels=contour_levels,
             cmap='coolwarm',  # Match color map
         )
 
         # Add color bar
         cbar = fig.colorbar(contours, ax=ax, orientation="vertical")
+        # cbar.ax.set_aspect(20) 
         # cbar.ax.set_ylabel("CBF Value (h)", rotation=270, labelpad=20)
 
         # Overlay safe/unsafe regions if specified

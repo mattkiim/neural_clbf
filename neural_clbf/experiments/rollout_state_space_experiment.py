@@ -45,7 +45,7 @@ class RolloutStateSpaceExperiment(Experiment):
         scenarios: Optional[ScenarioList] = None,
         n_sims_per_start: int = 5,
         t_sim: float = 5.0,
-        relative: bool = True
+        relative: bool = False
     ):
         """Initialize an experiment for simulating controller performance.
 
@@ -71,7 +71,7 @@ class RolloutStateSpaceExperiment(Experiment):
         self.plot_x_label = plot_x_label
         self.plot_y_index = plot_y_index
         self.plot_y_label = plot_y_label
-        self.scenarios = scenarios
+        self.scenarios = None
         self.n_sims_per_start = n_sims_per_start
         self.t_sim = t_sim
         self.other_index = [] if other_index is None else other_index
@@ -109,6 +109,7 @@ class RolloutStateSpaceExperiment(Experiment):
 
         # Compute the number of simulations to run
         n_sims = self.n_sims_per_start * self.start_x.shape[0]
+        # print(n_sims); quit()
 
         # Determine the parameter range to sample from
         parameter_ranges = {}
@@ -124,7 +125,7 @@ class RolloutStateSpaceExperiment(Experiment):
         for i in range(0, self.start_x.shape[0]):
             for j in range(0, self.n_sims_per_start):
                 x_sim_start[i * self.n_sims_per_start + j, :] = self.start_x[i, :]
-
+        
         # Generate a random scenario for each rollout from the given scenarios
         random_scenarios = []
         for i in range(n_sims):
@@ -170,6 +171,8 @@ class RolloutStateSpaceExperiment(Experiment):
             if tstep % controller_update_freq == 0:
                 start_time = time.time()
                 u_current = controller_under_test.u(x_current)
+                # rollout using CBF opt kit
+
                 if self.relative:
                     controls.append(u_current)
                 end_time = time.time()
@@ -235,8 +238,6 @@ class RolloutStateSpaceExperiment(Experiment):
                     random_scenarios[i],
                 )
                 x_current[i, :] = x_current[i, :] + delta_t * xdot.squeeze()
-                print(x_current, delta_t, xdot)
-                quit()
 
         if self.relative:
             # Rollout 2: x_non_rel
@@ -291,8 +292,8 @@ class RolloutStateSpaceExperiment(Experiment):
 
                     results_non_rel.append(log_packet)
         
-        print(results_non_rel)
-        return pd.DataFrame(results_non_rel)
+        # print(results_non_rel)
+        return pd.DataFrame(results)
 
     def plot2(
         self,
@@ -476,7 +477,7 @@ class RolloutStateSpaceExperiment(Experiment):
 
         x_left = -1
         x_right = 1
-        y_left = -1.
+        y_left = -1.0
         y_right = 0.5
         xticks = np.linspace(x_left, x_right, num=2)  # Adjust num to control the number of ticks
         yticks = np.linspace(y_left, y_right, num=2)  # Adjust num to control the number of ticks
@@ -485,8 +486,8 @@ class RolloutStateSpaceExperiment(Experiment):
         rollout_ax.set_yticks(yticks)
         rollout_ax.set_xticks(xticks)
         # fig.set_size_inches(12, 8)
-        rollout_ax.set_xlim(-1, 1)
-        rollout_ax.set_ylim(-1, 0.5)
+        rollout_ax.set_xlim(x_left, x_right)
+        rollout_ax.set_ylim(y_left, y_right)
 
         # Assign colors for each trajectory
         colors = sns.color_palette(n_colors=3)  # 3 coordinate pairs (x1y1, x2y2, x3y3)
@@ -567,7 +568,7 @@ class RolloutStateSpaceExperiment(Experiment):
         rollout_ax.set_xlabel("x")
         rollout_ax.set_ylabel("y")
         # rollout_ax.legend()
-        rollout_ax.set_title("$\\lambda=1.00$")
+        rollout_ax.set_title("$\\gamma=1.00$")
 
         # Optionally display the plot
         if display_plots:

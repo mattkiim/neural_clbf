@@ -457,17 +457,3 @@ class NeuralCBFController(pl.LightningModule, CBFController):
         self.opt_idx_dict = {0: "clbf"}
 
         return [clbf_opt]
-        
-    # def u(self, x):
-    #     """Use gradient direction (bang-bang style) as control input for the angular states"""
-    #     _, gradV = self.V_with_jacobian(x)  # gradV: [bs, 1, n_dims]
-        
-    #     # Extract gradients w.r.t. angles (assumed at indices 6, 7, 8)
-    #     angle_gradients = gradV[:, 0, [6, 7, 8]]  # shape: [bs, 3]
-        
-    #     # Bang-bang control: full rate in direction of gradient sign
-    #     u_bangbang = self.dynamics_model.omega_max * torch.sign(angle_gradients)  # shape: [bs, 3]
-
-    #     return u_bangbang
-
-

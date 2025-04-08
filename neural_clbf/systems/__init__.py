@@ -17,6 +17,7 @@ from .single_integrator_2d import SingleIntegrator2D
 from .autorally import AutoRally
 from .mvc import MultiVehicleCollision
 from .mvc_rel import MultiVehicleCollisionRelative
+from .air3d import Air3D
 
 __all__ = [
     "ControlAffineSystem",
@@ -34,8 +35,9 @@ __all__ = [
     "LinearSatellite",
     "SingleIntegrator2D",
     "AutoRally",
-    "MultiVehicleCollision"
-    "MultiVehicleCollisionRelative"
+    "MultiVehicleCollision",
+    "MultiVehicleCollisionRelative",
+    "Air3D",
 ]
 
 try:

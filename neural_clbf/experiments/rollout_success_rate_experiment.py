@@ -30,7 +30,7 @@ class RolloutSuccessRateExperiment(Experiment):
         n_sims: int = 500,
         t_sim: float = 10.0,
         initial_states=None,
-        relative=True,
+        relative=False,
     ):
         """Initialize an experiment for simulating controller performance.
 
@@ -93,17 +93,15 @@ class RolloutSuccessRateExperiment(Experiment):
         if self.relative:
             x = controller_under_test.dynamics_model.states_rel(x)
 
-        # If the controller has an internal RNN state or something similar,
-        # you may need a batched reset. But for simplicity, we skip that here.
         # if hasattr(controller_under_test, "reset_controller"):
-        #     # If you absolutely must reset in a loop, you'd do it once per trajectory,
-        #     # but that kills parallelization. If possible, implement a batched reset.
+        #     # If necessary to reset a loop, do it once per trajectory,
+        #     # but that kills parallelization. TODO: implement a batched reset.
         #     pass
 
         # Determine which trajectories are initially "safe" vs "unsafe"
         # We'll define "safe" if V(x) >= 0
         V_init = controller_under_test.V(x)
-        initially_safe_mask = V_init >= 0 # TODO: check if this is right. Maybe need to retrain model
+        initially_safe_mask = V_init <= 0
 
 
         # Keep a boolean mask of which trajectories are still safe
@@ -185,8 +183,10 @@ class RolloutSuccessRateExperiment(Experiment):
 
         print("FPR (overall): ", false_positive_rate)
         print("FNR (overall): ", false_negative_rate)
-        print("FPR (CM): ", false_positive_rate_cm)
-        print("FNR (CM): ", false_negative_rate_cm)
+        print("Success Rate: ", 1 - false_negative_rate - false_positive_rate)
+
+        # print("FPR (CM): ", false_positive_rate_cm)
+        # print("FNR (CM): ", false_negative_rate_cm)
 
         # Create a DataFrame with the results
         results_df = pd.DataFrame(

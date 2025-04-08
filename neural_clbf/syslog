@@ -1,0 +1,842 @@
+Jan 15 00:00:10 mk-deepreach systemd[1]: logrotate.service: Succeeded.
+Jan 15 00:00:10 mk-deepreach systemd[1]: Finished Rotate log files.
+Jan 15 00:00:10 mk-deepreach kernel: [5441353.743736] audit: type=1107 audit(1736899210.105:1966): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/cups/cupsd/Notifier" interface="org.cups.cupsd.Notifier" member="ServerStarted" name=":1.1264" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=3057377 peer_label="/usr/sbin/cupsd"
+Jan 15 00:00:10 mk-deepreach kernel: [5441353.743736]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 00:00:10 mk-deepreach kernel: [5441353.792708] audit: type=1400 audit(1736899210.153:1967): apparmor="DENIED" operation="capable" profile="/usr/sbin/cups-browsed" pid=3057371 comm="cups-browsed" capability=23  capname="sys_nice"
+Jan 15 00:00:12 mk-deepreach systemd[1]: man-db.service: Succeeded.
+Jan 15 00:00:12 mk-deepreach systemd[1]: Finished Daily man-db regeneration.
+Jan 15 00:17:01 mk-deepreach CRON[3058414]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+Jan 15 00:26:33 mk-deepreach systemd[1]: Starting Message of the Day...
+Jan 15 00:26:43 mk-deepreach 50-motd-news[3059035]:  * Strictly confined Kubernetes makes edge and IoT secure. Learn how MicroK8s
+Jan 15 00:26:43 mk-deepreach 50-motd-news[3059035]:    just raised the bar for easy, resilient and secure K8s cluster deployment.
+Jan 15 00:26:43 mk-deepreach 50-motd-news[3059035]:    https://ubuntu.com/engage/secure-kubernetes-at-the-edge
+Jan 15 00:26:43 mk-deepreach systemd[1]: motd-news.service: Succeeded.
+Jan 15 00:26:43 mk-deepreach systemd[1]: Finished Message of the Day.
+Jan 15 01:02:27 mk-deepreach systemd[1]: Starting Cleanup of Temporary Directories...
+Jan 15 01:02:28 mk-deepreach systemd[1]: systemd-tmpfiles-clean.service: Succeeded.
+Jan 15 01:02:28 mk-deepreach systemd[1]: Finished Cleanup of Temporary Directories.
+Jan 15 01:17:01 mk-deepreach CRON[3061071]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+Jan 15 01:27:09 mk-deepreach systemd[1]: Starting Refresh fwupd metadata and update motd...
+Jan 15 01:27:09 mk-deepreach dbus-daemon[967]: [system] Activating via systemd: service name='org.freedesktop.fwupd' unit='fwupd.service' requested by ':1.1267' (uid=112 pid=3061296 comm="/usr/bin/fwupdmgr refresh " label="unconfined")
+Jan 15 01:27:09 mk-deepreach systemd[1]: Starting Firmware update daemon...
+Jan 15 01:27:10 mk-deepreach dbus-daemon[967]: [system] Successfully activated service 'org.freedesktop.fwupd'
+Jan 15 01:27:10 mk-deepreach systemd[1]: Started Firmware update daemon.
+Jan 15 01:27:10 mk-deepreach systemd[1]: fwupd-refresh.service: Succeeded.
+Jan 15 01:27:10 mk-deepreach systemd[1]: Finished Refresh fwupd metadata and update motd.
+Jan 15 01:39:08 mk-deepreach systemd[1]: Started Session 1894 of user ubuntu.
+Jan 15 01:39:08 mk-deepreach kernel: [5447292.180520] audit: type=1107 audit(1736905148.601:1968): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 01:39:08 mk-deepreach kernel: [5447292.180520]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 01:39:08 mk-deepreach kernel: [5447292.191037] audit: type=1107 audit(1736905148.613:1969): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 01:39:08 mk-deepreach kernel: [5447292.191037]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 01:45:33 mk-deepreach systemd[1]: Started Session 1895 of user ubuntu.
+Jan 15 01:45:33 mk-deepreach kernel: [5447677.455972] audit: type=1107 audit(1736905533.881:1970): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 01:45:33 mk-deepreach kernel: [5447677.455972]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 01:45:33 mk-deepreach kernel: [5447677.474192] audit: type=1107 audit(1736905533.897:1971): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 01:45:33 mk-deepreach kernel: [5447677.474192]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 01:50:10 mk-deepreach kernel: [5447953.571818] audit: type=1107 audit(1736905809.996:1972): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 01:50:10 mk-deepreach kernel: [5447953.571818]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 01:50:10 mk-deepreach kernel: [5447953.574711] audit: type=1107 audit(1736905810.000:1973): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 01:50:10 mk-deepreach kernel: [5447953.574711]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 01:50:10 mk-deepreach systemd[1]: Started Session 1896 of user ubuntu.
+Jan 15 01:50:10 mk-deepreach kernel: [5447954.111432] audit: type=1107 audit(1736905810.536:1974): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 01:50:10 mk-deepreach kernel: [5447954.111432]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 01:50:10 mk-deepreach kernel: [5447954.131533] audit: type=1107 audit(1736905810.556:1975): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 01:50:10 mk-deepreach kernel: [5447954.131533]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 01:51:34 mk-deepreach systemd[1]: session-1895.scope: Succeeded.
+Jan 15 01:51:34 mk-deepreach kernel: [5448038.206328] audit: type=1107 audit(1736905894.632:1976): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 01:51:34 mk-deepreach kernel: [5448038.206328]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 01:52:07 mk-deepreach kernel: [5448070.624172] audit: type=1107 audit(1736905927.049:1977): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 01:52:07 mk-deepreach kernel: [5448070.624172]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 01:52:07 mk-deepreach kernel: [5448070.625711] audit: type=1107 audit(1736905927.053:1978): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 01:52:07 mk-deepreach kernel: [5448070.625711]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 01:52:07 mk-deepreach kernel: [5448070.625713] audit: type=1107 audit(1736905927.053:1979): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 01:52:07 mk-deepreach kernel: [5448070.625713]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 01:56:31 mk-deepreach kernel: [5448334.812700] audit: type=1107 audit(1736906191.239:1980): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 01:56:31 mk-deepreach kernel: [5448334.812700]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 01:56:31 mk-deepreach kernel: [5448334.815319] audit: type=1107 audit(1736906191.243:1981): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 01:56:31 mk-deepreach kernel: [5448334.815319]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 01:57:09 mk-deepreach systemd[1]: session-1894.scope: Succeeded.
+Jan 15 01:57:09 mk-deepreach kernel: [5448373.087091] audit: type=1107 audit(1736906229.516:1982): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 01:57:09 mk-deepreach kernel: [5448373.087091]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 01:58:05 mk-deepreach systemd[1]: Started Session 1897 of user ubuntu.
+Jan 15 01:58:05 mk-deepreach kernel: [5448429.151782] audit: type=1107 audit(1736906285.584:1983): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 01:58:05 mk-deepreach kernel: [5448429.151782]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 01:58:05 mk-deepreach kernel: [5448429.172648] audit: type=1107 audit(1736906285.604:1984): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 01:58:05 mk-deepreach kernel: [5448429.172648]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:06:43 mk-deepreach kernel: [5448946.802126] audit: type=1107 audit(1736906803.237:1985): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:06:43 mk-deepreach kernel: [5448946.802126]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:06:43 mk-deepreach kernel: [5448946.805637] audit: type=1107 audit(1736906803.241:1986): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:06:43 mk-deepreach kernel: [5448946.805637]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:06:43 mk-deepreach systemd[1]: Started Session 1898 of user ubuntu.
+Jan 15 02:06:43 mk-deepreach kernel: [5448947.337409] audit: type=1107 audit(1736906803.773:1987): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:06:43 mk-deepreach kernel: [5448947.337409]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:06:43 mk-deepreach kernel: [5448947.354316] audit: type=1107 audit(1736906803.789:1988): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:06:43 mk-deepreach kernel: [5448947.354316]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:07:09 mk-deepreach kernel: [5448973.366049] audit: type=1107 audit(1736906829.802:1989): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:07:09 mk-deepreach kernel: [5448973.366049]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:07:09 mk-deepreach kernel: [5448973.369055] audit: type=1107 audit(1736906829.806:1990): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:07:09 mk-deepreach kernel: [5448973.369055]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:07:10 mk-deepreach systemd[1]: Started Session 1899 of user ubuntu.
+Jan 15 02:07:10 mk-deepreach kernel: [5448973.698266] audit: type=1107 audit(1736906830.134:1991): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:07:10 mk-deepreach kernel: [5448973.698266]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:07:10 mk-deepreach kernel: [5448973.703943] audit: type=1107 audit(1736906830.142:1992): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:07:10 mk-deepreach kernel: [5448973.703943]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:08:11 mk-deepreach systemd[1]: session-1896.scope: Succeeded.
+Jan 15 02:08:11 mk-deepreach kernel: [5449034.976422] audit: type=1107 audit(1736906891.414:1993): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:08:11 mk-deepreach kernel: [5449034.976422]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:09:44 mk-deepreach systemd[1]: session-1898.scope: Succeeded.
+Jan 15 02:09:44 mk-deepreach kernel: [5449127.746030] audit: type=1107 audit(1736906984.187:1994): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:09:44 mk-deepreach kernel: [5449127.746030]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:14:01 mk-deepreach systemd[1]: session-1888.scope: Succeeded.
+Jan 15 02:14:01 mk-deepreach kernel: [5449385.426134] audit: type=1107 audit(1736907241.865:1995): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:14:01 mk-deepreach kernel: [5449385.426134]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:14:01 mk-deepreach kernel: [5449385.428608] audit: type=1107 audit(1736907241.869:1996): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:14:01 mk-deepreach kernel: [5449385.428608]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:17:01 mk-deepreach CRON[3063206]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+Jan 15 02:24:20 mk-deepreach kernel: [5450004.497238] audit: type=1107 audit(1736907860.942:1997): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:24:20 mk-deepreach kernel: [5450004.497238]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:24:20 mk-deepreach kernel: [5450004.500221] audit: type=1107 audit(1736907860.946:1998): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:24:20 mk-deepreach kernel: [5450004.500221]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:24:21 mk-deepreach systemd[1]: Started Session 1901 of user ubuntu.
+Jan 15 02:24:21 mk-deepreach kernel: [5450004.632721] audit: type=1107 audit(1736907861.078:1999): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:24:21 mk-deepreach kernel: [5450004.632721]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:24:21 mk-deepreach kernel: [5450004.652846] audit: type=1107 audit(1736907861.098:2000): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:24:21 mk-deepreach kernel: [5450004.652846]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:25:11 mk-deepreach systemd[1]: session-1899.scope: Succeeded.
+Jan 15 02:25:11 mk-deepreach kernel: [5450054.794219] audit: type=1107 audit(1736907911.238:2001): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:25:11 mk-deepreach kernel: [5450054.794219]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:25:57 mk-deepreach kernel: [5450101.097898] audit: type=1107 audit(1736907957.542:2002): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:25:57 mk-deepreach kernel: [5450101.097898]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:25:57 mk-deepreach kernel: [5450101.097903] audit: type=1107 audit(1736907957.542:2003): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:25:57 mk-deepreach kernel: [5450101.097903]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:25:57 mk-deepreach kernel: [5450101.097905] audit: type=1107 audit(1736907957.542:2004): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:25:57 mk-deepreach kernel: [5450101.097905]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:25:57 mk-deepreach systemd[1]: Started Session 1902 of user ubuntu.
+Jan 15 02:25:57 mk-deepreach kernel: [5450101.277386] audit: type=1107 audit(1736907957.722:2005): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:25:57 mk-deepreach kernel: [5450101.277386]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:25:57 mk-deepreach kernel: [5450101.277388] audit: type=1107 audit(1736907957.722:2006): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:25:57 mk-deepreach kernel: [5450101.277388]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:25:57 mk-deepreach kernel: [5450101.296426] audit: type=1107 audit(1736907957.742:2007): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:25:57 mk-deepreach kernel: [5450101.296426]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:27:21 mk-deepreach systemd[1]: session-1901.scope: Succeeded.
+Jan 15 02:27:21 mk-deepreach kernel: [5450184.953490] audit: type=1107 audit(1736908041.399:2008): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:27:21 mk-deepreach kernel: [5450184.953490]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:37:10 mk-deepreach systemd[1]: Starting Daily apt download activities...
+Jan 15 02:37:40 mk-deepreach apt-helper[3064674]: E: Sub-process nm-online returned an error code (1)
+Jan 15 02:37:40 mk-deepreach systemd[1]: Starting Update APT News...
+Jan 15 02:37:40 mk-deepreach systemd[1]: Starting Update the local ESM caches...
+Jan 15 02:37:41 mk-deepreach systemd[1]: apt-news.service: Succeeded.
+Jan 15 02:37:41 mk-deepreach systemd[1]: Finished Update APT News.
+Jan 15 02:37:41 mk-deepreach systemd[1]: esm-cache.service: Succeeded.
+Jan 15 02:37:41 mk-deepreach systemd[1]: Finished Update the local ESM caches.
+Jan 15 02:37:43 mk-deepreach dbus-daemon[967]: [system] Activating via systemd: service name='org.freedesktop.PackageKit' unit='packagekit.service' requested by ':1.1286' (uid=0 pid=3065672 comm="/usr/bin/gdbus call --system --dest org.freedeskto" label="unconfined")
+Jan 15 02:37:43 mk-deepreach PackageKit: daemon start
+Jan 15 02:37:43 mk-deepreach systemd[1]: Starting PackageKit Daemon...
+Jan 15 02:37:43 mk-deepreach dbus-daemon[967]: [system] Successfully activated service 'org.freedesktop.PackageKit'
+Jan 15 02:37:43 mk-deepreach systemd[1]: Started PackageKit Daemon.
+Jan 15 02:37:50 mk-deepreach systemd[1]: apt-daily.service: Succeeded.
+Jan 15 02:37:50 mk-deepreach systemd[1]: Finished Daily apt download activities.
+Jan 15 02:42:48 mk-deepreach PackageKit: daemon quit
+Jan 15 02:42:48 mk-deepreach systemd[1]: packagekit.service: Succeeded.
+Jan 15 02:45:02 mk-deepreach kernel: [5451246.126706] audit: type=1107 audit(1736909102.583:2009): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:45:02 mk-deepreach kernel: [5451246.126706]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:45:02 mk-deepreach kernel: [5451246.127263] audit: type=1107 audit(1736909102.583:2010): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:45:02 mk-deepreach kernel: [5451246.127263]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:45:03 mk-deepreach systemd[1]: Started Session 1903 of user ubuntu.
+Jan 15 02:45:03 mk-deepreach kernel: [5451246.696926] audit: type=1107 audit(1736909103.151:2011): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:45:03 mk-deepreach kernel: [5451246.696926]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:45:03 mk-deepreach kernel: [5451246.715199] audit: type=1107 audit(1736909103.171:2012): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:45:03 mk-deepreach kernel: [5451246.715199]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:46:58 mk-deepreach systemd[1]: session-1902.scope: Succeeded.
+Jan 15 02:46:58 mk-deepreach kernel: [5451362.328318] audit: type=1107 audit(1736909218.780:2013): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:46:58 mk-deepreach kernel: [5451362.328318]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:54:41 mk-deepreach systemd[1]: session-1884.scope: Succeeded.
+Jan 15 02:54:41 mk-deepreach kernel: [5451824.577129] audit: type=1107 audit(1736909681.031:2014): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:54:41 mk-deepreach kernel: [5451824.577129]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 02:54:41 mk-deepreach kernel: [5451824.579427] audit: type=1107 audit(1736909681.035:2015): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 02:54:41 mk-deepreach kernel: [5451824.579427]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 03:10:01 mk-deepreach CRON[3066878]: (root) CMD (test -e /run/systemd/system || SERVICE_MODE=1 /sbin/e2scrub_all -A -r)
+Jan 15 03:17:01 mk-deepreach CRON[3067131]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+Jan 15 03:20:42 mk-deepreach snapd[2362853]: storehelpers.go:954: cannot refresh: snap has no updates available: "bare", "core18", "core20", "core22", "cups", "gnome-3-28-1804", "gnome-3-38-2004", "gnome-42-2204", "gtk-common-themes", "remmina", "snapd"
+Jan 15 03:27:10 mk-deepreach systemd[1]: fwupd.service: Succeeded.
+Jan 15 03:51:27 mk-deepreach kernel: [5455231.166793] audit: type=1107 audit(1736913087.667:2016): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 03:51:27 mk-deepreach kernel: [5455231.166793]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 03:51:27 mk-deepreach kernel: [5455231.167527] audit: type=1107 audit(1736913087.667:2017): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 03:51:27 mk-deepreach kernel: [5455231.167527]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 03:51:27 mk-deepreach kernel: [5455231.167679] audit: type=1107 audit(1736913087.667:2018): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 03:51:27 mk-deepreach kernel: [5455231.167679]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 03:51:28 mk-deepreach systemd[1]: Started Session 1906 of user ubuntu.
+Jan 15 03:51:28 mk-deepreach kernel: [5455231.533789] audit: type=1107 audit(1736913088.035:2019): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 03:51:28 mk-deepreach kernel: [5455231.533789]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 03:51:28 mk-deepreach kernel: [5455231.534097] audit: type=1107 audit(1736913088.035:2020): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 03:51:28 mk-deepreach kernel: [5455231.534097]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 03:51:28 mk-deepreach kernel: [5455231.544464] audit: type=1107 audit(1736913088.043:2021): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 03:51:28 mk-deepreach kernel: [5455231.544464]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 03:54:04 mk-deepreach systemd[1]: session-1903.scope: Succeeded.
+Jan 15 03:54:04 mk-deepreach kernel: [5455387.539464] audit: type=1107 audit(1736913244.041:2022): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 03:54:04 mk-deepreach kernel: [5455387.539464]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 03:54:04 mk-deepreach kernel: [5455387.540072] audit: type=1107 audit(1736913244.041:2023): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 03:54:04 mk-deepreach kernel: [5455387.540072]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 04:08:54 mk-deepreach kernel: [5456278.067441] audit: type=1107 audit(1736914134.572:2024): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 04:08:54 mk-deepreach kernel: [5456278.067441]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 04:08:54 mk-deepreach kernel: [5456278.067445] audit: type=1107 audit(1736914134.572:2025): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 04:08:54 mk-deepreach kernel: [5456278.067445]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 04:08:54 mk-deepreach kernel: [5456278.067557] audit: type=1107 audit(1736914134.572:2026): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 04:08:54 mk-deepreach kernel: [5456278.067557]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 04:08:55 mk-deepreach systemd[1]: Started Session 1907 of user ubuntu.
+Jan 15 04:08:55 mk-deepreach kernel: [5456278.913312] audit: type=1107 audit(1736914135.420:2027): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 04:08:55 mk-deepreach kernel: [5456278.913312]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 04:08:55 mk-deepreach kernel: [5456278.929076] audit: type=1107 audit(1736914135.436:2028): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 04:08:55 mk-deepreach kernel: [5456278.929076]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 04:09:29 mk-deepreach systemd[1]: session-1906.scope: Succeeded.
+Jan 15 04:09:29 mk-deepreach kernel: [5456312.663339] audit: type=1107 audit(1736914169.168:2029): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 04:09:29 mk-deepreach kernel: [5456312.663339]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 04:09:29 mk-deepreach kernel: [5456312.663341] audit: type=1107 audit(1736914169.168:2030): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 04:09:29 mk-deepreach kernel: [5456312.663341]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 04:11:53 mk-deepreach systemd[1]: Started Session 1908 of user ubuntu.
+Jan 15 04:11:53 mk-deepreach kernel: [5456457.066861] audit: type=1107 audit(1736914313.573:2031): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 04:11:53 mk-deepreach kernel: [5456457.066861]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 04:11:53 mk-deepreach kernel: [5456457.072304] audit: type=1107 audit(1736914313.581:2032): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 04:11:53 mk-deepreach kernel: [5456457.072304]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 04:16:33 mk-deepreach systemd[1]: Started Session 1909 of user ubuntu.
+Jan 15 04:16:33 mk-deepreach kernel: [5456736.546180] audit: type=1107 audit(1736914593.056:2033): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 04:16:33 mk-deepreach kernel: [5456736.546180]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 04:16:33 mk-deepreach kernel: [5456736.569287] audit: type=1107 audit(1736914593.080:2034): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 04:16:33 mk-deepreach kernel: [5456736.569287]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 04:17:01 mk-deepreach CRON[3117821]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+Jan 15 04:18:56 mk-deepreach systemd[1]: session-1891.scope: Succeeded.
+Jan 15 04:18:56 mk-deepreach kernel: [5456879.514659] audit: type=1107 audit(1736914736.025:2035): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 04:18:56 mk-deepreach kernel: [5456879.514659]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 04:25:22 mk-deepreach kernel: [5457266.057176] audit: type=1107 audit(1736915122.572:2036): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 04:25:22 mk-deepreach kernel: [5457266.057176]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 04:25:22 mk-deepreach kernel: [5457266.057578] audit: type=1107 audit(1736915122.572:2037): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 04:25:22 mk-deepreach kernel: [5457266.057578]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 04:25:22 mk-deepreach kernel: [5457266.057582] audit: type=1107 audit(1736915122.572:2038): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 04:25:22 mk-deepreach kernel: [5457266.057582]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 04:26:56 mk-deepreach systemd[1]: session-1907.scope: Succeeded.
+Jan 15 04:26:56 mk-deepreach kernel: [5457359.859759] audit: type=1107 audit(1736915216.377:2039): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 04:26:56 mk-deepreach kernel: [5457359.859759]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 04:28:18 mk-deepreach kernel: [5457442.181249] audit: type=1107 audit(1736915298.698:2040): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 04:28:18 mk-deepreach kernel: [5457442.181249]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 04:28:18 mk-deepreach kernel: [5457442.181851] audit: type=1107 audit(1736915298.698:2041): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 04:28:18 mk-deepreach kernel: [5457442.181851]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 04:28:18 mk-deepreach kernel: [5457442.182070] audit: type=1107 audit(1736915298.702:2042): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 04:28:18 mk-deepreach kernel: [5457442.182070]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 04:29:54 mk-deepreach systemd[1]: session-1908.scope: Succeeded.
+Jan 15 04:29:54 mk-deepreach kernel: [5457538.138647] audit: type=1107 audit(1736915394.659:2043): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 04:29:54 mk-deepreach kernel: [5457538.138647]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 04:29:54 mk-deepreach kernel: [5457538.138881] audit: type=1107 audit(1736915394.659:2044): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 04:29:54 mk-deepreach kernel: [5457538.138881]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 04:50:33 mk-deepreach kernel: [5458777.465206] audit: type=1107 audit(1736916633.994:2045): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 04:50:33 mk-deepreach kernel: [5458777.465206]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 04:50:34 mk-deepreach kernel: [5458777.468131] audit: type=1107 audit(1736916633.998:2046): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 04:50:34 mk-deepreach kernel: [5458777.468131]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 04:52:34 mk-deepreach systemd[1]: session-1909.scope: Succeeded.
+Jan 15 04:52:34 mk-deepreach kernel: [5458898.133835] audit: type=1107 audit(1736916754.667:2047): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 04:52:34 mk-deepreach kernel: [5458898.133835]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 04:52:34 mk-deepreach kernel: [5458898.133839] audit: type=1107 audit(1736916754.667:2048): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 04:52:34 mk-deepreach kernel: [5458898.133839]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 05:17:01 mk-deepreach CRON[3119510]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+Jan 15 06:17:01 mk-deepreach CRON[3120625]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+Jan 15 06:25:01 mk-deepreach CRON[3120774]: (root) CMD (test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.daily ))
+Jan 15 06:25:01 mk-deepreach cracklib: no dictionary update necessary.
+Jan 15 06:44:40 mk-deepreach systemd[1]: Starting Daily apt upgrade and clean activities...
+Jan 15 06:45:10 mk-deepreach apt-helper[3121243]: E: Sub-process nm-online returned an error code (1)
+Jan 15 06:45:27 mk-deepreach systemd[1]: Reloading.
+Jan 15 06:45:28 mk-deepreach systemd[1]: Configuration file /run/systemd/system/netplan-ovs-cleanup.service is marked world-inaccessible. This has no effect as configuration data is accessible via APIs without restrictions. Proceeding anyway.
+Jan 15 06:45:29 mk-deepreach systemd[1]: /lib/systemd/system/cloud-init-local.service:15: Unknown key name 'ConditionEnvironment' in section 'Unit', ignoring.
+Jan 15 06:45:29 mk-deepreach systemd[1]: /lib/systemd/system/cloud-init.service:19: Unknown key name 'ConditionEnvironment' in section 'Unit', ignoring.
+Jan 15 06:45:29 mk-deepreach systemd[1]: /lib/systemd/system/cloud-init.target:15: Unknown key name 'ConditionEnvironment' in section 'Unit', ignoring.
+Jan 15 06:45:29 mk-deepreach systemd[1]: /lib/systemd/system/cloud-final.service:9: Unknown key name 'ConditionEnvironment' in section 'Unit', ignoring.
+Jan 15 06:45:29 mk-deepreach systemd[1]: /lib/systemd/system/cloud-config.service:8: Unknown key name 'ConditionEnvironment' in section 'Unit', ignoring.
+Jan 15 06:45:30 mk-deepreach systemd[1]: Reloading.
+Jan 15 06:45:30 mk-deepreach systemd[1]: Configuration file /run/systemd/system/netplan-ovs-cleanup.service is marked world-inaccessible. This has no effect as configuration data is accessible via APIs without restrictions. Proceeding anyway.
+Jan 15 06:45:30 mk-deepreach systemd[1]: /lib/systemd/system/cloud-init-local.service:15: Unknown key name 'ConditionEnvironment' in section 'Unit', ignoring.
+Jan 15 06:45:30 mk-deepreach systemd[1]: /lib/systemd/system/cloud-init.service:19: Unknown key name 'ConditionEnvironment' in section 'Unit', ignoring.
+Jan 15 06:45:30 mk-deepreach systemd[1]: /lib/systemd/system/cloud-init.target:15: Unknown key name 'ConditionEnvironment' in section 'Unit', ignoring.
+Jan 15 06:45:30 mk-deepreach systemd[1]: /lib/systemd/system/cloud-final.service:9: Unknown key name 'ConditionEnvironment' in section 'Unit', ignoring.
+Jan 15 06:45:30 mk-deepreach systemd[1]: /lib/systemd/system/cloud-config.service:8: Unknown key name 'ConditionEnvironment' in section 'Unit', ignoring.
+Jan 15 06:45:30 mk-deepreach systemd[1]: Reloading.
+Jan 15 06:45:30 mk-deepreach systemd[1]: Configuration file /run/systemd/system/netplan-ovs-cleanup.service is marked world-inaccessible. This has no effect as configuration data is accessible via APIs without restrictions. Proceeding anyway.
+Jan 15 06:45:30 mk-deepreach systemd[1]: /lib/systemd/system/cloud-init-local.service:15: Unknown key name 'ConditionEnvironment' in section 'Unit', ignoring.
+Jan 15 06:45:30 mk-deepreach systemd[1]: /lib/systemd/system/cloud-init.service:19: Unknown key name 'ConditionEnvironment' in section 'Unit', ignoring.
+Jan 15 06:45:30 mk-deepreach systemd[1]: /lib/systemd/system/cloud-init.target:15: Unknown key name 'ConditionEnvironment' in section 'Unit', ignoring.
+Jan 15 06:45:30 mk-deepreach systemd[1]: /lib/systemd/system/cloud-final.service:9: Unknown key name 'ConditionEnvironment' in section 'Unit', ignoring.
+Jan 15 06:45:30 mk-deepreach systemd[1]: /lib/systemd/system/cloud-config.service:8: Unknown key name 'ConditionEnvironment' in section 'Unit', ignoring.
+Jan 15 06:45:30 mk-deepreach systemd[1]: Reloading.
+Jan 15 06:45:31 mk-deepreach systemd[1]: Configuration file /run/systemd/system/netplan-ovs-cleanup.service is marked world-inaccessible. This has no effect as configuration data is accessible via APIs without restrictions. Proceeding anyway.
+Jan 15 06:45:31 mk-deepreach systemd[1]: /lib/systemd/system/cloud-init-local.service:15: Unknown key name 'ConditionEnvironment' in section 'Unit', ignoring.
+Jan 15 06:45:31 mk-deepreach systemd[1]: /lib/systemd/system/cloud-init.service:19: Unknown key name 'ConditionEnvironment' in section 'Unit', ignoring.
+Jan 15 06:45:31 mk-deepreach systemd[1]: /lib/systemd/system/cloud-init.target:15: Unknown key name 'ConditionEnvironment' in section 'Unit', ignoring.
+Jan 15 06:45:31 mk-deepreach systemd[1]: /lib/systemd/system/cloud-final.service:9: Unknown key name 'ConditionEnvironment' in section 'Unit', ignoring.
+Jan 15 06:45:31 mk-deepreach systemd[1]: /lib/systemd/system/cloud-config.service:8: Unknown key name 'ConditionEnvironment' in section 'Unit', ignoring.
+Jan 15 06:45:31 mk-deepreach systemd[1]: Condition check resulted in fast remote file copy program daemon being skipped.
+Jan 15 06:45:31 mk-deepreach systemd[1]: Reloading.
+Jan 15 06:45:31 mk-deepreach systemd[1]: Configuration file /run/systemd/system/netplan-ovs-cleanup.service is marked world-inaccessible. This has no effect as configuration data is accessible via APIs without restrictions. Proceeding anyway.
+Jan 15 06:45:31 mk-deepreach systemd[1]: /lib/systemd/system/cloud-init-local.service:15: Unknown key name 'ConditionEnvironment' in section 'Unit', ignoring.
+Jan 15 06:45:31 mk-deepreach systemd[1]: /lib/systemd/system/cloud-init.service:19: Unknown key name 'ConditionEnvironment' in section 'Unit', ignoring.
+Jan 15 06:45:31 mk-deepreach systemd[1]: /lib/systemd/system/cloud-init.target:15: Unknown key name 'ConditionEnvironment' in section 'Unit', ignoring.
+Jan 15 06:45:31 mk-deepreach systemd[1]: /lib/systemd/system/cloud-final.service:9: Unknown key name 'ConditionEnvironment' in section 'Unit', ignoring.
+Jan 15 06:45:31 mk-deepreach systemd[1]: /lib/systemd/system/cloud-config.service:8: Unknown key name 'ConditionEnvironment' in section 'Unit', ignoring.
+Jan 15 06:45:31 mk-deepreach systemd[1]: Starting Refresh fwupd metadata and update motd...
+Jan 15 06:45:31 mk-deepreach dbus-daemon[967]: [system] Activating via systemd: service name='org.freedesktop.fwupd' unit='fwupd.service' requested by ':1.1304' (uid=112 pid=3121595 comm="/usr/bin/fwupdmgr refresh " label="unconfined")
+Jan 15 06:45:31 mk-deepreach systemd[1]: Starting Firmware update daemon...
+Jan 15 06:45:32 mk-deepreach dbus-daemon[967]: [system] Successfully activated service 'org.freedesktop.fwupd'
+Jan 15 06:45:32 mk-deepreach systemd[1]: Started Firmware update daemon.
+Jan 15 06:45:32 mk-deepreach systemd[1]: fwupd-refresh.service: Succeeded.
+Jan 15 06:45:32 mk-deepreach systemd[1]: Finished Refresh fwupd metadata and update motd.
+Jan 15 06:45:32 mk-deepreach dbus-daemon[967]: [system] Activating via systemd: service name='org.freedesktop.PackageKit' unit='packagekit.service' requested by ':1.1306' (uid=0 pid=3121615 comm="/usr/bin/gdbus call --system --dest org.freedeskto" label="unconfined")
+Jan 15 06:45:32 mk-deepreach systemd[1]: Starting PackageKit Daemon...
+Jan 15 06:45:32 mk-deepreach PackageKit: daemon start
+Jan 15 06:45:32 mk-deepreach dbus-daemon[967]: [system] Successfully activated service 'org.freedesktop.PackageKit'
+Jan 15 06:45:32 mk-deepreach systemd[1]: Started PackageKit Daemon.
+Jan 15 06:45:35 mk-deepreach systemd[1]: apt-daily-upgrade.service: Succeeded.
+Jan 15 06:45:35 mk-deepreach systemd[1]: Finished Daily apt upgrade and clean activities.
+Jan 15 06:50:37 mk-deepreach PackageKit: daemon quit
+Jan 15 06:50:37 mk-deepreach systemd[1]: packagekit.service: Succeeded.
+Jan 15 07:01:32 mk-deepreach kernel: [5466635.567619] audit: type=1107 audit(1736924492.168:2049): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 07:01:32 mk-deepreach kernel: [5466635.567619]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 07:01:32 mk-deepreach kernel: [5466635.568467] audit: type=1107 audit(1736924492.172:2050): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 07:01:32 mk-deepreach kernel: [5466635.568467]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 07:01:32 mk-deepreach kernel: [5466635.568606] audit: type=1107 audit(1736924492.172:2051): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 07:01:32 mk-deepreach kernel: [5466635.568606]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 07:17:01 mk-deepreach CRON[3122306]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+Jan 15 07:26:02 mk-deepreach systemd[1]: Started Session 1915 of user ubuntu.
+Jan 15 07:26:02 mk-deepreach kernel: [5468106.054909] audit: type=1107 audit(1736925962.671:2052): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 07:26:02 mk-deepreach kernel: [5468106.054909]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 07:26:02 mk-deepreach kernel: [5468106.094823] audit: type=1107 audit(1736925962.711:2053): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 07:26:02 mk-deepreach kernel: [5468106.094823]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 08:17:01 mk-deepreach CRON[3185433]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+Jan 15 08:45:32 mk-deepreach systemd[1]: fwupd.service: Succeeded.
+Jan 15 09:17:01 mk-deepreach CRON[3201901]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+Jan 15 10:17:01 mk-deepreach CRON[3203074]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+Jan 15 10:25:42 mk-deepreach snapd[2362853]: storehelpers.go:954: cannot refresh: snap has no updates available: "bare", "core18", "core20", "core22", "cups", "gnome-3-28-1804", "gnome-3-38-2004", "gnome-42-2204", "gtk-common-themes", "remmina", "snapd"
+Jan 15 11:17:01 mk-deepreach CRON[3204264]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+Jan 15 11:48:31 mk-deepreach systemd[1]: session-1915.scope: Succeeded.
+Jan 15 11:48:31 mk-deepreach kernel: [5483854.990313] audit: type=1107 audit(1736941711.753:2054): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 11:48:31 mk-deepreach kernel: [5483854.990313]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 11:48:31 mk-deepreach kernel: [5483854.992227] audit: type=1107 audit(1736941711.757:2055): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 11:48:31 mk-deepreach kernel: [5483854.992227]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 11:48:31 mk-deepreach kernel: [5483854.992456] audit: type=1107 audit(1736941711.757:2056): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 11:48:31 mk-deepreach kernel: [5483854.992456]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 11:48:31 mk-deepreach kernel: [5483854.992559] audit: type=1107 audit(1736941711.757:2057): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 11:48:31 mk-deepreach kernel: [5483854.992559]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 12:00:42 mk-deepreach snapd[2362853]: storehelpers.go:954: cannot refresh: snap has no updates available: "bare", "core18", "core20", "core22", "cups", "gnome-3-28-1804", "gnome-3-38-2004", "gnome-42-2204", "gtk-common-themes", "remmina", "snapd"
+Jan 15 12:15:42 mk-deepreach systemd[1]: snapd.service: Watchdog timeout (limit 5min)!
+Jan 15 12:15:43 mk-deepreach snapd[2362853]: SIGABRT: abort
+Jan 15 12:15:44 mk-deepreach systemd[1]: snapd.service: Killing process 2362853 (snapd) with signal SIGABRT.
+Jan 15 12:15:45 mk-deepreach snapd[2362853]: PC=0x5620c4f0f9a1 m=0 sigcode=0
+Jan 15 12:15:48 mk-deepreach snapd[2362853]: goroutine 0 [idle]:
+Jan 15 12:15:55 mk-deepreach snapd[2362853]: runtime.futex()
+Jan 15 12:15:58 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/runtime/sys_linux_amd64.s:552 +0x21
+Jan 15 12:16:16 mk-deepreach snapd[2362853]: runtime.futexsleep(0x7fffcb87e630?, 0xc4ee91d3?, 0xc000046a00?)
+Jan 15 12:16:18 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/runtime/os_linux.go:66 +0x36
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347809] containerd invoked oom-killer: gfp_mask=0x100cca(GFP_HIGHUSER_MOVABLE), order=0, oom_score_adj=-999
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347812] CPU: 12 PID: 1639 Comm: containerd Tainted: P           OE     5.4.0-200-generic #220-Ubuntu
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347813] Hardware name: RDO OpenStack Compute, BIOS 1.16.0-3.module_el8.7.0+1218+f626c2ff 04/01/2014
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347814] Call Trace:
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347820]  dump_stack+0x6d/0x8b
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347822]  dump_header+0x4f/0x1eb
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347823]  oom_kill_process.cold+0xb/0x10
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347826]  out_of_memory+0x1cf/0x500
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347828]  __alloc_pages_slowpath+0xe14/0xee0
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347831]  ? blk_flush_plug_list+0xe3/0x110
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347832]  __alloc_pages_nodemask+0x2d0/0x320
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347834]  alloc_pages_current+0x87/0xe0
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347836]  __page_cache_alloc+0x72/0x90
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347837]  pagecache_get_page+0xbf/0x300
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347838]  filemap_fault+0x79e/0xbc0
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347841]  ? unlock_page_memcg+0x12/0x20
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347843]  ? page_add_file_rmap+0xff/0x1a0
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347845]  ? xas_load+0xd/0x80
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347846]  ? xas_find+0x17f/0x1c0
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347848]  ? filemap_map_pages+0x24c/0x380
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347851]  ext4_filemap_fault+0x32/0x50
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347853]  __do_fault+0x3c/0x170
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347854]  do_fault+0x24b/0x640
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347857]  ? dequeue_signal+0x52/0x190
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347858]  __handle_mm_fault+0x4c5/0x7a0
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347859]  handle_mm_fault+0xca/0x200
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347862]  do_user_addr_fault+0x1f9/0x440
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347863]  __do_page_fault+0x58/0x90
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347866]  ? exit_to_usermode_loop+0xbf/0x160
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347867]  do_page_fault+0x2c/0xe0
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347870]  do_async_page_fault+0x39/0x70
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347873]  async_page_fault+0x34/0x40
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347875] RIP: 0033:0x55cb7d35f0b0
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347878] Code: Bad RIP value.
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347879] RSP: 002b:000000c00070d958 EFLAGS: 00010212
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347880] RAX: 0000000000019d69 RBX: 0000000000000000 RCX: 000055cb7fa192a0
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347881] RDX: 0000000000000213 RSI: 000000000000de63 RDI: 0000000000000214
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347881] RBP: 000000c00070d968 R08: 000055cb7f4bc5a0 R09: 000055cb7f4bd640
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347882] R10: 0000000000000028 R11: 000000c0006bb000 R12: fffffffffffffff8
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347883] R13: 000000c000510400 R14: 000000c0006f01a0 R15: 000000000000002e
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347884] Mem-Info:
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347886] active_anon:7818315 inactive_anon:11365 isolated_anon:0
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347886]  active_file:181 inactive_file:348 isolated_file:0
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347886]  unevictable:4660 dirty:0 writeback:0 unstable:0
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347886]  slab_reclaimable:55298 slab_unreclaimable:117402
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347886]  mapped:67786 shmem:11783 pagetables:55780 bounce:0
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347886]  free:49921 free_pcp:2542 free_cma:0
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347888] Node 0 active_anon:31273260kB inactive_anon:45460kB active_file:724kB inactive_file:1392kB unevictable:18640kB isolated(anon):0kB isolated(file):0kB mapped:271144kB dirty:0kB writeback:0kB shmem:47132kB shmem_thp: 0kB shmem_pmdmapped: 0kB anon_thp: 0kB writeback_tmp:0kB unstable:0kB all_unreclaimable? no
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347889] Node 0 DMA free:15908kB min:32kB low:44kB high:56kB active_anon:0kB inactive_anon:0kB active_file:0kB inactive_file:0kB unevictable:0kB writepending:0kB present:15992kB managed:15908kB mlocked:0kB kernel_stack:0kB pagetables:0kB bounce:0kB free_pcp:0kB local_pcp:0kB free_cma:0kB
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347891] lowmem_reserve[]: 0 2965 32048 32048 32048
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347892] Node 0 DMA32 free:122556kB min:6248kB low:9284kB high:12320kB active_anon:2877480kB inactive_anon:0kB active_file:300kB inactive_file:416kB unevictable:0kB writepending:0kB present:3129196kB managed:3063660kB mlocked:0kB kernel_stack:304kB pagetables:8384kB bounce:0kB free_pcp:3660kB local_pcp:404kB free_cma:0kB
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347894] lowmem_reserve[]: 0 0 29083 29083 29083
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347895] Node 0 Normal free:61220kB min:61300kB low:91080kB high:120860kB active_anon:28395780kB inactive_anon:45460kB active_file:1004kB inactive_file:2128kB unevictable:18640kB writepending:0kB present:30408704kB managed:29789160kB mlocked:18640kB kernel_stack:13088kB pagetables:214736kB bounce:0kB free_pcp:6508kB local_pcp:340kB free_cma:0kB
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347897] lowmem_reserve[]: 0 0 0 0 0
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347897] Node 0 DMA: 1*4kB (U) 0*8kB 0*16kB 1*32kB (U) 2*64kB (U) 1*128kB (U) 1*256kB (U) 0*512kB 1*1024kB (U) 1*2048kB (M) 3*4096kB (M) = 15908kB
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347901] Node 0 DMA32: 1683*4kB (UME) 1433*8kB (UME) 1064*16kB (UME) 934*32kB (UE) 355*64kB (UME) 183*128kB (UME) 38*256kB (UME) 3*512kB (E) 0*1024kB 0*2048kB 0*4096kB = 122516kB
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347904] Node 0 Normal: 55*4kB (UH) 2917*8kB (UEH) 1603*16kB (UEH) 357*32kB (UEH) 5*64kB (H) 2*128kB (H) 0*256kB 0*512kB 0*1024kB 0*2048kB 0*4096kB = 61204kB
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347908] Node 0 hugepages_total=0 hugepages_free=0 hugepages_surp=0 hugepages_size=2048kB
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347909] 14557 total pagecache pages
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347910] 0 pages in swap cache
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347910] Swap cache stats: add 0, delete 0, find 0/0
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347911] Free swap  = 0kB
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347911] Total swap = 0kB
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347911] 8388473 pages RAM
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347912] 0 pages HighMem/MovableOnly
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347912] 171291 pages reserved
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347912] 0 pages cma reserved
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347913] 0 pages hwpoisoned
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347913] Tasks state (memory values in pages):
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347913] [  pid  ]   uid  tgid total_vm      rss pgtables_bytes swapents oom_score_adj name
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347921] [    520]     0   520    19352     1134   176128        0          -250 systemd-journal
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347923] [    552]     0   552     5624     1213    61440        0         -1000 systemd-udevd
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347924] [    786]     0   786    70034     4550    90112        0         -1000 multipathd
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347926] [    875]   102   875    22728      485    81920        0             0 systemd-timesyn
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347927] [    927]   100   927     8899      998    81920        0             0 systemd-network
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347928] [    929]   101   929     6304     1842    94208        0             0 systemd-resolve
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347929] [    965]     0   965    59874     1083    94208        0             0 accounts-daemon
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347931] [    966]   119   966     2118      700    61440        0             0 avahi-daemon
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347932] [    967]   103   967     2260     1068    65536        0          -900 dbus-daemon
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347933] [    968]     0   968    65404      854   151552        0             0 NetworkManager
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347934] [    974]     0   974    20481      689    57344        0             0 irqbalance
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347935] [    976]     0   976     9330     2989   106496        0             0 networkd-dispat
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347936] [    978]     0   978    59093     1339    98304        0             0 polkitd
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347937] [    980]   104   980    56129      681    86016        0             0 rsyslogd
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347938] [    999]     0   999    58710      518    90112        0             0 switcheroo-cont
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347939] [   1002]     0  1002     4717     1179    81920        0             0 systemd-logind
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347940] [   1012]     0  1012    98317     1323   135168        0             0 udisksd
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347941] [   1013]     0  1013     3423      688    65536        0             0 wpa_supplicant
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347942] [   1029]   119  1029     2085       80    57344        0             0 avahi-daemon
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347943] [   1088]     0  1088    78776      486   118784        0             0 ModemManager
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347945] [   1109]     0  1109      721       25    40960        0             0 run-cups-browse
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347946] [   1111]     0  1111      721       31    49152        0             0 run-cupsd
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347947] [   1114]     0  1114    28937     2843   122880        0             0 unattended-upgr
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347948] [   1137]     0  1137   653404     3469   393216        0          -999 containerd
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347949] [   1194]     0  1194     2135      494    57344        0             0 cron
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347950] [   1205]     0  1205   545638     1231  1097728        0             0 nvidia-gridd
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347952] [   1225]     0  1225      949      506    45056        0             0 atd
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347953] [   1242]     0  1242     1838      415    53248        0             0 agetty
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347954] [   1277]     0  1277     3047      581    69632        0         -1000 sshd
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347955] [   1286]     0  1286    59659      957    94208        0             0 gdm3
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347956] [   1301]     0  1301    41486      639    90112        0             0 gdm-session-wor
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347957] [   1350]   122  1350     4830      885    77824        0             0 systemd
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347958] [   1354]   122  1354    42524     1002   106496        0             0 (sd-pam)
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347959] [   1402]   122  1402   200971     1273   155648        0             0 pulseaudio
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347960] [   1426]   122  1426    40793      774    77824        0             0 gdm-x-session
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347961] [   1428]   122  1428  6338606     8369   241664        0             0 Xorg
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347963] [   1461]   114  1461    38232      460    65536        0             0 rtkit-daemon
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347964] [   1486]     0  1486  1177967     7869   880640        0          -500 dockerd
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347965] [   1509]   122  1509     1811      831    53248        0             0 dbus-daemon
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347966] [   1533]     0  1533    34299      456   122880        0             0 cupsd
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347967] [   1550]   122  1550     1322      230    49152        0             0 dbus-run-sessio
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347968] [   1551]   122  1551     1877      881    61440        0             0 dbus-daemon
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347970] [   1552]   122  1552   102289      770   143360        0             0 gnome-session-b
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347971] [   1559]     0  1559    64940      676   135168        0             0 cups-browsed
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347972] [   1589]   122  1589    76324      691    94208        0             0 at-spi-bus-laun
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347972] [   1603]   122  1603     1777      719    49152        0             0 dbus-daemon
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347974] [   1641]   122  1641   997488    19113   847872        0             0 gnome-shell
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347975] [   1649]     0  1649      622      143    49152        0             0 none
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347975] [   1935]   122  1935    77525      889    98304        0             0 ibus-daemon
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347976] [   1938]   122  1938    40465      437    81920        0             0 ibus-memconf
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347977] [   1941]   122  1941    46777     1026   131072        0             0 ibus-x11
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347978] [   1946]   122  1946    58882      477    94208        0             0 ibus-portal
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347979] [   1950]   122  1950    40726      514    77824        0             0 at-spi2-registr
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347980] [   1958]     0  1958    62805      313   102400        0             0 upowerd
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347981] [   1975]   122  1975   750769     1988   274432        0             0 gjs
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347983] [   1988]   122  1988   142001     1220   200704        0             0 gsd-color
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347984] [   1990]   122  1990    61847      382   122880        0             0 gsd-print-notif
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347985] [   1991]   122  1991    77180      631    90112        0             0 gsd-a11y-settin
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347986] [   1992]   122  1992   102304      673   167936        0             0 gsd-power
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347987] [   1993]   122  1993   222570      713   200704        0             0 gsd-media-keys
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347988] [   1994]   122  1994   114064      223   114688        0             0 gsd-rfkill
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347989] [   1995]   122  1995    83618      532   143360        0             0 gsd-keyboard
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347990] [   1996]   122  1996    83550     1242   139264        0             0 gsd-wacom
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347991] [   1997]   122  1997    77696      725   102400        0             0 gsd-housekeepin
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347992] [   1998]   122  1998    79604      767   122880        0             0 gsd-sound
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347993] [   2000]   122  2000    93169     1200   167936        0             0 gsd-datetime
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347994] [   2002]   122  2002    78627      772   114688        0             0 gsd-smartcard
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347996] [   2005]   122  2005    58666      622    81920        0             0 gsd-screensaver
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347997] [   2006]   122  2006   115960      390   126976        0             0 gsd-sharing
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347998] [   2007]   122  2007    40463      630    81920        0             0 ibus-engine-sim
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.347999] [   2032]   121  2032   215060     2111   176128        0             0 colord
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348000] [   2074]   122  2074    85335     1117   147456        0             0 gsd-printer
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348002] [   3059]  1000  3059     4849     1213    77824        0             0 systemd
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348003] [   3063]  1000  3063    42524     1004   106496        0             0 (sd-pam)
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348004] [   3091]  1000  3091     1811      699    61440        0             0 dbus-daemon
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348005] [   8680]  1000  8680   600179    19460   495616        0             0 wandb-service(2
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348006] [   8723]  1000  8723     1658      522    57344        0             0 git
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348007] [   8886]  1000  8886     1887      585    57344        0             0 screen
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348008] [   8887]  1000  8887     3969     1195    77824        0             0 zsh
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348010] [ 116934]  1000 116934    59796      708    86016        0             0 gnome-keyring-d
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348011] [ 119880]  1000 119880     4384     1862    69632        0             0 python3
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348012] [ 119900]  1000 119900    42480     2394   102400        0             0 python3
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348013] [2328649]  1000 2328649     2285      357    57344        0             0 screen
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348014] [2328650]  1000 2328650     4004     1248    73728        0             0 zsh
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348015] [2846718]  1000 2846718     2297      646    65536        0             0 screen
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348016] [2846719]  1000 2846719     3956     1188    73728        0             0 zsh
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348017] [4001711]  1000 4001711     2259      483    57344        0             0 screen
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348018] [4001712]  1000 4001712     3986     1251    73728        0             0 zsh
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348019] [3824669]  1000 3824669     2143      442    53248        0             0 screen
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348021] [1235495]  1000 1235495     2253      231    61440        0             0 screen
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348022] [1235496]  1000 1235496     3947     1161    61440        0             0 zsh
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348023] [2107571]  1000 2107571     2219      510    53248        0             0 screen
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348024] [2107572]  1000 2107572     3930     1209    69632        0             0 zsh
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348025] [2225809]  1000 2225809      652      120    49152        0             0 sh
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348026] [2225813]  1000 2225813  2951654    13007  1384448        0             0 node
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348027] [2225864]  1000 2225864  2930814     6759  1085440        0             0 node
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348028] [2225955]  1000 2225955     3087     1054    65536        0             0 zsh
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348029] [2362853]     0 2362853   589300     3815   397312        0          -900 snapd
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348031] [2618596]     0 2618596     3465     1026    69632        0             0 sshd
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348032] [2618672]  1000 2618672     3499      730    69632        0             0 sshd
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348033] [2618673]  1000 2618673     2455      626    61440        0             0 zsh
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348034] [2618675]  1000 2618675      652      401    53248        0             0 sh
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348035] [2618695]  1000 2618695    15933     1704   163840        0             0 code-fabdb6a30b
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348036] [2618744]  1000 2618744      652      120    45056        0             0 sh
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348037] [2618792]  1000 2618792      652      103    49152        0             0 sh
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348038] [2618835]  1000 2618835  8254103    76618  3747840        0             0 node
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348039] [2618846]  1000 2618846  2980779     5457   720896        0             0 node
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348039] [2618896]  1000 2618896      652      119    45056        0             0 sh
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348041] [2618927]  1000 2618927     3089     1078    69632        0             0 zsh
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348042] [2618956]  1000 2618956     3089     1078    69632        0             0 zsh
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348043] [2619044]  1000 2619044   473210    78697  7634944        0             0 node
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348044] [2789716]     0 2789716     3465     1029    69632        0             0 sshd
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348045] [2789798]  1000 2789798     4338     1404    81920        0             0 sshd
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348046] [2789799]  1000 2789799     2455      626    57344        0             0 zsh
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348047] [2789801]  1000 2789801      652      363    45056        0             0 sh
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348048] [2789821]  1000 2789821    15470     1227   167936        0             0 code-fabdb6a30b
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348049] [2789858]  1000 2789858  8231679    55634  3579904        0             0 node
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348050] [2789865]  1000 2789865  2948390     3832   716800        0             0 node
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348051] [2789934]  1000 2789934   647048   126438 12898304        0             0 node
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348052] [2789940]  1000 2789940     3089     1078    69632        0             0 zsh
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348054] [3057370]     0 3057370     6498     1188    73728        0             0 cupsd
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348055] [3057371]     0 3057371    42979     1054   102400        0             0 cups-browsed
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348056] [3057377]     7 3057377     3831      837    69632        0             0 dbus
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348057] [3116855]  1000 3116855     1778      191    53248        0             0 screen
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348058] [3116856]  1000 3116856     3951     1177    73728        0             0 zsh
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348059] [3117049]  1000 3117049  3933313  1112492 13635584        0             0 python
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348060] [3117083]  1000 3117083   861963    59848  2232320        0             0 torch_shm_manag
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348061] [3117082]  1000 3117082   861963    59884  2224128        0             0 torch_shm_manag
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348062] [3117084]  1000 3117084   861963    59468  2224128        0             0 torch_shm_manag
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348063] [3117085]  1000 3117085   861963    59626  2220032        0             0 torch_shm_manag
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348065] [3167051]  1000 3167051  3943243  1105848 13582336        0             0 python
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348066] [3167082]  1000 3167082   861963    59790  2215936        0             0 torch_shm_manag
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348067] [3167083]  1000 3167083   861963    59679  2220032        0             0 torch_shm_manag
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348068] [3167084]  1000 3167084   861963    59369  2224128        0             0 torch_shm_manag
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348069] [3167085]  1000 3167085   861963    59880  2224128        0             0 torch_shm_manag
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348070] [3192023]  1000 3192023  6829721  3719091 34643968        0             0 python
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348071] [3192063]  1000 3192063   861963    59841  2220032        0             0 torch_shm_manag
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348072] [3192064]  1000 3192064   861963    59676  2232320        0             0 torch_shm_manag
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348073] [3192065]  1000 3192065   861963    59842  2215936        0             0 torch_shm_manag
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348074] [3204982]  1000 3204982  3942840  1103483  9666560        0             0 python
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348075] [3204983]  1000 3204983  3942843  1103755  9666560        0             0 python
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348076] [3204984]  1000 3204984  3942846  1103699  9666560        0             0 python
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348077] [3204985]  1000 3204985  3942849  1103108  9666560        0             0 python
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348078] [3263973]  1000 3263973  3943222  1103804  9687040        0             0 python
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348079] [3263974]  1000 3263974  3943225  1104129  9687040        0             0 python
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348080] [3263975]  1000 3263975  3943228  1103846  9687040        0             0 python
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348081] [3263976]  1000 3263976  3943231  1103961  9687040        0             0 python
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348082] [3272972]  1000 3272972  3933292  1111036  9715712        0             0 python
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348083] [3272973]  1000 3272973  3933295  1111342  9715712        0             0 python
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348084] [3272974]  1000 3272974  3933298  1111143  9715712        0             0 python
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348085] [3272975]  1000 3272975  3933301  1111128  9715712        0             0 python
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348086] [3290139]  1000 3290139     1369       17    53248        0             0 sleep
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348087] [3290154]  1000 3290154     1369       15    49152        0             0 sleep
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348088] oom-kill:constraint=CONSTRAINT_NONE,nodemask=(null),cpuset=/,mems_allowed=0,global_oom,task_memcg=/user.slice/user-1000.slice/session-1462.scope,task=python,pid=3192023,uid=1000
+Jan 15 12:16:32 mk-deepreach kernel: [5485535.348218] Out of memory: Killed process 3192023 (python) total-vm:27318884kB, anon-rss:14812892kB, file-rss:49128kB, shmem-rss:14344kB, UID:1000 pgtables:33832kB oom_score_adj:0
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: runtime.notesleep(0x5620c654cf68)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/runtime/lock_futex.go:159 +0x87
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: runtime.mPark()
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/runtime/proc.go:1449 +0x25
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: runtime.stoplockedm()
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/runtime/proc.go:2430 +0x65
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: runtime.schedule()
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/runtime/proc.go:3127 +0x3d
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: runtime.park_m(0xc0002ad860?)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/runtime/proc.go:3344 +0x14d
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: runtime.mcall()
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/runtime/asm_amd64.s:425 +0x45
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: goroutine 1 [select, 7535 minutes]:
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: main.run(0xc00009afc0)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/cmd/snapd/main.go:166 +0x465
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: main.main()
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/cmd/snapd/main.go:68 +0x13b
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: goroutine 6 [syscall, 7535 minutes]:
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: os/signal.signal_recv()
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/runtime/sigqueue.go:151 +0x2f
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: os/signal.loop()
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/os/signal/signal_unix.go:23 +0x19
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: created by os/signal.Notify.func1.1
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/os/signal/signal.go:151 +0x2a
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: goroutine 296 [IO wait, 7535 minutes]:
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: internal/poll.runtime_pollWait(0x7f1234558e08, 0x72)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/runtime/netpoll.go:302 +0x89
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: internal/poll.(*pollDesc).wait(0xc000201f80?, 0x0?, 0x0)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/internal/poll/fd_poll_runtime.go:83 +0x32
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: internal/poll.(*pollDesc).waitRead(...)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/internal/poll/fd_poll_runtime.go:88
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: internal/poll.(*FD).Accept(0xc000201f80)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/internal/poll/fd_unix.go:614 +0x22c
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: net.(*netFD).accept(0xc000201f80)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/net/fd_unix.go:172 +0x35
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: net.(*UnixListener).accept(0xc0000c6558?)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/net/unixsock_posix.go:166 +0x1c
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: net.(*UnixListener).Accept(0xc000111350)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/net/unixsock.go:260 +0x3d
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: github.com/snapcore/snapd/daemon.(*ucrednetListener).Accept(0x5620c6531d20?)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/daemon/ucrednet.go:150 +0x25
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: net/http.(*Server).Serve(0xc000228380, {0x5620c5f1d8b0, 0xc0001113b0})
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/net/http/server.go:3039 +0x385
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: github.com/snapcore/snapd/daemon.(*Daemon).Start.func3.1()
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/daemon/daemon.go:394 +0x32
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: gopkg.in/tomb%2ev2.(*Tomb).run(0xc000288050, 0x0?)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/vendor/gopkg.in/tomb.v2/tomb.go:163 +0x36
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: created by gopkg.in/tomb%2ev2.(*Tomb).Go
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/vendor/gopkg.in/tomb.v2/tomb.go:159 +0xee
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: goroutine 295 [runnable]:
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: net.sockaddrToUnixgram({0x5620c5f182c0?, 0xc000290080})
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/net/unixsock_posix.go:61 +0x3f
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: net.(*netFD).dial(0xc000673d80, {0x5620c5f1ef80, 0xc00019c000}, {0x0?, 0x0?}, {0x5620c5f20a88?, 0xc000148000}, 0x0?)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/net/sock_posix.go:168 +0x6bb
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: net.socket({0x5620c5f1ef80, 0xc00019c000}, {0x5620c58d2763, 0x8}, 0x1, 0x2, 0x0?, 0x0?, {0x0, 0x0}, ...)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/net/sock_posix.go:70 +0x2b2
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: net.unixSocket({0x5620c5f1ef80?, 0xc00019c000?}, {0x5620c58d2763?, 0x8?}, {0x5620c5f20a88?, 0x0?}, {0x5620c5f20a88?, 0xc000148000?}, {0x5620c58cedf2, 0x4}, ...)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/net/unixsock_posix.go:45 +0x32c
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: net.(*sysDialer).dialUnix(0x0?, {0x5620c5f1ef80?, 0xc00019c000?}, 0x0?, 0xbf71e0767d34df05?)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/net/unixsock_posix.go:158 +0x66
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: net.DialUnix({0x5620c58d2763, 0x8}, 0x0, 0xc000148000)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/net/unixsock.go:210 +0x11f
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: github.com/snapcore/snapd/systemd.SdNotify({0x5620c58d4273, 0xa})
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/systemd/sdnotify.go:51 +0x10c
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: main.runWatchdog.func1()
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/cmd/snapd/main.go:109 +0x3d
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: created by main.runWatchdog
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/cmd/snapd/main.go:102 +0x10e
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: goroutine 294 [IO wait, 7535 minutes]:
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: internal/poll.runtime_pollWait(0x7f1234558d18, 0x72)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/runtime/netpoll.go:302 +0x89
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: internal/poll.(*pollDesc).wait(0xc000201e80?, 0x5620c4eb1fc5?, 0x0)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/internal/poll/fd_poll_runtime.go:83 +0x32
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: internal/poll.(*pollDesc).waitRead(...)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/internal/poll/fd_poll_runtime.go:88
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: internal/poll.(*FD).Accept(0xc000201e80)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/internal/poll/fd_unix.go:614 +0x22c
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: net.(*netFD).accept(0xc000201e80)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/net/fd_unix.go:172 +0x35
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: net.(*UnixListener).accept(0x50?)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/net/unixsock_posix.go:166 +0x1c
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: net.(*UnixListener).Accept(0xc000111320)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/net/unixsock.go:260 +0x3d
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: github.com/snapcore/snapd/daemon.(*ucrednetListener).Accept(0x5620c6531d20?)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/daemon/ucrednet.go:150 +0x25
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: net/http.(*Server).Serve(0xc000228380, {0x5620c5f1d8b0, 0xc000111380})
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/net/http/server.go:3039 +0x385
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: github.com/snapcore/snapd/daemon.(*Daemon).Start.func3()
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/daemon/daemon.go:402 +0x8a
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: gopkg.in/tomb%2ev2.(*Tomb).run(0xc000288050, 0x0?)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/vendor/gopkg.in/tomb.v2/tomb.go:163 +0x36
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: created by gopkg.in/tomb%2ev2.(*Tomb).Go
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/vendor/gopkg.in/tomb.v2/tomb.go:159 +0xee
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: goroutine 293 [select, 6 minutes]:
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: github.com/snapcore/snapd/overlord.(*Overlord).Loop.func1()
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/overlord/overlord.go:479 +0x185
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: gopkg.in/tomb%2ev2.(*Tomb).run(0xc0004cf8b0, 0x0?)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/vendor/gopkg.in/tomb.v2/tomb.go:163 +0x36
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: created by gopkg.in/tomb%2ev2.(*Tomb).Go
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/vendor/gopkg.in/tomb.v2/tomb.go:159 +0xee
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: goroutine 292 [select]:
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: github.com/snapcore/snapd/overlord/standby.(*StandbyOpinions).Start.func1()
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/overlord/standby/standby.go:105 +0x11b
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: created by github.com/snapcore/snapd/overlord/standby.(*StandbyOpinions).Start
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/overlord/standby/standby.go:96 +0x9b
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: goroutine 97 [IO wait, 7535 minutes]:
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: internal/poll.runtime_pollWait(0x7f12342d3380, 0x72)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/runtime/netpoll.go:302 +0x89
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: internal/poll.(*pollDesc).wait(0xc000290280?, 0xc0002994f0?, 0x0)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/internal/poll/fd_poll_runtime.go:83 +0x32
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: internal/poll.(*pollDesc).waitRead(...)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/internal/poll/fd_poll_runtime.go:88
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: internal/poll.(*FD).ReadMsg(0xc000290280, {0xc0002994f0, 0x10, 0x10}, {0xc000014020, 0x1000, 0x1000}, 0x1?)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/internal/poll/fd_unix.go:304 +0x31c
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: net.(*netFD).readMsg(0xc000290280, {0xc0002994f0?, 0x5620c5f220a8?, 0x1?}, {0xc000014020?, 0x0?, 0x8?}, 0x5620c650d310?)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/net/fd_posix.go:78 +0x37
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: net.(*UnixConn).readMsg(0xc00011a2f8, {0xc0002994f0?, 0xc00061a8e8?, 0x5620c5f15b80?}, {0xc000014020?, 0x5620c5f15b80?, 0xc000584b70?})
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/net/unixsock_posix.go:115 +0x4f
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: net.(*UnixConn).ReadMsgUnix(0xc00011a2f8, {0xc0002994f0?, 0xc0007cfdf8?, 0x5620c4eb1fc5?}, {0xc000014020?, 0xc0007cfda0?, 0x5620c4edd1e0?})
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/net/unixsock.go:143 +0x3c
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: github.com/godbus/dbus.(*oobReader).Read(0xc000014000, {0xc0002994f0?, 0xc0007cfe20?, 0x5620c4eb2327?})
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/vendor/github.com/godbus/dbus/transport_unix.go:21 +0x45
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: io.ReadAtLeast({0x5620c5f162a0, 0xc000014000}, {0xc0002994f0, 0x10, 0x10}, 0x10)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/io/io.go:331 +0x9a
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: io.ReadFull(...)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/io/io.go:350
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: github.com/godbus/dbus.(*unixTransport).ReadMessage(0xc000590990)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/vendor/github.com/godbus/dbus/transport_unix.go:91 +0x11e
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: github.com/godbus/dbus.(*Conn).inWorker(0xc0002defc0)
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/vendor/github.com/godbus/dbus/conn.go:294 +0x3b
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: created by github.com/godbus/dbus.(*Conn).Auth
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/vendor/github.com/godbus/dbus/auth.go:118 +0x9ed
+Jan 15 12:16:32 mk-deepreach snapd[2362853]: goroutine 341 [select, 1658 minutes]:
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: github.com/snapcore/snapd/overlord/ifacestate/udevmonitor.(*Monitor).Run.func1()
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/overlord/ifacestate/udevmonitor/udevmon.go:147 +0x205
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: gopkg.in/tomb%2ev2.(*Tomb).run(0xc000473d40, 0xc000157170?)
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/vendor/gopkg.in/tomb.v2/tomb.go:163 +0x36
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: created by gopkg.in/tomb%2ev2.(*Tomb).Go
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/vendor/gopkg.in/tomb.v2/tomb.go:159 +0xee
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: goroutine 276 [runnable]:
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: regexp/syntax.(*parser).newRegexp(...)
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/regexp/syntax/parse.go:144
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: regexp/syntax.(*parser).literal(0xc000200000, 0x65)
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/regexp/syntax/parse.go:368 +0x90
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: regexp/syntax.parse({0x5620c58ce6e5, 0x3}, 0xd4)
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/regexp/syntax/parse.go:926 +0xc65
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: regexp/syntax.Parse(...)
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/regexp/syntax/parse.go:885
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: regexp.compile({0x5620c58ce6e5, 0x3}, 0xfdd8?, 0x0)
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/regexp/regexp.go:172 +0x36
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: regexp.Compile(...)
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: #011/snap/go/10029/src/regexp/regexp.go:135
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: github.com/snapcore/snapd/osutil/udev/netlink.(*RuleDefinition).Compile(0xc00067fe80)
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/osutil/udev/netlink/matcher.go:74 +0x15f
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: github.com/snapcore/snapd/osutil/udev/netlink.RuleDefinition.Evaluate({0x0, 0xc0002e2930, 0xc000502000}, {{0xc00019dcd0, 0x6}, {0xc0009a6690, 0x21}, 0xc0002e21e0})
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/osutil/udev/netlink/matcher.go:26 +0x52
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: github.com/snapcore/snapd/osutil/udev/netlink.RuleDefinitions.Evaluate(...)
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/osutil/udev/netlink/matcher.go:136
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: github.com/snapcore/snapd/osutil/udev/netlink.(*UEventConn).Monitor.func4()
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/osutil/udev/netlink/conn.go:164 +0x1ec
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: created by github.com/snapcore/snapd/osutil/udev/netlink.(*UEventConn).Monitor
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: #011/build/snapd/parts/snapd/build/osutil/udev/netlink/conn.go:136 +0x2d1
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: rax    0xca
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: rbx    0x0
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: rcx    0x5620c4f0f9a3
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: rdx    0x0
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: rdi    0x5620c654cf68
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: rsi    0x80
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: rbp    0x7fffcb87e600
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: rsp    0x7fffcb87e5b8
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: r8     0x0
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: r9     0x0
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: r10    0x0
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: r11    0x286
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: r12    0x5620c4ee36c0
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: r13    0x0
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: r14    0x5620c654c880
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: r15    0x0
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: rip    0x5620c4f0f9a1
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: rflags 0x286
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: cs     0x33
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: fs     0x0
+Jan 15 12:16:33 mk-deepreach snapd[2362853]: gs     0x0
+Jan 15 12:16:33 mk-deepreach systemd[1]: snapd.service: Main process exited, code=exited, status=2/INVALIDARGUMENT
+Jan 15 12:16:33 mk-deepreach systemd[1]: snapd.service: Failed with result 'watchdog'.
+Jan 15 12:16:33 mk-deepreach systemd[1]: snapd.service: Scheduled restart job, restart counter is at 5.
+Jan 15 12:16:33 mk-deepreach systemd[1]: Stopped Snap Daemon.
+Jan 15 12:16:33 mk-deepreach systemd[1]: Starting Snap Daemon...
+Jan 15 12:16:36 mk-deepreach snapd[3290212]: overlord.go:274: Acquiring state lock file
+Jan 15 12:16:36 mk-deepreach snapd[3290212]: overlord.go:279: Acquired state lock file
+Jan 15 12:16:36 mk-deepreach snapd[3290212]: daemon.go:250: started snapd/2.67 (series 16; classic) ubuntu/20.04 (amd64) linux/5.4.0-200-generic.
+Jan 15 12:16:36 mk-deepreach snapd[3290212]: daemon.go:353: adjusting startup timeout by 1m25s (pessimistic estimate of 30s plus 5s per snap)
+Jan 15 12:16:36 mk-deepreach systemd[1]: tmp-syscheck\x2dmountpoint\x2d3612758510.mount: Succeeded.
+Jan 15 12:16:36 mk-deepreach systemd[3059]: tmp-syscheck\x2dmountpoint\x2d3612758510.mount: Succeeded.
+Jan 15 12:16:36 mk-deepreach systemd[1350]: tmp-syscheck\x2dmountpoint\x2d3612758510.mount: Succeeded.
+Jan 15 12:16:37 mk-deepreach snapd[3290212]: backends.go:58: AppArmor status: apparmor is enabled and all features are available (using snapd provided apparmor_parser)
+Jan 15 12:16:37 mk-deepreach systemd[1]: Started Snap Daemon.
+Jan 15 12:16:37 mk-deepreach dbus-daemon[967]: [system] Activating via systemd: service name='org.freedesktop.timedate1' unit='dbus-org.freedesktop.timedate1.service' requested by ':1.1312' (uid=0 pid=3290212 comm="/usr/lib/snapd/snapd " label="unconfined")
+Jan 15 12:16:37 mk-deepreach systemd[1]: Starting Time & Date Service...
+Jan 15 12:16:38 mk-deepreach dbus-daemon[967]: [system] Successfully activated service 'org.freedesktop.timedate1'
+Jan 15 12:16:38 mk-deepreach systemd[1]: Started Time & Date Service.
+Jan 15 12:17:01 mk-deepreach CRON[3290313]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+Jan 15 12:17:08 mk-deepreach systemd[1]: systemd-timedated.service: Succeeded.
+Jan 15 13:17:01 mk-deepreach CRON[3291281]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+Jan 15 14:17:01 mk-deepreach CRON[3292294]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+Jan 15 15:17:01 mk-deepreach CRON[3293865]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+Jan 15 16:17:01 mk-deepreach CRON[3294485]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+Jan 15 16:42:01 mk-deepreach CRON[3294722]: (root) CMD (   test -x /etc/cron.daily/popularity-contest && /etc/cron.daily/popularity-contest --crond)
+Jan 15 17:17:01 mk-deepreach CRON[3295824]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+Jan 15 17:28:40 mk-deepreach systemd[1]: Starting Daily apt download activities...
+Jan 15 17:29:12 mk-deepreach apt-helper[3295933]: E: Sub-process nm-online returned an error code (1)
+Jan 15 17:29:17 mk-deepreach systemd[1]: apt-daily.service: Succeeded.
+Jan 15 17:29:17 mk-deepreach systemd[1]: Finished Daily apt download activities.
+Jan 15 18:17:01 mk-deepreach CRON[3296662]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+Jan 15 19:11:39 mk-deepreach snapd[3290212]: storehelpers.go:954: cannot refresh: snap has no updates available: "bare", "core18", "core20", "core22", "cups", "gnome-3-28-1804", "gnome-3-38-2004", "gnome-42-2204", "gtk-common-themes", "remmina", "snapd"
+Jan 15 19:17:01 mk-deepreach CRON[3297140]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+Jan 15 20:13:02 mk-deepreach kernel: [5514125.565921] audit: type=1107 audit(1736971982.613:2058): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 20:13:02 mk-deepreach kernel: [5514125.565921]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 20:13:02 mk-deepreach kernel: [5514125.578087] audit: type=1107 audit(1736971982.625:2059): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 20:13:02 mk-deepreach kernel: [5514125.578087]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 20:13:02 mk-deepreach kernel: [5514125.578471] audit: type=1107 audit(1736971982.625:2060): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 20:13:02 mk-deepreach kernel: [5514125.578471]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 20:13:02 mk-deepreach systemd[1]: Started Session 1929 of user ubuntu.
+Jan 15 20:17:01 mk-deepreach CRON[3297770]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly)
+Jan 15 20:26:14 mk-deepreach systemd[1]: Starting Refresh fwupd metadata and update motd...
+Jan 15 20:26:15 mk-deepreach dbus-daemon[967]: [system] Activating via systemd: service name='org.freedesktop.fwupd' unit='fwupd.service' requested by ':1.1316' (uid=112 pid=3324231 comm="/usr/bin/fwupdmgr refresh " label="unconfined")
+Jan 15 20:26:15 mk-deepreach systemd[1]: Starting Firmware update daemon...
+Jan 15 20:26:17 mk-deepreach dbus-daemon[967]: [system] Successfully activated service 'org.freedesktop.fwupd'
+Jan 15 20:26:17 mk-deepreach systemd[1]: Started Firmware update daemon.
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Updating lvfs
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 0%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 100%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: message repeated 2 times: [ Downloading…: 100%]
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 0%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 1%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 3%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 4%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 6%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 7%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 9%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 11%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 12%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 14%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 15%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 19%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 22%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 25%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 28%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 31%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 34%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 36%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 40%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 43%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 45%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 48%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 51%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 53%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 54%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 58%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 61%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 62%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 65%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 69%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 72%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 75%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 78%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 81%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 83%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 86%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 88%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 89%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 93%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 95%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Downloading…: 98%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Idle…: 100%
+Jan 15 20:26:17 mk-deepreach fwupdmgr[3324231]: Idle…: 100%
+Jan 15 20:26:18 mk-deepreach fwupdmgr[3324231]: Successfully downloaded new metadata: 0 local devices supported
+Jan 15 20:26:18 mk-deepreach systemd[1]: fwupd-refresh.service: Succeeded.
+Jan 15 20:26:18 mk-deepreach systemd[1]: Finished Refresh fwupd metadata and update motd.
+Jan 15 20:41:44 mk-deepreach systemd[1]: Started Session 1931 of user ubuntu.
+Jan 15 20:41:44 mk-deepreach kernel: [5515847.237914] audit: type=1107 audit(1736973704.300:2061): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 20:41:44 mk-deepreach kernel: [5515847.237914]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'
+Jan 15 20:41:44 mk-deepreach kernel: [5515847.244099] audit: type=1107 audit(1736973704.308:2062): pid=967 uid=103 auid=4294967295 ses=4294967295 msg='apparmor="DENIED" operation="dbus_signal"  bus="system" path="/org/freedesktop/NetworkManager" interface="org.freedesktop.NetworkManager" member="CheckPermissions" name=":1.13" mask="receive" pid=1559 label="snap.cups.cups-browsed" peer_pid=968 peer_label="unconfined"
+Jan 15 20:41:44 mk-deepreach kernel: [5515847.244099]  exe="/usr/bin/dbus-daemon" sauid=103 hostname=? addr=? terminal=?'

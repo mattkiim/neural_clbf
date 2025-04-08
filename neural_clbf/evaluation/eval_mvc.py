@@ -3,6 +3,10 @@ import numpy as np
 import matplotlib
 matplotlib.use('TkAgg')
 
+import glob
+import os
+
+
 from neural_clbf.controllers import NeuralCLBFController, NeuralCBFController
 
 
@@ -11,17 +15,21 @@ from neural_clbf.experiments import (
     ExperimentSuite,
     CBFContourExperiment,
     RolloutStateSpaceExperiment,
-    RolloutSuccessRateExperiment
+    RolloutSuccessRateExperiment,
 )
 
 
 start_x = torch.tensor(
     [
-        [0.0080, -0.5999,  0.5293, -0.2825, -0.4753, -0.3662,  1.5841-0.5,  2.6514-0.5, 0.6565-0.5],
+        [0.0080, -0.5999,  0.5293, -0.2825, -0.4753, -0.3662, 1.5841, 2.6514, 0.6565],
     ]
 )
 
-file_path = 'initial_conditions_2.npy'
+file_path = 'boundary_initials.npy'
+# file_path = 'initial_conditions_2.npy'
+# file_path = 'initial_states_5000.npy'
+# file_path = 'initial_states_all_10000.npy'
+
 initial_conditions = np.load(file_path)
 
 start_xs = torch.tensor(initial_conditions[:, :-1], dtype=torch.float32)
@@ -33,11 +41,28 @@ scenarios = [
 
 
 def plot_mvc_rel():
-    log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_3a414cf/version_71/checkpoints/epoch=100-step=372731.ckpt" # combined_states
-    # log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_3a414cf/version_73/checkpoints/epoch=100-step=369881.ckpt" # generated_states_with_boundary
-    # log_file = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_3a414cf/version_74/checkpoints/epoch=100-step=383981.ckpt" # combined_states + generated_states_with_boundary
+    checkpoint_dir = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_c69834e/version_58/checkpoints/" # gamma=0.5
+    # checkpoint_dir = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_c69834e/version_63/checkpoints/" # gamma=1.0
+    # checkpoint_dir = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_c69834e/version_65/checkpoints/" # gamma=0.5, sanity check
+
+    ckpt_files = glob.glob(os.path.join(checkpoint_dir, "*.ckpt"))
+
+    # Select the latest checkpoint file and store it in log_file
+    log_file = max(ckpt_files, key=os.path.getctime) if ckpt_files else None
+
     neural_controller = NeuralCBFController.load_from_checkpoint(log_file)
 
+
+    # # Load the full PyTorch Lightning checkpoint
+    # checkpoint = torch.load(log_file, map_location=torch.device("cpu"))
+
+    # # Extract and save only the model state_dict (weights)
+    # torch.save(checkpoint["state_dict"], "model.pth")
+
+    # print(checkpoint["state_dict"])
+    # print("Model weights extracted and saved as model.pth")
+
+    # quit()
 
 
     rollout_experiment = RolloutStateSpaceExperiment(
@@ -75,9 +100,9 @@ def plot_mvc_rel():
 
     # experiment_suite = ExperimentSuite([rollout_experiment, h_contour_experiment])
     # experiment_suite = ExperimentSuite([rollout_experiment, rollout_success_experiment])
-    # experiment_suite = ExperimentSuite([h_contour_experiment])
+    experiment_suite = ExperimentSuite([h_contour_experiment])
     # experiment_suite = ExperimentSuite([rollout_success_experiment])
-    experiment_suite = ExperimentSuite([rollout_experiment])
+    # experiment_suite = ExperimentSuite([rollout_experiment])
 
 
 

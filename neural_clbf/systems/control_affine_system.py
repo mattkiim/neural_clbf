@@ -411,12 +411,14 @@ class ControlAffineSystem(ABC):
             xdot: bs x self.n_dims tensor of time derivatives of x
         """
         # Get the control-affine dynamics
+        # print(x.shape)
         f, g = self.control_affine_dynamics(x, params=params)
         # Compute state derivatives using control-affine form
-        xdot = f + torch.bmm(g, u.unsqueeze(-1))
+        # u = u.repeat(f.shape[0], 1)  # Repeat u along the batch dimension
         # print(f.shape, g.shape, u.shape)
         # print(xdot.shape, x.shape)
         # quit()
+        xdot = f + torch.bmm(g, u.unsqueeze(-1))
         return xdot.view(x.shape)
 
     def zero_order_hold(
@@ -498,6 +500,8 @@ class ControlAffineSystem(ABC):
                     u = controller(x_current)
 
                 # Simulate forward using the dynamics
+                # print(u)
+                # quit()
                 xdot = self.closed_loop_dynamics(x_current, u, params)
                 x_sim[:, tstep, :] = x_current + self.dt * xdot
 
@@ -527,6 +531,7 @@ class ControlAffineSystem(ABC):
             a bs x num_steps x self.n_dims tensor of simulated trajectories
         """
         # Call the simulate method using the nominal controller
+        print(self.u_nominal)
         return self.simulate(
             x_init, num_steps, self.u_nominal, guard=self.out_of_bounds_mask
         )

@@ -9,6 +9,7 @@ from typing import List, Callable, Tuple, Dict, Optional
 import torch
 import pytorch_lightning as pl
 from torch.utils.data import TensorDataset, DataLoader
+import numpy as np
 
 
 from neural_clbf.systems import ControlAffineSystem
@@ -24,7 +25,7 @@ class EpisodicDataModule(pl.LightningDataModule):
         model: ControlAffineSystem,
         initial_domain: List[Tuple[float, float]],
         trajectories_per_episode: int = 100,
-        trajectory_length: int = 5000,
+        trajectory_length: int = 500,
         fixed_samples: int = 100000,
         max_points: int = 10000000,
         val_split: float = 0.1,
@@ -74,7 +75,8 @@ class EpisodicDataModule(pl.LightningDataModule):
         self.x_range = self.x_max - self.x_min
 
     def sample_trajectories(
-        self, simulator: Callable[[torch.Tensor, int], torch.Tensor]
+        self, simulator: Callable[[torch.Tensor, int], torch.Tensor],
+        custom_initial_states: Optional[bool] = False
     ) -> torch.Tensor:
         """
         Generate new data points by simulating a bunch of trajectories
@@ -83,16 +85,22 @@ class EpisodicDataModule(pl.LightningDataModule):
             simulator: a function that simulates the given initial conditions out for
                        the specified number of timesteps
         """
-        # Start by sampling from initial conditions from the given region
-        x_init = torch.Tensor(self.trajectories_per_episode, self.n_dims).uniform_(
-            0.0, 1.0
-        )
-        for i in range(self.n_dims):
-            min_val, max_val = self.initial_domain[i]
-            x_init[:, i] = x_init[:, i] * (max_val - min_val) + min_val
+        if custom_initial_states:
+            file_path = 'initial_states_10000.npy'
+            initial_conditions = np.load(file_path)
+            x_init = torch.tensor(initial_conditions[:, :-1], dtype=torch.float32)
+            x_sim = simulator(x_init, self.trajectory_length)
+        else:
+            # Start by sampling from initial conditions from the given region
+            x_init = torch.Tensor(self.trajectories_per_episode, self.n_dims).uniform_(
+                0.0, 1.0
+            )
+            for i in range(self.n_dims):
+                min_val, max_val = self.initial_domain[i]
+                x_init[:, i] = x_init[:, i] * (max_val - min_val) + min_val
 
-        # Simulate each initial condition out for the specified number of steps
-        x_sim = simulator(x_init, self.trajectory_length)
+            # Simulate each initial condition out for the specified number of steps
+            x_sim = simulator(x_init, self.trajectory_length)
 
         # Reshape the data into a single replay buffer
         x_sim = x_sim.view(-1, self.n_dims)
