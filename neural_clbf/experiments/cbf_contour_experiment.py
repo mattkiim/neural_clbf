@@ -256,7 +256,7 @@ class CBFContourExperiment(Experiment):
         # Define consistent contour levels
         value_min = results_df["CBF Value (h)"].min()
         value_max = results_df["CBF Value (h)"].max()
-        contour_levels = np.linspace(-0.5, 0.5, 21)  # Same intervals as before
+        contour_levels = np.linspace(value_min, value_max, 21)  # Same intervals as before
 
         # Plot contours
         contours = ax.tricontourf(

@@ -32,6 +32,10 @@ file_path = 'boundary_initials.npy'
 
 initial_conditions = np.load(file_path)
 
+# print(initial_conditions.shape); quit()
+start_x = torch.tensor([initial_conditions[3, :-1]])
+# print(start_x); quit()
+
 start_xs = torch.tensor(initial_conditions[:, :-1], dtype=torch.float32)
 
 nominal_params = {"angle_alpha_factor": 1.2, "velocity": 0.6, "omega_max": 1.1, "collisionR": 0.25}
@@ -44,6 +48,8 @@ def plot_mvc_rel():
     checkpoint_dir = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_c69834e/version_58/checkpoints/" # gamma=0.5
     # checkpoint_dir = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_c69834e/version_63/checkpoints/" # gamma=1.0
     # checkpoint_dir = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_c69834e/version_65/checkpoints/" # gamma=0.5, sanity check
+
+    checkpoint_dir = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_0ce2993/version_4/checkpoints/" # gamma=0.5
 
     ckpt_files = glob.glob(os.path.join(checkpoint_dir, "*.ckpt"))
 
@@ -100,8 +106,8 @@ def plot_mvc_rel():
 
     # experiment_suite = ExperimentSuite([rollout_experiment, h_contour_experiment])
     # experiment_suite = ExperimentSuite([rollout_experiment, rollout_success_experiment])
-    experiment_suite = ExperimentSuite([h_contour_experiment])
-    # experiment_suite = ExperimentSuite([rollout_success_experiment])
+    # experiment_suite = ExperimentSuite([h_contour_experiment])
+    experiment_suite = ExperimentSuite([rollout_success_experiment])
     # experiment_suite = ExperimentSuite([rollout_experiment])
 
 

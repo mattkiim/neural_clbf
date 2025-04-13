@@ -58,13 +58,13 @@ def main(args):
     data_module = EpisodicDataModule(
         dynamics_model,
         initial_conditions,
-        trajectories_per_episode=100,
-        trajectory_length=500,
-        fixed_samples=50000,
+        trajectories_per_episode=50,
+        trajectory_length=300,
+        fixed_samples=40000,
         max_points=50000,
         val_split=0.1,
         batch_size=batch_size,
-        quotas={"boundary": 0.3, "safe": 0.2, "unsafe": 0.3},
+        quotas={"boundary": 0.5, "safe": 0.4},
     )
 
     experiment_suite = ExperimentSuite([])
@@ -78,11 +78,11 @@ def main(args):
         cbf_hidden_layers=3,
         cbf_hidden_size=512,
         cbf_lambda=0.0,
-        cbf_relaxation_penalty=2e3,
+        cbf_relaxation_penalty=2e2,
         controller_period=controller_period,
         primal_learning_rate=5e-4,
         scale_parameter=10.0, 
-        learn_shape_epochs=11,
+        learn_shape_epochs=21,
         use_relu=True,
     )
 

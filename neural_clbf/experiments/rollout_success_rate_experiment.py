@@ -78,15 +78,6 @@ class RolloutSuccessRateExperiment(Experiment):
         # Make sure it's a tensor on the same device as the controller
         device = next(controller_under_test.parameters()).device
 
-        # print(self.initial_states)
-
-        # self.n_sims = 1
-        # self.initial_states = np.array([[0.0080, -0.5999,  0.5293, -0.2825, -0.4753, -0.3662,  1.5841,  2.6514, 0.6565]])
-        # self.initial_states = torch.tensor(self.initial_states, dtype=torch.float32)
-        # print(self.initial_states)
-        # print(self.initial_states.dtype)
-        # quit()
-
         x = self.initial_states.to(device)
 
         # If needed, transform states into 'relative' form
@@ -119,15 +110,9 @@ class RolloutSuccessRateExperiment(Experiment):
             xdot = controller_under_test.dynamics_model.closed_loop_dynamics(x, u_current)
 
             x = x + dt * xdot
-            # print(x, dt, xdot)
-            # quit()
 
             # Check which have become unsafe
             unsafe_mask = controller_under_test.dynamics_model.unsafe_mask(x)  # shape [n_sims] 
-            # TODO: verify this is right with simple test cases (i.e. straight line initial points)
-            # print(unsafe_mask.shape)
-            # print(x.shape)
-            # quit()
             still_safe = still_safe & (~unsafe_mask)
 
             # if tstep == 5: quit()
@@ -141,14 +126,13 @@ class RolloutSuccessRateExperiment(Experiment):
         # False Negative (FN): started unsafe, ended safe
         n_safe = initially_safe_mask.sum().item()
 
-        print(n_safe)
         n_unsafe = self.n_sims - n_safe
 
         still_safe = still_safe.view(-1, 1)  # shape [n_sims, 1]
-        print(initially_safe_mask.shape, still_safe.shape)
 
         # TP: (initially safe) & (still safe)
         num_true_positives = (initially_safe_mask & still_safe).sum().item()
+        # print(initially_safe_mask, still_safe)
         # FP: (initially safe) & (became unsafe)
         num_false_positives = n_safe - num_true_positives
 

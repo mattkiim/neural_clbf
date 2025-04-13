@@ -95,7 +95,7 @@ class MultiVehicleCollision(ControlAffineSystem):
 
     def safe_mask(self, x: torch.Tensor) -> torch.Tensor:
         # Defines safe regions based on collision distance
-        return self.boundary_fn(x) > 0 + 0.25
+        return self.boundary_fn(x) > 0 + 0.2
 
     def unsafe_mask(self, x: torch.Tensor) -> torch.Tensor:
         # Unsafe region if boundary function is less than zero
