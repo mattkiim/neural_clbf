@@ -19,7 +19,7 @@ class MultiVehicleCollision(ControlAffineSystem):
         self.angle_alpha_factor = 1.2
         self.velocity = 0.6
         self.omega_max = 1.1
-        self.collisionR = 0.25
+        self.collisionR = 0.25 # 0.25
         self.obs_dim = 9
 
         
@@ -97,9 +97,9 @@ class MultiVehicleCollision(ControlAffineSystem):
         # Defines safe regions based on collision distance
         return self.boundary_fn(x) > 0 + 0.2
 
-    def unsafe_mask(self, x: torch.Tensor) -> torch.Tensor:
+    def unsafe_mask(self, x: torch.Tensor, buf=0.) -> torch.Tensor:
         # Unsafe region if boundary function is less than zero
-        return self.boundary_fn(x) < 0
+        return self.boundary_fn(x) + buf < 0
 
     def boundary_fn(self, state: torch.Tensor) -> torch.Tensor:
         """
@@ -123,12 +123,10 @@ class MultiVehicleCollision(ControlAffineSystem):
         dist_23 = torch.norm(xy2 - xy3, dim=-1) - self.collisionR
 
         # Return the **minimum pairwise distance**
-        boundary_values = torch.min(torch.min(dist_12, dist_13), dist_23)
+        min_boundary_values = torch.min(torch.min(dist_12, dist_13), dist_23)
 
-        return boundary_values
+        return min_boundary_values
 
-
-    
 
     def u_nominal2(
         self, x: torch.Tensor, params: Optional[Scenario] = None

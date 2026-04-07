@@ -112,7 +112,7 @@ class RolloutSuccessRateExperiment(Experiment):
             x = x + dt * xdot
 
             # Check which have become unsafe
-            unsafe_mask = controller_under_test.dynamics_model.unsafe_mask(x)  # shape [n_sims] 
+            unsafe_mask = controller_under_test.dynamics_model.unsafe_mask(x, buf=0.) # shape [n_sims] || buf=0.0 is default
             still_safe = still_safe & (~unsafe_mask)
 
             # if tstep == 5: quit()
@@ -128,6 +128,8 @@ class RolloutSuccessRateExperiment(Experiment):
 
         n_unsafe = self.n_sims - n_safe
 
+        print(still_safe.shape)
+        print(initially_safe_mask.shape)
         still_safe = still_safe.view(-1, 1)  # shape [n_sims, 1]
 
         # TP: (initially safe) & (still safe)

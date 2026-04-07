@@ -24,7 +24,7 @@ controller_period = 0.01
 
 def main(args):
     # Define the scenarios
-    nominal_params = {"angle_alpha_factor": 1.2, "velocity": 0.6, "omega_max": 1.1, "collisionR": 0.4}
+    nominal_params = {"angle_alpha_factor": 1.2, "velocity": 0.6, "omega_max": 1.1, "collisionR": 0.6}
     scenarios = [
         nominal_params, # add more for robustness
     ]
@@ -64,7 +64,7 @@ def main(args):
         max_points=50000,
         val_split=0.1,
         batch_size=batch_size,
-        quotas={"boundary": 0.5, "safe": 0.4},
+        quotas={"boundary": 0.5, "unsafe": 0.4},
     )
 
     experiment_suite = ExperimentSuite([])
@@ -77,7 +77,7 @@ def main(args):
         experiment_suite=experiment_suite,
         cbf_hidden_layers=3,
         cbf_hidden_size=512,
-        cbf_lambda=0.0,
+        cbf_lambda=0.5,
         cbf_relaxation_penalty=2e2,
         controller_period=controller_period,
         primal_learning_rate=5e-4,

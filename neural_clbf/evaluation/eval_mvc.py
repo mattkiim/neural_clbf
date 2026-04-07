@@ -27,13 +27,11 @@ start_x = torch.tensor(
 
 file_path = 'boundary_initials.npy'
 # file_path = 'initial_conditions_2.npy'
-# file_path = 'initial_states_5000.npy'
-# file_path = 'initial_states_all_10000.npy'
 
 initial_conditions = np.load(file_path)
 
 # print(initial_conditions.shape); quit()
-start_x = torch.tensor([initial_conditions[3, :-1]])
+start_x = torch.tensor([initial_conditions[8, :-1]])
 # print(start_x); quit()
 
 start_xs = torch.tensor(initial_conditions[:, :-1], dtype=torch.float32)
@@ -45,11 +43,8 @@ scenarios = [
 
 
 def plot_mvc_rel():
-    checkpoint_dir = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_c69834e/version_58/checkpoints/" # gamma=0.5
-    # checkpoint_dir = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_c69834e/version_63/checkpoints/" # gamma=1.0
-    # checkpoint_dir = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_c69834e/version_65/checkpoints/" # gamma=0.5, sanity check
-
-    checkpoint_dir = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_0ce2993/version_4/checkpoints/" # gamma=0.5
+    # checkpoint_dir = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_0ce2993/version_4/checkpoints/" # gamma=0.0
+    checkpoint_dir = "/home/ubuntu/neural_clbf_mk/neural_clbf/training/logs/multivehicle_collision/commit_c00856e/version_1/checkpoints/" # gamma=0.0
 
     ckpt_files = glob.glob(os.path.join(checkpoint_dir, "*.ckpt"))
 
@@ -57,7 +52,7 @@ def plot_mvc_rel():
     log_file = max(ckpt_files, key=os.path.getctime) if ckpt_files else None
 
     neural_controller = NeuralCBFController.load_from_checkpoint(log_file)
-
+    # print(neural_controller.dynamics_model.collisionR); quit()
 
     # # Load the full PyTorch Lightning checkpoint
     # checkpoint = torch.load(log_file, map_location=torch.device("cpu"))
@@ -106,8 +101,8 @@ def plot_mvc_rel():
 
     # experiment_suite = ExperimentSuite([rollout_experiment, h_contour_experiment])
     # experiment_suite = ExperimentSuite([rollout_experiment, rollout_success_experiment])
-    # experiment_suite = ExperimentSuite([h_contour_experiment])
-    experiment_suite = ExperimentSuite([rollout_success_experiment])
+    experiment_suite = ExperimentSuite([h_contour_experiment])
+    # experiment_suite = ExperimentSuite([rollout_success_experiment])
     # experiment_suite = ExperimentSuite([rollout_experiment])
 
 

@@ -16,6 +16,7 @@ import copy
 
 import numpy as np
 
+import os
 
 from neural_clbf.experiments import Experiment
 from neural_clbf.systems.utils import ScenarioList
@@ -122,6 +123,9 @@ class RolloutStateSpaceExperiment(Experiment):
         n_dims = controller_under_test.dynamics_model.n_dims
         n_controls = controller_under_test.dynamics_model.n_controls
         x_sim_start = torch.zeros(n_sims, n_dims).type_as(self.start_x)
+        
+        print(self.start_x)
+        print(x_sim_start)
         for i in range(0, self.start_x.shape[0]):
             for j in range(0, self.n_sims_per_start):
                 x_sim_start[i * self.n_sims_per_start + j, :] = self.start_x[i, :]
@@ -146,6 +150,7 @@ class RolloutStateSpaceExperiment(Experiment):
             x_sim_start = controller_under_test.dynamics_model.states_rel(x_sim_start)
             x_non_rel = x_non_rel.to(device)
         x_current = x_sim_start.to(device)
+        # print(x_current); quit()
 
         # Reset the controller if necessary
         if hasattr(controller_under_test, "reset_controller"):
@@ -179,24 +184,24 @@ class RolloutStateSpaceExperiment(Experiment):
                 controller_calls += 1
                 controller_time += end_time - start_time
 
-            # Get the barrier function if applicable
-            h: Optional[torch.Tensor] = None
-            if hasattr(controller_under_test, "h") and hasattr(
-                controller_under_test.dynamics_model, "get_observations"
-            ):
-                controller_under_test = cast(
-                    "NeuralObsBFController", controller_under_test
-                )
-                dynamics_model = cast(
-                    "ObservableSystem", controller_under_test.dynamics_model
-                )
-                obs = dynamics_model.get_observations(x_current)
-                h = controller_under_test.h(x_current, obs)
+                # Get the barrier function if applicable
+                h: Optional[torch.Tensor] = None
+                if hasattr(controller_under_test, "h") and hasattr(
+                    controller_under_test.dynamics_model, "get_observations"
+                ):
+                    controller_under_test = cast(
+                        "NeuralObsBFController", controller_under_test
+                    )
+                    dynamics_model = cast(
+                        "ObservableSystem", controller_under_test.dynamics_model
+                    )
+                    obs = dynamics_model.get_observations(x_current)
+                    h = controller_under_test.h(x_current, obs)
 
-            # Get the Lyapunov function if applicable
-            V: Optional[torch.Tensor] = None
-            if hasattr(controller_under_test, "V") and h is None:
-                V = controller_under_test.V(x_current)  # type: ignore
+                # Get the Lyapunov function if applicable
+                V: Optional[torch.Tensor] = None
+                if hasattr(controller_under_test, "V") and h is None:
+                    V = controller_under_test.V(x_current) + 0.02
 
             # Log the current state and control for each simulation
             for sim_index in range(n_sims):
@@ -292,7 +297,6 @@ class RolloutStateSpaceExperiment(Experiment):
 
                     results_non_rel.append(log_packet)
         
-        # print(results_non_rel)
         return pd.DataFrame(results)
 
     def plot2(
